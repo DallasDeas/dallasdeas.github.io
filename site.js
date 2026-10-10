@@ -143,7 +143,7 @@ document.querySelectorAll('.network-proof img').forEach(image => {
       if (!email) return;
       try {
         await writeClipboard(email);
-        showToast('COPIED — email address saved to clipboard');
+        showToast('COPIED TO CLIPBOARD — email address ready to paste');
         window.markEmailCursorCopied?.();
         window.clearTimeout(labelTimer);
         const label = button.querySelector('.copy-button-label');
@@ -151,7 +151,7 @@ document.querySelectorAll('.network-proof img').forEach(image => {
           label.textContent = '✓ Copied!';
           button.classList.add('did-copy');
           labelTimer = window.setTimeout(() => {
-            label.textContent = 'Copy email';
+            label.textContent = 'COPY EMAIL';
             button.classList.remove('did-copy');
           }, 1800);
         }
