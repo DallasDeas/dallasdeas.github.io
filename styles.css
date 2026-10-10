@@ -55,3 +55,12 @@ button{font:inherit} p{margin:0 0 1rem} h1,h2,h3,h4{letter-spacing:-.035em;line-
 .lab-image-link:hover{text-decoration:underline}
 @media(max-width:730px){.lab-gallery{grid-template-columns:1fr}.lab-shot>a{min-height:190px}.lab-shot figcaption{padding:18px}.lab-gallery-section{margin:30px 0 50px}}
 @media(prefers-reduced-motion:reduce){.lab-shot img{transition:none}}
+
+/* Homepage readability and mobile diagram improvements */
+.hero h1{font-size:clamp(3rem,5.2vw,4.5rem);letter-spacing:-.055em;overflow-wrap:normal}
+.hero-role{font-size:clamp(1.18rem,2vw,1.65rem);font-weight:720;color:var(--text);line-height:1.4;margin:13px 0 0;letter-spacing:-.02em}
+.hero-role span{color:var(--blue)}
+.hero .lead{margin-top:20px}
+.node-four{top:67%}
+.visual-status{bottom:14px;font-size:.68rem}
+@media(max-width:620px){.hero h1{font-size:clamp(2.6rem,12vw,3.5rem)}.visual-status{font-size:.61rem;bottom:9px}.node-four{top:65%}}
