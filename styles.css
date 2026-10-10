@@ -151,3 +151,19 @@ button{font:inherit} p{margin:0 0 1rem} h1,h2,h3,h4{letter-spacing:-.035em;line-
 @media (hover: hover) and (pointer: fine){.open-hover-enabled button.copy-email-btn{cursor:none}}
 @media (max-width:620px){.copy-toast{bottom:18px;right:16px;left:16px;max-width:none;font-size:.82rem;padding:12px 14px}.copy-toast-icon{width:27px;height:27px}}
 @media (prefers-reduced-motion: reduce){.copy-toast{transition:none}}
+
+
+/* More visible Copy Email actions: desktop, phone, and keyboard */
+.copy-email-btn{
+  background:rgba(104,197,255,.17);
+  border:1px solid var(--blue);
+  color:var(--text);
+  font-weight:800;
+  box-shadow:0 0 0 1px rgba(104,197,255,.06),0 8px 22px rgba(0,0,0,.14);
+}
+.copy-email-btn:hover{background:var(--blue);color:#061423}
+.copy-email-btn:focus-visible{outline:3px solid var(--teal);outline-offset:4px}
+.contact-copy-action{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.contact-copy-action .btn{min-height:45px;padding:11px 16px}
+.copy-hint{color:var(--faint);font-size:.78rem}
+@media(max-width:620px){.copy-hint{display:block;width:100%}}
