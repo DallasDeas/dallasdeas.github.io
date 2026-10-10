@@ -565,3 +565,73 @@ a.edition-project-row:hover .edition-row-marker{background:var(--blue);color:whi
  .edition-contact-section{padding-bottom:40px}
 }
 @media(prefers-reduced-motion:reduce){.edition-stickers>span:hover{transform:none}}
+
+
+/* Dallas Deas homepage name glitch — decoration only; short, one-shot animation */
+.edition-title .name-glitch{
+  display:inline-block;
+  position:relative;
+  isolation:isolate;
+  white-space:nowrap;
+}
+.edition-title .name-glitch::before,
+.edition-title .name-glitch::after{
+  content:attr(data-text);
+  position:absolute;
+  inset:0;
+  z-index:1;
+  opacity:0;
+  white-space:nowrap;
+  font:inherit;
+  letter-spacing:inherit;
+  pointer-events:none;
+  user-select:none;
+  mix-blend-mode:normal;
+}
+.edition-title .name-glitch::before{
+  color:var(--teal);
+  text-shadow:-2px 0 var(--bg);
+}
+.edition-title .name-glitch::after{
+  color:var(--blue);
+  text-shadow:2px 0 var(--bg);
+}
+@media(hover:hover) and (pointer:fine){
+  .edition-title:hover .name-glitch{
+    animation:name-glitch-base .72s steps(1,end) both;
+  }
+  .edition-title:hover .name-glitch::before{
+    animation:name-glitch-upper .78s steps(1,end) both;
+  }
+  .edition-title:hover .name-glitch::after{
+    animation:name-glitch-lower .78s steps(1,end) both;
+  }
+}
+@keyframes name-glitch-base{
+  0%,8%,23%,42%,65%,100%{transform:translate(0,0);filter:none}
+  10%,12%{transform:translate(-2px,1px)}
+  26%,29%{transform:translate(2px,-1px)}
+  46%,48%{transform:translate(-1px,0)}
+  70%,72%{transform:translate(1px,1px)}
+}
+@keyframes name-glitch-upper{
+  0%,7%,17%,25%,41%,56%,74%,100%{opacity:0;transform:translate(0);clip-path:inset(0 0 100% 0)}
+  9%,13%{opacity:.85;transform:translate(-5px,-1px);clip-path:inset(7% 0 67% 0)}
+  27%,32%{opacity:.95;transform:translate(4px,1px);clip-path:inset(38% 0 37% 0)}
+  44%,51%{opacity:.75;transform:translate(-3px,-2px);clip-path:inset(67% 0 13% 0)}
+  61%,68%{opacity:.85;transform:translate(3px,0);clip-path:inset(16% 0 64% 0)}
+}
+@keyframes name-glitch-lower{
+  0%,8%,19%,29%,46%,64%,78%,100%{opacity:0;transform:translate(0);clip-path:inset(100% 0 0 0)}
+  10%,15%{opacity:.9;transform:translate(4px,2px);clip-path:inset(71% 0 8% 0)}
+  31%,37%{opacity:.95;transform:translate(-5px,0);clip-path:inset(25% 0 53% 0)}
+  49%,54%{opacity:.7;transform:translate(3px,1px);clip-path:inset(51% 0 27% 0)}
+  69%,73%{opacity:.9;transform:translate(-3px,-1px);clip-path:inset(7% 0 75% 0)}
+}
+@media(prefers-reduced-motion:reduce){
+ .edition-title .name-glitch,
+ .edition-title .name-glitch::before,
+ .edition-title .name-glitch::after{animation:none!important;transform:none!important}
+ .edition-title .name-glitch::before,
+ .edition-title .name-glitch::after{content:none!important}
+}
