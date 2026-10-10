@@ -97,3 +97,41 @@ button{font:inherit} p{margin:0 0 1rem} h1,h2,h3,h4{letter-spacing:-.035em;line-
 .azure-video-details p:last-child{margin-bottom:0}
 .azure-video-privacy{font-size:.83rem!important;color:var(--faint)!important}
 @media(max-width:620px){.azure-video-details{padding:17px}.azure-video-player{max-height:none}}
+
+
+/* Circular OPEN hover indicator for primary links */
+.open-hover-cursor {
+  position: fixed;
+  left: -100px;
+  top: -100px;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #b82e32;
+  color: #fff;
+  box-shadow: 0 12px 27px rgba(0, 0, 0, .32);
+  font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: .12em;
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.65);
+  transition: opacity .16s ease, transform .18s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .open-hover-enabled a.btn,
+  .open-hover-enabled a.card[href] {
+    cursor: none;
+  }
+  .open-hover-cursor.is-visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .open-hover-cursor { transition: none; }
+}
