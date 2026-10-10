@@ -135,3 +135,19 @@ button{font:inherit} p{margin:0 0 1rem} h1,h2,h3,h4{letter-spacing:-.035em;line-
 @media (prefers-reduced-motion: reduce) {
   .open-hover-cursor { transition: none; }
 }
+
+/* Copy email action and confirmation toast */
+.copy-email-btn{cursor:pointer;white-space:nowrap}
+.copy-btn-icon{flex:none}
+.contact-copy-action{margin-top:12px}
+.contact-copy-action .btn{padding:9px 14px;font-size:.85rem;min-height:40px}
+.copy-email-btn.did-copy{border-color:rgba(85,221,200,.65);color:var(--teal)}
+.copy-toast{position:fixed;right:24px;bottom:26px;z-index:1200;display:flex;align-items:center;gap:11px;padding:15px 19px;border-radius:12px;background:#112941;border:1px solid var(--teal);color:var(--text);box-shadow:0 16px 38px rgba(0,0,0,.35);font-size:.91rem;font-weight:700;opacity:0;transform:translateY(16px) scale(.98);pointer-events:none;transition:opacity .18s,transform .18s;max-width:min(420px,calc(100vw - 32px))}
+.copy-toast.is-visible{opacity:1;transform:translateY(0) scale(1)}
+.copy-toast-icon{width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--teal);color:#061423;font-size:1.1rem;font-weight:900}
+.copy-toast.is-error{border-color:#f1a6a6}
+.copy-toast.is-error .copy-toast-icon{background:#f1a6a6}
+.open-hover-cursor.is-copied{background:var(--teal)}
+@media (hover: hover) and (pointer: fine){.open-hover-enabled button.copy-email-btn{cursor:none}}
+@media (max-width:620px){.copy-toast{bottom:18px;right:16px;left:16px;max-width:none;font-size:.82rem;padding:12px 14px}.copy-toast-icon{width:27px;height:27px}}
+@media (prefers-reduced-motion: reduce){.copy-toast{transition:none}}
