@@ -163,7 +163,8 @@ document.querySelectorAll('.network-proof img').forEach(image => {
 })();
 
 
-// Persistent theme toggle, with accessible controls and an optional dotted reveal.
+
+// Interactive daybreak / nightfall toggle. Saved across all portfolio pages.
 (() => {
   const root = document.documentElement;
   const header = document.querySelector('.header-inner');
@@ -173,34 +174,74 @@ document.querySelectorAll('.network-proof img').forEach(image => {
   button.className = 'theme-toggle';
   button.innerHTML = '<svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg><svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 13.4A8.5 8.5 0 0 1 10.6 3.3a8.6 8.6 0 1 0 10.1 10.1Z"/></svg><span class="theme-toggle-label"></span>';
   header.appendChild(button);
-
   const getMode = () => root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
   const updateLabel = () => {
     const toLight = getMode() === 'dark';
     button.querySelector('.theme-toggle-label').textContent = toLight ? 'Light' : 'Dark';
     button.setAttribute('aria-label', toLight ? 'Switch to light mode' : 'Switch to dark mode');
-    button.setAttribute('title', toLight ? 'Switch to light mode' : 'Switch to dark mode');
+    button.title = toLight ? 'Switch to light mode' : 'Switch to dark mode';
     button.setAttribute('aria-pressed', String(!toLight));
+  };
+  const setMode = mode => {
+    root.setAttribute('data-theme', mode);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', mode === 'light' ? '#f4f8fd' : '#07111f');
+    try { localStorage.setItem('dallas-portfolio-theme', mode); } catch (_) {}
+    updateLabel();
   };
   updateLabel();
 
+  let animating = false;
   button.addEventListener('click', () => {
+    if (animating) return;
     const next = getMode() === 'dark' ? 'light' : 'dark';
-    const setTheme = () => {
-      root.setAttribute('data-theme', next);
-      const themeMeta = document.querySelector('meta[name="theme-color"]');
-      if (themeMeta) themeMeta.setAttribute('content', next === 'light' ? '#f4f8fd' : '#07111f');
-      try { localStorage.setItem('dallas-portfolio-theme', next); } catch (_) {}
-      updateLabel();
-    };
-    const noAnimation = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!noAnimation && typeof document.startViewTransition === 'function') {
-      const rect = button.getBoundingClientRect();
-      root.style.setProperty('--theme-reveal-x', (rect.left + rect.width / 2) + 'px');
-      root.style.setProperty('--theme-reveal-y', (rect.top + rect.height / 2) + 'px');
-      document.startViewTransition(setTheme);
-    } else {
-      setTheme();
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const supportsPortal = !!(window.CSS && CSS.supports && CSS.supports('clip-path', 'circle(10px at 10px 10px)'));
+    if (reducedMotion || !supportsPortal) { setMode(next); return; }
+
+    animating = true;
+    button.classList.add('is-morphing');
+    button.setAttribute('aria-busy', 'true');
+    const rect = button.getBoundingClientRect();
+    const fx = document.createElement('div');
+    fx.className = 'theme-morph theme-morph--' + next;
+    fx.setAttribute('aria-hidden', 'true');
+    fx.style.setProperty('--origin-x', (rect.left + rect.width / 2) + 'px');
+    fx.style.setProperty('--origin-y', (rect.top + rect.height / 2) + 'px');
+
+    const veil = document.createElement('div');
+    veil.className = 'theme-morph__veil';
+    const texture = document.createElement('div');
+    texture.className = 'theme-morph__texture';
+    fx.append(veil, texture);
+    for (let i = 0; i < 2; i += 1) {
+      const ring = document.createElement('span');
+      ring.className = 'theme-morph__ring theme-morph__ring--' + (i ? 'two' : 'one');
+      fx.appendChild(ring);
     }
+    for (let i = 0; i < 12; i += 1) {
+      const spark = document.createElement('span');
+      spark.className = 'theme-morph__spark';
+      spark.style.setProperty('--ray', (i * 30) + 'deg');
+      spark.style.setProperty('--distance', (100 + (i % 3) * 24) + 'px');
+      spark.style.setProperty('--delay', (i % 4) * 35 + 'ms');
+      fx.appendChild(spark);
+    }
+    const orb = document.createElement('span');
+    orb.className = 'theme-morph__orb';
+    const word = document.createElement('span');
+    word.className = 'theme-morph__word';
+    word.textContent = next === 'light' ? 'Daybreak' : 'Nightfall';
+    fx.append(orb, word);
+    document.body.appendChild(fx);
+
+    // The expanding veil covers the old palette before switching to the new one.
+    window.setTimeout(() => setMode(next), 525);
+    window.setTimeout(() => {
+      fx.remove();
+      button.classList.remove('is-morphing');
+      button.removeAttribute('aria-busy');
+      animating = false;
+    }, 1060);
   });
 })();
