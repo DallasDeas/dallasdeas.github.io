@@ -31,3 +31,44 @@ document.querySelectorAll('.network-proof img').forEach(image => {
   image.addEventListener('error', showUnavailable);
   if (image.complete && image.naturalWidth === 0) showUnavailable();
 });
+
+
+// Show an "OPEN" cursor on prominent links without changing their click behavior.
+// This visual effect is desktop-only: touch and keyboard navigation remain normal.
+(() => {
+  const pointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+  if (!pointerQuery.matches) return;
+  const selector = 'a.btn, a.card[href]';
+  const indicator = document.createElement('span');
+  indicator.className = 'open-hover-cursor';
+  indicator.textContent = 'OPEN';
+  indicator.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(indicator);
+  document.body.classList.add('open-hover-enabled');
+
+  const hide = () => indicator.classList.remove('is-visible');
+
+  document.addEventListener('pointermove', event => {
+    if (event.pointerType && event.pointerType !== 'mouse') {
+      hide();
+      return;
+    }
+    const element = event.target instanceof Element ? event.target.closest(selector) : null;
+    if (!element) {
+      hide();
+      return;
+    }
+    indicator.style.left = event.clientX + 'px';
+    indicator.style.top = event.clientY + 'px';
+    indicator.classList.add('is-visible');
+  }, { passive: true });
+
+  document.addEventListener('pointerleave', hide);
+  document.addEventListener('pointercancel', hide);
+  window.addEventListener('blur', hide);
+  window.addEventListener('scroll', hide, { passive: true });
+  pointerQuery.addEventListener?.('change', event => {
+    document.body.classList.toggle('open-hover-enabled', event.matches);
+    if (!event.matches) hide();
+  });
+})();
