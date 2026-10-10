@@ -170,3 +170,78 @@ button{font:inherit} p{margin:0 0 1rem} h1,h2,h3,h4{letter-spacing:-.035em;line-
 
 /* Preserve sentence-case Copy email text across browsers */
 .copy-email-btn, .copy-email-btn .copy-button-label { text-transform: none; }
+
+/* ---- Interactive light/dark mode ------------------------------------------ */
+:root{--theme-reveal-x:90vw;--theme-reveal-y:38px}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f4f8fd;--bg-alt:#eaf2fb;--surface:#ffffff;--surface2:#eaf2f9;
+  --text:#172c3d;--muted:#455d72;--faint:#586f83;
+  --blue:#126b9f;--teal:#0c7778;--border:rgba(40,90,130,.20);
+  --shadow:0 16px 45px rgba(25,73,108,.11);
+}
+:root[data-theme="light"] strong{color:var(--text)}
+:root[data-theme="light"] body::before{background:radial-gradient(ellipse at 80% 14%,rgba(106,176,213,.19),transparent 45%),radial-gradient(ellipse at 7% 5%,rgba(96,188,177,.11),transparent 46%)}
+:root[data-theme="light"] .site-header{background:rgba(247,251,255,.91)}
+:root[data-theme="light"] .menu-toggle{color:var(--text)}
+:root[data-theme="light"] .btn-primary{color:#fff}
+:root[data-theme="light"] .btn-secondary{color:var(--text);background:rgba(18,107,159,.07);border-color:rgba(18,107,159,.35)}
+:root[data-theme="light"] .btn-secondary:hover{background:rgba(18,107,159,.14)}
+:root[data-theme="light"] .card{background:linear-gradient(145deg,#ffffff,#edf5fc);box-shadow:0 7px 25px rgba(35,83,124,.07)}
+:root[data-theme="light"] a.card:hover{border-color:rgba(18,107,159,.62)}
+:root[data-theme="light"] .card-icon,:root[data-theme="light"] .logo-mark{background:rgba(18,107,159,.085);border-color:rgba(18,107,159,.25)}
+:root[data-theme="light"] .tag{color:#205878;background:rgba(18,107,159,.07);border-color:rgba(18,107,159,.2)}
+:root[data-theme="light"] .credential{background:#eef5fc}
+:root[data-theme="light"] .band{background:linear-gradient(120deg,#ffffff,#e9f3fc)}
+:root[data-theme="light"] .visual{background:linear-gradient(165deg,#ffffff,#e5f2fa 55%,#d8eafb)}
+:root[data-theme="light"] .visual::before{background-image:linear-gradient(rgba(42,107,150,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(42,107,150,.09) 1px,transparent 1px)}
+:root[data-theme="light"] .visual-label{color:#486b81}
+:root[data-theme="light"] .visual-node{background:rgba(238,248,255,.98);border-color:#89b4ce;color:#47667f;box-shadow:0 6px 16px rgba(38,83,122,.12)}
+:root[data-theme="light"] .visual-node b{color:#14547b}
+:root[data-theme="light"] .visual-lines path{stroke:rgba(20,101,153,.50)}
+:root[data-theme="light"] .visual-status{color:#18776b}
+:root[data-theme="light"] .visual-status::before{color:#149773}
+:root[data-theme="light"] .prose code,:root[data-theme="light"] .network-proof figcaption code,:root[data-theme="light"] .azure-video-section .network-intro code{color:#0a6569;background:#e7f5f3}
+:root[data-theme="light"] .evidence{background:#eff6fd}
+:root[data-theme="light"] .evidence b{color:#27475f}
+:root[data-theme="light"] .note{color:#245e61;background:rgba(12,119,120,.08)}
+:root[data-theme="light"] .lab-shot,:root[data-theme="light"] .network-proof{background:linear-gradient(145deg,#ffffff,#f1f7fc)}
+:root[data-theme="light"] .lab-shot>a,:root[data-theme="light"] .network-image-link{background:#eaf2f8}
+:root[data-theme="light"] .azure-video-frame{background:#fff}
+:root[data-theme="light"] .copy-toast{background:#ffffff;color:var(--text);box-shadow:0 12px 36px rgba(25,73,108,.19)}
+:root[data-theme="light"] .copy-email-btn{background:rgba(18,107,159,.09);border-color:var(--blue);color:var(--text)}
+:root[data-theme="light"] .copy-email-btn:hover{background:var(--blue);color:#fff}
+:root[data-theme="light"] .copy-email-btn.did-copy{color:#087868}
+:root[data-theme="light"] .nav-cta{border-color:rgba(18,107,159,.35)}
+:root[data-theme="light"] .network-jump-links a{background:#fff}
+:root[data-theme="light"] .copy-toast.is-error{background:#fff7f7}
+:root[data-theme="light"] .skip-link{background:#142b40;color:#fff}
+@media(max-width:620px){:root[data-theme="light"] .nav{background:#f4f8fd}}
+
+/* Toggle stays visible beside navigation, including on small screens. */
+.header-inner .logo{order:0}
+.header-inner .nav{order:1;margin-left:auto;gap:19px}
+.header-inner .theme-toggle{order:2}
+.header-inner .menu-toggle{order:3}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;flex:none;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:8px 12px;min-height:40px;min-width:84px;font:700 .78rem/1 system-ui,-apple-system,Segoe UI,sans-serif;cursor:pointer;transition:background .18s,border-color .18s,transform .18s;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.theme-toggle:hover{border-color:var(--blue);transform:translateY(-1px)}
+.theme-toggle svg{width:17px;height:17px;flex:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none}
+:root[data-theme="dark"] .theme-icon-moon{display:none}
+:root[data-theme="light"] .theme-icon-sun{display:none}
+:root[data-theme="light"] .theme-toggle{background:#fff}
+@media(max-width:860px){.header-inner{gap:12px}.header-inner .nav{gap:13px}.nav a{font-size:.85rem}.theme-toggle{padding:8px 10px}}
+@media(max-width:620px){.header-inner .theme-toggle{margin-left:auto}.header-inner .nav{margin-left:0}.theme-toggle{min-width:76px;min-height:38px}.theme-toggle span{font-size:.75rem}}
+@media(max-width:390px){.theme-toggle{min-width:38px;width:40px}.theme-toggle span{display:none}}
+
+/* Dotted, expanding ink-reveal inspired by the reference video.
+   Uses browser View Transitions when available; otherwise an immediate theme change. */
+@keyframes theme-ink-reveal{
+  from{clip-path:circle(0px at var(--theme-reveal-x) var(--theme-reveal-y));opacity:.75}
+  to{clip-path:circle(160vmax at var(--theme-reveal-x) var(--theme-reveal-y));opacity:1}
+}
+@keyframes theme-old-dots{from{opacity:1}to{opacity:0}}
+:root::view-transition-old(root){animation:theme-old-dots .75s ease-out both;mix-blend-mode:normal;z-index:1;mask-image:radial-gradient(circle,#000 69%,transparent 78%);mask-size:10px 10px}
+:root::view-transition-new(root){animation:theme-ink-reveal .75s cubic-bezier(.21,.73,.22,1) both;mix-blend-mode:normal;z-index:2}
+@media(prefers-reduced-motion:reduce){
+  :root::view-transition-old(root),:root::view-transition-new(root){animation-duration:.01ms!important;mask-image:none!important}
+}

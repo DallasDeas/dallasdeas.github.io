@@ -161,3 +161,46 @@ document.querySelectorAll('.network-proof img').forEach(image => {
     });
   });
 })();
+
+
+// Persistent theme toggle, with accessible controls and an optional dotted reveal.
+(() => {
+  const root = document.documentElement;
+  const header = document.querySelector('.header-inner');
+  if (!header) return;
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'theme-toggle';
+  button.innerHTML = '<svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg><svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 13.4A8.5 8.5 0 0 1 10.6 3.3a8.6 8.6 0 1 0 10.1 10.1Z"/></svg><span class="theme-toggle-label"></span>';
+  header.appendChild(button);
+
+  const getMode = () => root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  const updateLabel = () => {
+    const toLight = getMode() === 'dark';
+    button.querySelector('.theme-toggle-label').textContent = toLight ? 'Light' : 'Dark';
+    button.setAttribute('aria-label', toLight ? 'Switch to light mode' : 'Switch to dark mode');
+    button.setAttribute('title', toLight ? 'Switch to light mode' : 'Switch to dark mode');
+    button.setAttribute('aria-pressed', String(!toLight));
+  };
+  updateLabel();
+
+  button.addEventListener('click', () => {
+    const next = getMode() === 'dark' ? 'light' : 'dark';
+    const setTheme = () => {
+      root.setAttribute('data-theme', next);
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      if (themeMeta) themeMeta.setAttribute('content', next === 'light' ? '#f4f8fd' : '#07111f');
+      try { localStorage.setItem('dallas-portfolio-theme', next); } catch (_) {}
+      updateLabel();
+    };
+    const noAnimation = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!noAnimation && typeof document.startViewTransition === 'function') {
+      const rect = button.getBoundingClientRect();
+      root.style.setProperty('--theme-reveal-x', (rect.left + rect.width / 2) + 'px');
+      root.style.setProperty('--theme-reveal-y', (rect.top + rect.height / 2) + 'px');
+      document.startViewTransition(setTheme);
+    } else {
+      setTheme();
+    }
+  });
+})();
