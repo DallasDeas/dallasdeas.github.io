@@ -148,10 +148,10 @@ document.querySelectorAll('.network-proof img').forEach(image => {
         window.clearTimeout(labelTimer);
         const label = button.querySelector('.copy-button-label');
         if (label) {
-          label.textContent = '✓ Copied!';
+          label.textContent = 'Copied!';
           button.classList.add('did-copy');
           labelTimer = window.setTimeout(() => {
-            label.textContent = 'COPY EMAIL';
+            label.textContent = 'Copy email';
             button.classList.remove('did-copy');
           }, 1800);
         }
