@@ -32,3 +32,26 @@ button{font:inherit} p{margin:0 0 1rem} h1,h2,h3,h4{letter-spacing:-.035em;line-
 @media(max-width:850px){.hero{grid-template-columns:1fr;padding:65px 0}.visual{max-width:620px;width:100%;min-height:330px}.grid-3{grid-template-columns:1fr 1fr}.doc-grid{grid-template-columns:1fr}.side-sticky{position:static}}
 @media(max-width:620px){.container{width:min(calc(100% - 32px),var(--max))}.header-inner{min-height:65px}.menu-toggle{display:block}.nav{display:none;position:absolute;top:65px;left:0;right:0;align-items:stretch;flex-direction:column;gap:0;padding:10px 16px 18px;background:#0b1b2e;border-bottom:1px solid var(--border)}.nav.open{display:flex}.nav a{padding:10px 12px}.nav-cta{border:0}.hero{gap:31px;padding:51px 0}.hero .lead{font-size:1.06rem}.visual{min-height:310px}.visual-node{min-width:67px;min-height:58px}.section{padding:45px 0}.section-head{display:block}.section-link{display:inline-block;margin-top:15px}.grid-3,.grid-2{grid-template-columns:1fr}.panel{padding:23px}.page-hero{padding:55px 0 20px}.band{display:block;padding:27px}.band .btn{margin-top:18px}.stat-row{grid-template-columns:1fr}.footer-inner{flex-direction:column;align-items:flex-start}.site-footer{margin-top:60px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
+
+
+/* Active Directory lab case study / visual evidence gallery */
+.lab-hero-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.lab-evidence-section{padding-top:26px}
+.lab-evidence-intro{max-width:790px;margin-bottom:40px}
+.lab-evidence-intro>p,.lab-gallery-heading>p{color:var(--muted);margin-top:12px}
+.lab-gallery-section{margin:48px 0 65px}
+.lab-gallery-heading{border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:24px}
+.lab-gallery-heading h3{font-size:clamp(1.35rem,2.5vw,1.85rem)}
+.lab-gallery-heading p{max-width:770px;margin-bottom:0}
+.lab-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:stretch}
+.lab-shot{min-width:0;margin:0;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:linear-gradient(145deg,rgba(22,47,72,.93),rgba(11,31,50,.98))}
+.lab-shot>a{display:flex;align-items:center;justify-content:center;background:#091524;padding:12px;min-height:260px;overflow:hidden}
+.lab-shot img{max-width:100%;width:100%;height:auto;max-height:420px;object-fit:contain;border-radius:8px;transition:transform .2s}
+.lab-shot>a:hover img{transform:scale(1.015)}
+.lab-shot figcaption{padding:22px 24px 25px}
+.lab-shot figcaption strong{display:block;font-size:1.03rem;line-height:1.35}
+.lab-shot figcaption p{color:var(--muted);font-size:.92rem;line-height:1.75;margin:10px 0 13px}
+.lab-image-link{color:var(--blue);font-size:.88rem;font-weight:650}
+.lab-image-link:hover{text-decoration:underline}
+@media(max-width:730px){.lab-gallery{grid-template-columns:1fr}.lab-shot>a{min-height:190px}.lab-shot figcaption{padding:18px}.lab-gallery-section{margin:30px 0 50px}}
+@media(prefers-reduced-motion:reduce){.lab-shot img{transition:none}}
