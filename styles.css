@@ -110,9 +110,9 @@ button{font:inherit} p{margin:0 0 1rem} h1,h2,h3,h4{letter-spacing:-.035em;line-
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: #b82e32;
-  color: #fff;
-  box-shadow: 0 12px 27px rgba(0, 0, 0, .32);
+  background: var(--blue);
+  color: #061423;
+  box-shadow: 0 12px 27px rgba(0, 0, 0, .32), 0 0 0 1px rgba(104, 197, 255, .22);
   font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   letter-spacing: .12em;
   text-align: center;
