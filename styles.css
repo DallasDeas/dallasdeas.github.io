@@ -64,3 +64,24 @@ button{font:inherit} p{margin:0 0 1rem} h1,h2,h3,h4{letter-spacing:-.035em;line-
 .node-four{top:67%}
 .visual-status{bottom:14px;font-size:.68rem}
 @media(max-width:620px){.hero h1{font-size:clamp(2.6rem,12vw,3.5rem)}.visual-status{font-size:.61rem;bottom:9px}.node-four{top:65%}}
+
+/* Cisco screenshot evidence gallery */
+.network-evidence{padding-top:25px}
+.network-intro{max-width:800px}
+.network-intro>p,.network-proof-heading>p{color:var(--muted);margin:12px 0 0}
+.network-jump-links{display:flex;flex-wrap:wrap;gap:9px;margin:28px 0 36px}
+.network-jump-links a{padding:7px 13px;border:1px solid var(--border);border-radius:100px;background:var(--surface);color:var(--blue);font-size:.79rem}
+.network-jump-links a:hover{border-color:var(--blue)}
+.network-proof-group{scroll-margin-top:100px;margin:45px 0 62px}
+.network-proof-heading{border-bottom:1px solid var(--border);padding-bottom:17px;margin-bottom:24px}
+.network-proof-heading h3{font-size:clamp(1.4rem,2.6vw,1.9rem)}
+.network-proof{margin:0 0 22px;padding:0;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:linear-gradient(145deg,rgba(22,47,72,.92),rgba(11,31,50,.98))}
+.network-image-link{display:flex;justify-content:center;align-items:center;overflow:hidden;background:#0b1724;padding:16px;min-height:115px;border-bottom:1px solid var(--border)}
+.network-proof img{display:block;max-width:100%;height:auto;object-fit:contain;border-radius:6px}
+.network-proof figcaption{padding:22px 28px 25px}
+.network-proof figcaption h4{font-size:1.15rem;margin-bottom:10px}
+.network-proof figcaption p{color:var(--muted);margin-bottom:12px;line-height:1.75}
+.network-proof figcaption code{color:#8be5d0;background:#0c2d37;border-radius:4px;padding:2px 5px;font-size:.88em}
+.network-proves{border-left:3px solid var(--teal);padding-left:14px}
+.network-proves strong{color:var(--text)}
+@media(max-width:620px){.network-proof figcaption{padding:18px}.network-image-link{padding:7px}.network-proof-group{margin:35px 0 45px}}
