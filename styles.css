@@ -167,3 +167,6 @@ button{font:inherit} p{margin:0 0 1rem} h1,h2,h3,h4{letter-spacing:-.035em;line-
 .contact-copy-action .btn{min-height:45px;padding:11px 16px}
 .copy-hint{color:var(--faint);font-size:.78rem}
 @media(max-width:620px){.copy-hint{display:block;width:100%}}
+
+/* Preserve sentence-case Copy email text across browsers */
+.copy-email-btn, .copy-email-btn .copy-button-label { text-transform: none; }
