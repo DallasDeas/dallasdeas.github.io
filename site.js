@@ -38,7 +38,7 @@ document.querySelectorAll('.network-proof img').forEach(image => {
 (() => {
   const pointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
   if (!pointerQuery.matches) return;
-  const selector = 'a.btn, a.card[href]';
+  const selector = 'a.btn, a.card[href], button.copy-email-btn';
   const indicator = document.createElement('span');
   indicator.className = 'open-hover-cursor';
   indicator.textContent = 'OPEN';
@@ -46,7 +46,15 @@ document.querySelectorAll('.network-proof img').forEach(image => {
   document.body.appendChild(indicator);
   document.body.classList.add('open-hover-enabled');
 
-  const hide = () => indicator.classList.remove('is-visible');
+  let copiedCursorUntil = 0;
+  window.markEmailCursorCopied = () => {
+    copiedCursorUntil = Date.now() + 1100;
+    if (indicator.classList.contains('is-visible')) {
+      indicator.textContent = '✓';
+      indicator.classList.add('is-copied');
+    }
+  };
+  const hide = () => { indicator.classList.remove('is-visible', 'is-copied'); };
 
   document.addEventListener('pointermove', event => {
     if (event.pointerType && event.pointerType !== 'mouse') {
@@ -58,6 +66,10 @@ document.querySelectorAll('.network-proof img').forEach(image => {
       hide();
       return;
     }
+    const isCopyTarget = element.matches('button.copy-email-btn');
+    const showCopied = isCopyTarget && Date.now() < copiedCursorUntil;
+    indicator.textContent = showCopied ? '✓' : (isCopyTarget ? 'COPY' : 'OPEN');
+    indicator.classList.toggle('is-copied', showCopied);
     indicator.style.left = event.clientX + 'px';
     indicator.style.top = event.clientY + 'px';
     indicator.classList.add('is-visible');
@@ -70,5 +82,82 @@ document.querySelectorAll('.network-proof img').forEach(image => {
   pointerQuery.addEventListener?.('change', event => {
     document.body.classList.toggle('open-hover-enabled', event.matches);
     if (!event.matches) hide();
+  });
+})();
+
+
+// Copy email to clipboard and display confirmation ONLY if the copy succeeded.
+(() => {
+  const buttons = document.querySelectorAll('button[data-copy-email]');
+  if (!buttons.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'copy-toast';
+  toast.setAttribute('role', 'status');
+  toast.setAttribute('aria-live', 'polite');
+  toast.setAttribute('aria-atomic', 'true');
+  document.body.appendChild(toast);
+  let toastTimer;
+  let labelTimer;
+
+  function showToast(text, isError = false) {
+    window.clearTimeout(toastTimer);
+    toast.replaceChildren();
+    const icon = document.createElement('span');
+    icon.className = 'copy-toast-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = isError ? '!' : '✓';
+    const label = document.createElement('span');
+    label.textContent = text;
+    toast.append(icon, label);
+    toast.classList.toggle('is-error', isError);
+    toast.classList.add('is-visible');
+    toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 2500);
+  }
+
+  async function writeClipboard(value) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(value);
+        return;
+      } catch (_) {
+        // Fall back for browsers that block the modern clipboard API.
+      }
+    }
+    const temp = document.createElement('textarea');
+    temp.value = value;
+    temp.setAttribute('readonly', '');
+    temp.style.position = 'fixed';
+    temp.style.left = '-9999px';
+    document.body.appendChild(temp);
+    temp.select();
+    let succeeded = false;
+    try { succeeded = document.execCommand('copy'); }
+    finally { temp.remove(); }
+    if (!succeeded) throw new Error('Clipboard unavailable');
+  }
+
+  buttons.forEach(button => {
+    button.addEventListener('click', async () => {
+      const email = button.getAttribute('data-copy-email');
+      if (!email) return;
+      try {
+        await writeClipboard(email);
+        showToast('COPIED — email address saved to clipboard');
+        window.markEmailCursorCopied?.();
+        window.clearTimeout(labelTimer);
+        const label = button.querySelector('.copy-button-label');
+        if (label) {
+          label.textContent = '✓ Copied!';
+          button.classList.add('did-copy');
+          labelTimer = window.setTimeout(() => {
+            label.textContent = 'Copy email';
+            button.classList.remove('did-copy');
+          }, 1800);
+        }
+      } catch (_) {
+        showToast('Could not copy. Select the email address above.', true);
+      }
+    });
   });
 })();
