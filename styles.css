@@ -85,3 +85,15 @@ button{font:inherit} p{margin:0 0 1rem} h1,h2,h3,h4{letter-spacing:-.035em;line-
 .network-proves{border-left:3px solid var(--teal);padding-left:14px}
 .network-proves strong{color:var(--text)}
 @media(max-width:620px){.network-proof figcaption{padding:18px}.network-image-link{padding:7px}.network-proof-group{margin:35px 0 45px}}
+
+/* Responsive Azure recorded-lab demonstration */
+.azure-video-section{padding-top:22px}
+.azure-video-section .network-intro{margin-bottom:24px}
+.azure-video-section .network-intro code{color:#8be5d0;background:#0c2d37;border-radius:4px;padding:2px 5px}
+.azure-video-frame{overflow:hidden;border:1px solid var(--border);border-radius:17px;background:var(--surface);box-shadow:var(--shadow)}
+.azure-video-player{display:block;width:100%;height:auto;max-height:720px;aspect-ratio:1400/714;background:#07111f;object-fit:contain}
+.azure-video-details{padding:20px 28px 22px}
+.azure-video-details p{color:var(--muted);margin-bottom:12px;font-size:.93rem;line-height:1.7}
+.azure-video-details p:last-child{margin-bottom:0}
+.azure-video-privacy{font-size:.83rem!important;color:var(--faint)!important}
+@media(max-width:620px){.azure-video-details{padding:17px}.azure-video-player{max-height:none}}
