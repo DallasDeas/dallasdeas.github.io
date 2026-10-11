@@ -135,3 +135,21 @@ input,textarea{user-select:text}
 .cursor-halo.is-hovering .cursor-halo-ring{transform:scale(1.35);border-color:#ff7c8db3;background:#f15a7010}
 .cursor-halo.is-pressed .cursor-halo-ring{transform:scale(.75);border-color:var(--accent-bright)}
 @media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){.cursor-halo{display:none}}
+
+/* Contact form in the desktop pop-out. */
+.desktop-contact-form{display:grid;gap:18px;margin-top:22px}
+.desktop-contact-form label{display:grid;gap:8px;color:#cdd3e0;font:12px var(--mono)}
+.contact-form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.desktop-contact-form input,.desktop-contact-form textarea{display:block;width:100%;min-width:0;border:1px solid #8896b33d;border-radius:4px;background:#ffffff04;color:var(--text);padding:11px 12px;font:14px/1.6 var(--sans)}
+.desktop-contact-form input::placeholder,.desktop-contact-form textarea::placeholder{color:#818b9f}
+.desktop-contact-form textarea{resize:vertical;min-height:140px;max-height:340px}
+.contact-form-actions{display:flex;gap:14px;align-items:center}
+.contact-form-actions .action{flex-shrink:0}
+.contact-form-actions small{font:11px/1.6 var(--sans);color:#8e9bb3}
+.contact-form-actions small a{text-decoration:underline;text-underline-offset:3px}
+.desktop-contact-form .contact-honeypot{display:none}
+.contact-form-status{margin:0;padding:12px 14px;border:1px solid #65ad884d;border-radius:4px;background:#65ad8810;color:#bcdfce;font:13px/1.6 var(--sans)}
+.contact-form-status.is-error{border-color:#f15a7050;background:#f15a7010;color:#f7a7b5}
+.contact-form-actions button:disabled{opacity:.65}
+.contact-direct{border-top:1px solid var(--border);padding-top:22px;margin-top:26px}
+@media(max-width:700px){.contact-form-row{grid-template-columns:1fr;gap:18px}.desktop-contact-form input,.desktop-contact-form textarea{font-size:16px}.contact-form-actions{align-items:flex-start;flex-direction:column}}
