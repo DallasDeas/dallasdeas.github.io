@@ -22,6 +22,46 @@
   const layer = document.getElementById('windows');
   const mobile = window.matchMedia('(max-width:700px)');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion:reduce)');
+  // A lightweight halo complements the native pointer without intercepting input.
+  const mousePointer = window.matchMedia('(hover:hover) and (pointer:fine)');
+  const cursorHalo = document.createElement('div');
+  cursorHalo.className = 'cursor-halo';
+  cursorHalo.setAttribute('aria-hidden', 'true');
+  cursorHalo.innerHTML = '<span class="cursor-halo-ring"></span>';
+  document.body.appendChild(cursorHalo);
+  let cursorFrame = 0;
+  let cursorPosition;
+  function hideCursorHalo() {
+    cursorHalo.classList.remove('is-visible', 'is-hovering', 'is-pressed');
+    cancelAnimationFrame(cursorFrame);
+    cursorFrame = 0;
+    cursorPosition = null;
+  }
+  document.addEventListener('pointermove', event => {
+    if (event.pointerType !== 'mouse' || !mousePointer.matches || reducedMotion.matches) {
+      hideCursorHalo();
+      return;
+    }
+    cursorPosition = { x: event.clientX, y: event.clientY };
+    cursorHalo.classList.toggle('is-hovering', Boolean(event.target.closest('a,button,input,textarea,select,.titlebar,.guide-widget header')));
+    if (cursorFrame) return;
+    cursorFrame = requestAnimationFrame(() => {
+      cursorFrame = 0;
+      cursorHalo.style.transform = 'translate3d(' + cursorPosition.x + 'px,' + cursorPosition.y + 'px,0)';
+      cursorHalo.classList.add('is-visible');
+    });
+  }, { passive: true });
+  document.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse' && cursorHalo.classList.contains('is-visible')) cursorHalo.classList.add('is-pressed');
+  }, { passive: true });
+  document.addEventListener('pointerup', () => cursorHalo.classList.remove('is-pressed'), { passive: true });
+  document.addEventListener('pointercancel', hideCursorHalo);
+  document.addEventListener('pointerout', event => { if (!event.relatedTarget) hideCursorHalo(); });
+  window.addEventListener('blur', hideCursorHalo);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) hideCursorHalo(); });
+  mousePointer.addEventListener('change', hideCursorHalo);
+  reducedMotion.addEventListener('change', hideCursorHalo);
+
   // Desktop selection begins only on empty wallpaper, never inside an app.
   const selectionBox = document.createElement('div');
   selectionBox.className = 'desktop-selection-box';
