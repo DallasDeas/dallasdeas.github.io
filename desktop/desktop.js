@@ -190,8 +190,24 @@
       <div class="detail-content">${Object.entries({ Networking: ['Cisco IOS', 'TCP/IP', 'VLANs', 'OSPF', 'DHCP', 'NAT/PAT', 'LACP', 'SSH'], Systems: ['Windows Server', 'Active Directory', 'Group Policy', 'Hyper-V', 'Windows support'], Cloud: ['Microsoft Azure', 'Entra ID', 'RBAC', 'Cost Management'], 'Business tools': ['Excel', 'Power Query', 'ERP workflows', 'IT asset tracking'] }).map(([label, skills]) => `<section class="skills-group"><h3>${label.toUpperCase()}</h3><div class="pill-row">${skills.map(skill => `<span class="pill">${skill}</span>`).join('')}</div></section>`).join('')}</div>` },
     certifications: { title: 'Credentials — verified learning', icon: 'shield', width: 600, height: 560, x: .45, y: .14, status: 'NETWORKING / SECURITY / CLOUD', content: () => `
       <div class="detail-content"><div class="credential"><span class="credential-icon">${svg('network')}</span><div><h3>Cisco Certified Network Associate</h3><p>CCNA · Routing, switching, IP services and network fundamentals.</p><small>Certified June 2026</small></div></div><div class="credential"><span class="credential-icon">${svg('shield')}</span><div><h3>CompTIA Security+</h3><p>Security fundamentals, threats, risk, defensive controls and identity.</p><small>Certified October 2025</small></div></div><div class="credential"><span class="credential-icon">${svg('cloud')}</span><div><h3>Microsoft Azure Fundamentals</h3><p>AZ-900 · Cloud concepts, Azure services, governance and pricing.</p><small>Certified</small></div></div><div class="action-row"><button class="action" data-app="projects">See the hands-on work ↗</button></div></div>` },
-    contact: { title: 'Contact.txt', icon: 'mail', width: 580, height: 510, x: .6, y: .16, status: 'LET’S CONNECT', content: () => `
-      <div class="detail-content"><span class="eyebrow">HAVE A ROLE IN MIND?</span><h2>Let's connect.</h2><p class="body-text">I'm interested in IT support, junior networking, infrastructure support and systems operations opportunities.</p><a class="contact-address" href="mailto:dallasjdeas03@gmail.com">dallasjdeas03@gmail.com ↗</a><div class="action-row" style="margin:0 0 22px"><button class="action" id="copy-email">Copy email <span>⧉</span></button></div><div class="contact-card"><span>LinkedIn</span><a href="https://www.linkedin.com/in/dallas-deas" target="_blank" rel="noopener noreferrer">dallas-deas ↗</a></div><div class="contact-card"><span>GitHub</span><a href="https://github.com/DallasDeas" target="_blank" rel="noopener noreferrer">DallasDeas ↗</a></div></div>` },
+    contact: { title: 'Contact — Let’s connect', icon: 'mail', width: 620, height: 760, x: .6, y: .08, status: 'LET’S CONNECT', content: () => `
+      <div class="detail-content"><span class="eyebrow">HAVE A ROLE IN MIND?</span><h2>Let's connect.</h2><p class="body-text">Have an IT support, networking, or systems opportunity? Send me a message below.</p>
+      <form id="contact-form" class="desktop-contact-form" action="https://formsubmit.co/ajax/dallasjdeas03@gmail.com" method="POST">
+        <div class="contact-form-row">
+          <label for="contact-name">Your name<input id="contact-name" name="name" type="text" autocomplete="name" maxlength="100" required></label>
+          <label for="contact-email">Your email<input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required></label>
+        </div>
+        <label for="contact-subject">Subject<input id="contact-subject" name="subject" type="text" maxlength="160" placeholder="Role, project, or question" required></label>
+        <label for="contact-message">Message<textarea id="contact-message" name="message" rows="5" maxlength="5000" placeholder="Tell me a little about what you have in mind…" required></textarea></label>
+        <input type="hidden" name="_subject" value="New message from Dallas Deas Portfolio">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_url" value="https://dallasdeas.github.io/desktop/">
+        <input type="text" name="_honey" class="contact-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="contact-form-actions"><button class="action" type="submit">Send message <span aria-hidden="true">↗</span></button><small>Messages are processed by <a href="https://formsubmit.co/" target="_blank" rel="noopener noreferrer">FormSubmit</a> and sent to my inbox.</small></div>
+        <p class="contact-form-status" role="status" aria-live="polite" hidden></p>
+      </form>
+      <div class="contact-direct"><span class="eyebrow">PREFER EMAIL?</span><a class="contact-address" href="mailto:dallasjdeas03@gmail.com">dallasjdeas03@gmail.com ↗</a><div class="action-row" style="margin:0 0 20px"><button class="outline-action" id="copy-email">Copy email <span>⧉</span></button></div></div>
+      <div class="contact-card"><span>LinkedIn</span><a href="https://www.linkedin.com/in/dallas-deas" target="_blank" rel="noopener noreferrer">dallas-deas ↗</a></div><div class="contact-card"><span>GitHub</span><a href="https://github.com/DallasDeas" target="_blank" rel="noopener noreferrer">DallasDeas ↗</a></div></div>` },
     resume: { title: 'Dallas_Deas_Resume.pdf', icon: 'file', width: 800, height: 760, x: .5, y: .045, status: 'RÉSUMÉ / PDF', content: () => `
       <div class="resume-toolbar"><span>Dallas Deas / Résumé</span><a href="/desktop/assets/Dallas_Deas_Resume.pdf" target="_blank" rel="noopener noreferrer">Open PDF ↗</a><a href="/desktop/assets/Dallas_Deas_Resume.pdf" download="Dallas_Deas_Resume.pdf">Download ↓</a></div><div class="resume-preview"><img src="/desktop/assets/resume-preview.webp" alt="Dallas Deas résumé, page 1. Open or download the original PDF using the toolbar links."><img src="/desktop/assets/resume-preview-2.webp" alt="Dallas Deas résumé, page 2."></div>` },
     settings: { title: 'Appearance — workspace settings', icon: 'settings', width: 510, height: 420, x: .6, y: .16, status: 'PREFERENCES SAVED ON THIS DEVICE', content: () => `
@@ -282,6 +298,56 @@
     if (id === 'contact') el.querySelector('#copy-email').addEventListener('click', async () => {
       try { await navigator.clipboard.writeText('dallasjdeas03@gmail.com'); notify('Email copied to clipboard'); } catch (_) { notify('Copy unavailable. Select the email address to copy it.'); }
     });
+    if (id === 'contact') {
+      const form = el.querySelector('#contact-form');
+      const submit = form.querySelector('button[type="submit"]');
+      const status = form.querySelector('.contact-form-status');
+      let sending = false;
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        if (sending || !form.reportValidity()) return;
+        if (form.elements._honey.value) return;
+        sending = true;
+        submit.disabled = true;
+        submit.textContent = 'Sending…';
+        form.setAttribute('aria-busy', 'true');
+        status.hidden = false;
+        status.classList.remove('is-error');
+        status.textContent = 'Submitting your message…';
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 20000);
+        try {
+          const values = Object.fromEntries(new FormData(form).entries());
+          values.name = values.name.trim();
+          values.email = values.email.trim();
+          values.subject = values.subject.trim();
+          values.message = values.message.trim();
+          if (!values.name || !values.subject || !values.message) throw new Error('empty-fields');
+          values._replyto = values.email;
+          const response = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(values),
+            signal: controller.signal,
+          });
+          const result = await response.json();
+          if (!response.ok || !(result.success === true || result.success === 'true')) throw new Error('submission-failed');
+          status.textContent = 'Message submitted. Thanks for reaching out!';
+          form.reset();
+        } catch (error) {
+          status.classList.add('is-error');
+          status.textContent = error.message === 'empty-fields'
+            ? 'Please enter your name, subject, and message.'
+            : 'Your message could not be confirmed. Your text is still here. Try again, or email me directly below.';
+        } finally {
+          clearTimeout(timeout);
+          sending = false;
+          submit.disabled = false;
+          submit.innerHTML = 'Send message <span aria-hidden="true">↗</span>';
+          form.removeAttribute('aria-busy');
+        }
+      });
+    }
     if (id === 'settings') {
       el.querySelectorAll('[data-preference]').forEach(button => button.addEventListener('click', () => {
         const key = button.dataset.preference;
