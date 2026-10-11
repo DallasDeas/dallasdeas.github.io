@@ -119,3 +119,11 @@
 .guide-widget header{cursor:grab;touch-action:none;user-select:none}
 .guide-widget header.is-dragging{cursor:grabbing}
 .guide-widget header:focus-visible{outline:2px solid var(--accent-bright);outline-offset:-3px}
+
+/* Desktop marquee selection; app content retains normal text selection. */
+#workspace{cursor:default;user-select:none}
+.window-content,.guide-messages,.guide-note{user-select:text}
+input,textarea{user-select:text}
+.desktop-selection-box{position:absolute;z-index:10;border:1px solid var(--accent-bright);background:rgba(241,90,112,.14);box-shadow:inset 0 0 0 1px #ffffff0a;pointer-events:none}
+.desktop-icons button.is-selected,.desktop-icons a.is-selected{background:rgba(241,90,112,.2);border-color:var(--accent-bright);box-shadow:0 0 0 1px #f15a7020}
+#workspace.is-selecting,#workspace.is-selecting *{cursor:default!important;user-select:none!important}
