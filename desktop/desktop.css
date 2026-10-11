@@ -127,3 +127,11 @@ input,textarea{user-select:text}
 .desktop-selection-box{position:absolute;z-index:10;border:1px solid var(--accent-bright);background:rgba(241,90,112,.14);box-shadow:inset 0 0 0 1px #ffffff0a;pointer-events:none}
 .desktop-icons button.is-selected,.desktop-icons a.is-selected{background:rgba(241,90,112,.2);border-color:var(--accent-bright);box-shadow:0 0 0 1px #f15a7020}
 #workspace.is-selecting,#workspace.is-selecting *{cursor:default!important;user-select:none!important}
+
+/* A quiet coral halo follows the mouse while the native pointer stays visible. */
+.cursor-halo{position:fixed;top:0;left:0;width:0;height:0;z-index:10000;pointer-events:none;opacity:0;transition:opacity .15s,transform .08s ease-out}
+.cursor-halo.is-visible{opacity:1}
+.cursor-halo-ring{position:absolute;left:-12px;top:-12px;width:24px;height:24px;border:1px solid #ff7c8d85;border-radius:50%;background:#f15a7007;box-shadow:0 0 12px #f15a7024;transition:transform .15s,border-color .15s,background .15s}
+.cursor-halo.is-hovering .cursor-halo-ring{transform:scale(1.35);border-color:#ff7c8db3;background:#f15a7010}
+.cursor-halo.is-pressed .cursor-halo-ring{transform:scale(.75);border-color:var(--accent-bright)}
+@media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){.cursor-halo{display:none}}
