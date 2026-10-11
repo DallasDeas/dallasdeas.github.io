@@ -202,9 +202,11 @@
         <input type="hidden" name="_subject" value="New message from Dallas Deas Portfolio">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_url" value="https://dallasdeas.github.io/desktop/">
+          <input type="hidden" name="_next" value="https://dallasdeas.github.io/desktop/">
         <input type="text" name="_honey" class="contact-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="contact-form-actions"><button class="action" type="submit">Send message <span aria-hidden="true">↗</span></button><small>Messages are processed by <a href="https://formsubmit.co/" target="_blank" rel="noopener noreferrer">FormSubmit</a> and sent to my inbox.</small></div>
         <p class="contact-form-status" role="status" aria-live="polite" hidden></p>
+          <button class="outline-action contact-form-fallback" type="submit" formaction="https://formsubmit.co/dallasjdeas03@gmail.com" formmethod="POST" formtarget="_blank" data-contact-fallback hidden>Continue on secure submission page ↗</button>
       </form>
       <div class="contact-direct"><span class="eyebrow">PREFER EMAIL?</span><a class="contact-address" href="mailto:dallasjdeas03@gmail.com">dallasjdeas03@gmail.com ↗</a><div class="action-row" style="margin:0 0 20px"><button class="outline-action" id="copy-email">Copy email <span>⧉</span></button></div></div>
       <div class="contact-card"><span>LinkedIn</span><a href="https://www.linkedin.com/in/dallas-deas" target="_blank" rel="noopener noreferrer">dallas-deas ↗</a></div><div class="contact-card"><span>GitHub</span><a href="https://github.com/DallasDeas" target="_blank" rel="noopener noreferrer">DallasDeas ↗</a></div></div>` },
@@ -304,6 +306,10 @@
       const status = form.querySelector('.contact-form-status');
       let sending = false;
       form.addEventListener('submit', async event => {
+        if (event.submitter?.hasAttribute('data-contact-fallback')) {
+          if (form.elements._honey.value) event.preventDefault();
+          return;
+        }
         event.preventDefault();
         if (sending || !form.reportValidity()) return;
         if (form.elements._honey.value) return;
@@ -313,6 +319,7 @@
         form.setAttribute('aria-busy', 'true');
         status.hidden = false;
         status.classList.remove('is-error');
+        form.querySelector('[data-contact-fallback]').hidden = true;
         status.textContent = 'Submitting your message…';
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 20000);
@@ -336,9 +343,10 @@
           form.reset();
         } catch (error) {
           status.classList.add('is-error');
+          form.querySelector('[data-contact-fallback]').hidden = error.message === 'empty-fields';
           status.textContent = error.message === 'empty-fields'
             ? 'Please enter your name, subject, and message.'
-            : 'Your message could not be confirmed. Your text is still here. Try again, or email me directly below.';
+            : 'Your message could not be confirmed here. Your text is still here. Continue on the secure submission page to finish sending, or email me directly below.';
         } finally {
           clearTimeout(timeout);
           sending = false;
