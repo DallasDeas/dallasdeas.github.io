@@ -131,6 +131,8 @@
   let front = 20;
   let lastFocused;
   let toastTimer;
+  const themeKey = 'dallas-portfolio-theme';
+  let theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
   const preferenceKey = 'dallas-workspace-preferences';
   let preferences = { rain: !reducedMotion.matches, dim: false };
   try { preferences = { ...preferences, ...JSON.parse(localStorage.getItem(preferenceKey) || '{}') }; } catch (_) {}
@@ -213,7 +215,7 @@
     resume: { title: 'Dallas_Deas_Resume.pdf', icon: 'file', width: 800, height: 760, x: .5, y: .045, status: 'RÉSUMÉ / PDF', content: () => `
       <div class="resume-toolbar"><span>Dallas Deas / Résumé</span><a href="/desktop/assets/Dallas_Deas_Resume.pdf" target="_blank" rel="noopener noreferrer">Open PDF ↗</a><a href="/desktop/assets/Dallas_Deas_Resume.pdf" download="Dallas_Deas_Resume.pdf">Download ↓</a></div><div class="resume-preview"><img src="/desktop/assets/resume-preview.webp" alt="Dallas Deas résumé, page 1. Open or download the original PDF using the toolbar links."><img src="/desktop/assets/resume-preview-2.webp" alt="Dallas Deas résumé, page 2."></div>` },
     settings: { title: 'Appearance — workspace settings', icon: 'settings', width: 510, height: 420, x: .6, y: .16, status: 'PREFERENCES SAVED ON THIS DEVICE', content: () => `
-      <div class="detail-content"><span class="eyebrow">MAKE YOURSELF AT HOME</span><div class="settings-row"><div><strong>Animated rain</strong><small>Atmosphere over the skyline.<br>Respects reduced motion settings.</small></div><button class="switch" data-preference="rain" aria-label="Animated rain" aria-pressed="${preferences.rain && !reducedMotion.matches}"><span></span></button></div><div class="settings-row"><div><strong>Dim the wallpaper</strong><small>A quieter background for reading.</small></div><button class="switch" data-preference="dim" aria-label="Dim the wallpaper" aria-pressed="${preferences.dim}"><span></span></button></div><div class="action-row"><button class="outline-action" id="reset-workspace">Reset window layout ↺</button></div></div>` },
+      <div class="detail-content"><span class="eyebrow">MAKE YOURSELF AT HOME</span><div class="settings-row"><div><strong>Desktop theme</strong><small>Day shift in light mode. Night shift in dark mode.</small></div><button class="outline-action" data-theme-toggle>Switch to ${theme === 'dark' ? 'light' : 'dark'} mode</button></div><div class="settings-row"><div><strong>Animated rain</strong><small>Atmosphere over the skyline.<br>Respects reduced motion settings.</small></div><button class="switch" data-preference="rain" aria-label="Animated rain" aria-pressed="${preferences.rain && !reducedMotion.matches}"><span></span></button></div><div class="settings-row"><div><strong>Dim the wallpaper</strong><small>A quieter background for reading.</small></div><button class="switch" data-preference="dim" aria-label="Dim the wallpaper" aria-pressed="${preferences.dim}"><span></span></button></div><div class="action-row"><button class="outline-action" id="reset-workspace">Reset window layout ↺</button></div></div>` },
   };
   Object.entries(projectData).forEach(([id, project]) => {
     apps[`project-${id}`] = { title: `${project.title} — Lab notes`, icon: project.icon, width: 730, height: 690, x: .48, y: .08, status: 'HANDS-ON LAB / DOCUMENTED', content: () => `<div class="detail-content"><span class="eyebrow">${project.label}</span><h2>${project.title}</h2><p class="body-text">${project.summary}</p><div class="pill-row">${project.tools.map(tool => `<span class="pill">${tool}</span>`).join('')}</div><h3>WHAT I CONFIGURED & TESTED</h3><ul class="detail-list">${project.points.map(point => `<li>${point}</li>`).join('')}</ul>${project.image ? `<a href="${project.image}" target="_blank" rel="noopener noreferrer"><img class="evidence-image" src="${project.image}" alt="${project.caption}" loading="lazy"></a><div class="evidence-caption">${project.caption}</div>` : ''}<div class="action-row"><a class="action" href="${project.path}" target="_blank" rel="noopener noreferrer">Read full lab documentation ↗</a><button class="outline-action" data-app="projects">All projects →</button></div></div>` };
@@ -458,8 +460,10 @@
     state.el.querySelector('.terminal-content').addEventListener('click', e => { if (!e.target.closest('a,button') && !window.getSelection().toString()) input.focus(); });
   }
   function applyPreferences() {
+    document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]').content = theme === 'light' ? '#f7f0e6' : '#101019';
     document.body.classList.toggle('calm-mode', preferences.dim);
-    document.getElementById('rain').hidden = !preferences.rain || reducedMotion.matches;
+    document.getElementById('rain').hidden = theme === 'light' || !preferences.rain || reducedMotion.matches;
     try { localStorage.setItem(preferenceKey, JSON.stringify(preferences)); } catch (_) {}
     updateRain();
   }
@@ -497,12 +501,13 @@
   }
   if (ctx) { sizeRain(); window.addEventListener('resize', sizeRain); document.addEventListener('visibilitychange', updateRain); }
   reducedMotion.addEventListener('change', () => { applyPreferences(); const button = document.querySelector('[data-preference="rain"]'); button?.setAttribute('aria-pressed', String(preferences.rain && !reducedMotion.matches)); });
-  applyPreferences();
   function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { timeZone:'America/New_York', hour:'2-digit', minute:'2-digit' }) + ' ET'; }
   updateClock();setInterval(updateClock, 30000);
   let audio;
   let audioSource;
   let volume;
+  let nightGain;
+  let dayGain;
   let playing = false;
   const soundButton = document.getElementById('sound-toggle');
   const soundVolume = document.getElementById('sound-volume');
@@ -519,18 +524,71 @@
         audioSource = audio.createBufferSource();audioSource.buffer=buffer;audioSource.loop=true;
         const filter = audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=1800;
         volume = audio.createGain();volume.gain.value=0;
-        audioSource.connect(filter);filter.connect(volume);volume.connect(audio.destination);audioSource.start();
+        nightGain = audio.createGain(); dayGain = audio.createGain();
+        audioSource.connect(filter); filter.connect(nightGain); nightGain.connect(volume);
+        const dayBuffer = audio.createBuffer(1, audio.sampleRate * 12, audio.sampleRate);
+        const dayData = dayBuffer.getChannelData(0);
+        let breeze = 0;
+        const chirps = [1.1, 1.4, 3.8, 4.15, 7.4, 7.8, 10.1];
+        for (let i = 0; i < dayData.length; i++) {
+          const t = i / audio.sampleRate;
+          breeze = (breeze + Math.random() * 2 - 1) / 1.035;
+          let sample = breeze * .025;
+          chirps.forEach((start, n) => {
+            const u = t - start;
+            if (u >= 0 && u < .22) {
+              const envelope = Math.sin(Math.PI * u / .22) ** 2;
+              sample += .045 * envelope * Math.sin(2 * Math.PI * ((1700 + n * 75) * u + 1600 * u * u));
+            }
+          });
+          dayData[i] = sample;
+        }
+        const daySource = audio.createBufferSource(); daySource.buffer = dayBuffer; daySource.loop = true;
+        daySource.connect(dayGain); dayGain.connect(volume);
+        volume.connect(audio.destination); audioSource.start(); daySource.start();
+        syncAmbient();
       }
       await audio.resume();
       playing = !playing;
       volume.gain.setTargetAtTime(playing ? Number(soundVolume.value)/100 : 0, audio.currentTime, .25);
       soundButton.setAttribute('aria-pressed', String(playing));
-      soundButton.setAttribute('aria-label', playing ? 'Pause ambient rain' : 'Play ambient rain');
-      soundButton.title = playing ? 'Pause ambient rain' : 'Play ambient rain';
+      syncAmbient();
       document.body.classList.toggle('sound-playing', playing);
     } catch (_) { notify('Ambient audio is unavailable in this browser.'); }
   });
   soundVolume.addEventListener('input', () => { if (playing && volume) volume.gain.setTargetAtTime(Number(soundVolume.value)/100,audio.currentTime,.1); });
+  function syncAmbient() {
+    const day = theme === 'light';
+    document.getElementById('shift-label').textContent = day ? 'Day shift' : 'Night shift';
+    document.getElementById('shift-location').textContent = day ? 'ATLANTA / DAYLIGHT' : 'ATLANTA / AFTER HOURS';
+    const label = (playing ? 'Pause ' : 'Play ') + (day ? 'daytime birds and breeze' : 'ambient rain');
+    soundButton.setAttribute('aria-label', label); soundButton.title = label;
+    soundVolume.setAttribute('aria-label', day ? 'Day shift volume' : 'Ambient rain volume');
+    if (audio && nightGain && dayGain) {
+      nightGain.gain.setTargetAtTime(day ? 0 : 1, audio.currentTime, .25);
+      dayGain.gain.setTargetAtTime(day ? 1 : 0, audio.currentTime, .25);
+    }
+    document.querySelectorAll('[data-theme-toggle]').forEach(button => {
+      button.textContent = 'Switch to ' + (day ? 'dark' : 'light') + ' mode';
+      button.setAttribute('aria-label', button.textContent);
+    });
+  }
+  document.addEventListener('click', event => {
+    if (!event.target.closest('[data-theme-toggle]')) return;
+    theme = theme === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(themeKey, theme); } catch (_) {}
+    applyPreferences(); syncAmbient();
+  });
+  window.addEventListener('storage', event => {
+    if (event.key !== themeKey) return;
+    theme = event.newValue === 'light' ? 'light' : 'dark';
+    applyPreferences(); syncAmbient();
+  });
+  window.addEventListener('pageshow', () => {
+    try { theme = localStorage.getItem(themeKey) === 'light' ? 'light' : 'dark'; } catch (_) {}
+    applyPreferences(); syncAmbient();
+  });
+  applyPreferences(); syncAmbient();
   const guide = document.getElementById('guide-widget');
   const guideToggle = document.getElementById('guide-toggle');
   const guideHeader = guide.querySelector('header');
