@@ -617,6 +617,7 @@
       }
       await audio.resume();
       if (!playing && theme === 'light') {
+        clearTimeout(dayPauseTimer);
         await dayRecording.play();
       }
       playing = !playing;
