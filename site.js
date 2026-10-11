@@ -185,7 +185,7 @@ document.querySelectorAll('.network-proof img').forEach(image => {
   const setMode = mode => {
     root.setAttribute('data-theme', mode);
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', mode === 'light' ? '#f3efe7' : '#07111f');
+    if (meta) meta.setAttribute('content', mode === 'light' ? '#f7f0e6' : '#211719');
     try { localStorage.setItem('dallas-portfolio-theme', mode); } catch (_) {}
     updateLabel();
   };
