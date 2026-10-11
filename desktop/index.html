@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101019">
+  <meta name="description" content="Explore Dallas Deas's IT support, networking, systems and cloud portfolio through an interactive desktop.">
+  <title>Dallas Deas — Workspace</title>
+  <link rel="icon" href="/desktop/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/desktop/desktop.css">
+  <script src="/desktop/desktop.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#desktop-icons">Skip to portfolio shortcuts</a>
+  <div class="wallpaper" aria-hidden="true"></div>
+  <canvas id="rain" aria-hidden="true"></canvas>
+  <header class="system-bar">
+    <button class="brand" data-app="about" aria-label="Open About Dallas"><span class="brand-mark">D<span>›</span></span><b>Dallas Deas</b><span class="bar-divider">/</span><span class="workspace-label">Workspace</span></button>
+    <span class="system-title"><span class="status-dot"></span> PERSONAL IT PORTFOLIO</span>
+    <div class="system-controls"><button data-app="settings" aria-label="Open appearance settings" title="Appearance"><span data-icon="settings"></span></button><span class="clock" id="clock"></span></div>
+  </header>
+  <main id="workspace" aria-label="Dallas Deas portfolio desktop">
+    <nav class="desktop-icons" id="desktop-icons" tabindex="-1" aria-label="Portfolio shortcuts">
+      <button data-app="terminal"><span class="app-icon terminal-icon" data-icon="terminal"></span><span>Terminal</span></button>
+      <button data-app="about"><span class="app-icon" data-icon="user"></span><span>About me</span></button>
+      <button data-app="projects"><span class="app-icon" data-icon="folder"></span><span>Projects</span></button>
+      <button data-app="skills"><span class="app-icon" data-icon="network"></span><span>Toolbox</span></button>
+      <button data-app="certifications"><span class="app-icon" data-icon="shield"></span><span>Credentials</span></button>
+      <button data-app="resume"><span class="app-icon" data-icon="file"></span><span>Résumé.pdf</span></button>
+      <button data-app="contact"><span class="app-icon" data-icon="mail"></span><span>Contact.txt</span></button>
+      <a href="https://github.com/DallasDeas" target="_blank" rel="noopener noreferrer"><span class="app-icon" data-icon="github"></span><span>GitHub ↗</span></a>
+      <button data-app="settings"><span class="app-icon" data-icon="settings"></span><span>Appearance</span></button>
+    </nav>
+    <div class="desktop-watermark" aria-hidden="true"><span>DD / WORKSPACE</span><small>BUILD. BREAK. UNDERSTAND.</small></div>
+    <div id="windows"></div>
+    <aside class="profile-widget" aria-label="Dallas Deas quick profile">
+      <div class="widget-topline"><span class="status-dot"></span><span>OPEN TO OPPORTUNITIES</span><span>↗</span></div>
+      <img src="/desktop/assets/headshot.webp" alt="Dallas Deas" class="profile-avatar" width="64" height="64">
+      <h2 class="glitch" data-text="Dallas Deas">Dallas Deas</h2>
+      <p class="profile-role">IT support · Networks · Systems</p>
+      <p class="profile-location"><span data-icon="pin"></span> Atlanta, Georgia</p>
+      <div class="profile-tags"><span>CCNA</span><span>Security+</span><span>AZ-900</span></div>
+      <div class="profile-links"><a href="https://www.linkedin.com/in/dallas-deas" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://github.com/DallasDeas" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+      <button class="profile-contact" data-app="contact">Let's connect <span>→</span></button>
+    </aside>
+    <section class="ambient-widget" aria-label="Ambient sound and motion controls">
+      <div class="ambient-title"><span class="status-dot"></span><span>Night shift</span><button id="sound-toggle" aria-label="Play ambient rain" aria-pressed="false" title="Play ambient rain"><span data-icon="volume"></span></button></div>
+      <div class="ambient-bottom"><span>ATLANTA / AFTER HOURS</span><div class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <label class="volume-label">Volume<input id="sound-volume" type="range" min="0" max="100" value="30" aria-label="Ambient rain volume"></label>
+    </section>
+    <aside class="guide-widget" id="guide-widget" hidden aria-label="Portfolio guide">
+      <header><span><span class="status-dot"></span> Portfolio guide</span><button id="guide-close" aria-label="Close portfolio guide">×</button></header>
+      <div class="guide-messages" id="guide-messages" role="log" aria-live="polite"><p class="guide-response">Welcome to Dallas's workspace. I can point you to his labs, skills, résumé, or contact information.</p></div>
+      <div class="guide-options"><button data-guide="projects">Projects</button><button data-guide="skills">Skills</button><button data-guide="contact">Contact</button></div>
+      <form id="guide-form"><label class="sr-only" for="guide-input">Ask the portfolio guide</label><input id="guide-input" placeholder="Find something in the portfolio…" autocomplete="off" maxlength="200"><button aria-label="Send question">↗</button></form>
+      <small class="guide-note">A local portfolio guide with predefined answers.</small>
+    </aside>
+  </main>
+  <footer class="desktop-footer"><span>© 2026 DALLAS DEAS</span><span class="desktop-hint">Click to explore · Drag windows to arrange</span><a href="/classic/">Classic view ↗</a></footer>
+  <nav class="dock" aria-label="Application dock">
+    <button data-app="about" aria-label="About me" title="About me"><span data-icon="user"></span><i></i></button>
+    <button data-app="projects" aria-label="Projects" title="Projects"><span data-icon="folder"></span><i></i></button>
+    <button data-app="terminal" aria-label="Terminal" title="Terminal"><span data-icon="terminal"></span><i></i></button>
+    <button data-app="certifications" aria-label="Credentials" title="Credentials"><span data-icon="shield"></span><i></i></button>
+    <button data-app="resume" aria-label="Résumé" title="Résumé"><span data-icon="file"></span><i></i></button>
+    <span class="dock-divider"></span>
+    <button data-app="contact" aria-label="Contact" title="Contact"><span data-icon="mail"></span><i></i></button>
+    <button id="guide-toggle" aria-label="Open portfolio guide" title="Portfolio guide" aria-expanded="false"><span data-icon="spark"></span><i></i></button>
+  </nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">This desktop needs JavaScript. <a href="/classic/">Open the classic portfolio</a>.</div></noscript>
+</body>
+</html>
