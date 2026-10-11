@@ -574,14 +574,62 @@
       button.setAttribute('aria-label', 'Switch to ' + next + ' mode');
     });
   }
-  document.addEventListener('click', event => {
-    if (!event.target.closest('[data-theme-toggle]')) return;
-    theme = theme === 'dark' ? 'light' : 'dark';
+  let themeTransition;
+  function setDesktopTheme(next) {
+    theme = next;
     try { localStorage.setItem(themeKey, theme); } catch (_) {}
     applyPreferences(); syncAmbient();
+  }
+  function finishThemeTransition(commit = false) {
+    if (!themeTransition) return;
+    const transition = themeTransition;
+    clearTimeout(transition.switchTimer); clearTimeout(transition.finishTimer);
+    if (commit) setDesktopTheme(transition.next);
+    transition.fx.remove();
+    document.querySelectorAll('[data-theme-toggle]').forEach(button => {
+      button.classList.remove('is-morphing'); button.removeAttribute('aria-busy');
+    });
+    themeTransition = null;
+  }
+  document.addEventListener('click', event => {
+    const button = event.target.closest('[data-theme-toggle]');
+    if (!button || themeTransition) return;
+    const next = theme === 'dark' ? 'light' : 'dark';
+    if (reducedMotion.matches || !CSS.supports('clip-path', 'circle(10px at 10px 10px)')) {
+      setDesktopTheme(next); return;
+    }
+    const rect = button.getBoundingClientRect();
+    const fx = document.createElement('div');
+    fx.className = 'theme-morph theme-morph--' + next;
+    fx.setAttribute('aria-hidden', 'true');
+    fx.style.setProperty('--origin-x', (rect.left + rect.width / 2) + 'px');
+    fx.style.setProperty('--origin-y', (rect.top + rect.height / 2) + 'px');
+    fx.innerHTML = '<div class="theme-morph__veil"></div><div class="theme-morph__texture"></div><span class="theme-morph__ring"></span><span class="theme-morph__ring theme-morph__ring--two"></span><span class="theme-morph__orb"></span><span class="theme-morph__word">' + (next === 'light' ? 'Daybreak' : 'Nightfall') + '</span>';
+    for (let i = 0; i < 12; i++) {
+      const spark = document.createElement('span');
+      spark.className = 'theme-morph__spark';
+      spark.style.setProperty('--ray', (i * 30) + 'deg');
+      spark.style.setProperty('--distance', (100 + (i % 3) * 24) + 'px');
+      spark.style.setProperty('--delay', (i % 4) * 35 + 'ms');
+      fx.append(spark);
+    }
+    document.body.append(fx);
+    document.querySelectorAll('[data-theme-toggle]').forEach(toggle => {
+      toggle.classList.add('is-morphing'); toggle.setAttribute('aria-busy', 'true');
+    });
+    themeTransition = {
+      fx, next,
+      switchTimer: setTimeout(() => setDesktopTheme(next), 525),
+      finishTimer: setTimeout(() => finishThemeTransition(), 1060),
+    };
+  });
+  window.addEventListener('pagehide', () => finishThemeTransition(true));
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) finishThemeTransition(true);
   });
   window.addEventListener('storage', event => {
     if (event.key !== themeKey) return;
+    finishThemeTransition();
     theme = event.newValue === 'light' ? 'light' : 'dark';
     applyPreferences(); syncAmbient();
   });
