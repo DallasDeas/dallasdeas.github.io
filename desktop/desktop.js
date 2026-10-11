@@ -606,8 +606,12 @@
         dayRecording.crossOrigin = 'anonymous';
         dayRecording.preload = 'none';
         dayRecording.loop = true;
+        dayRecording.id = 'day-birdsong-recording';
+        dayRecording.hidden = true;
+        document.body.append(dayRecording);
         const daySource = audio.createMediaElementSource(dayRecording);
-        daySource.connect(dayGain); dayGain.connect(volume);
+        const birdLevel = audio.createGain(); birdLevel.gain.value = .45;
+        daySource.connect(birdLevel); birdLevel.connect(dayGain); dayGain.connect(volume);
         volume.connect(audio.destination); audioSource.start();
         syncAmbient();
       }
