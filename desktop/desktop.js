@@ -22,6 +22,71 @@
   const layer = document.getElementById('windows');
   const mobile = window.matchMedia('(max-width:700px)');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion:reduce)');
+  // Desktop selection begins only on empty wallpaper, never inside an app.
+  const selectionBox = document.createElement('div');
+  selectionBox.className = 'desktop-selection-box';
+  selectionBox.hidden = true;
+  selectionBox.setAttribute('aria-hidden', 'true');
+  desktop.appendChild(selectionBox);
+  const shortcuts = [...document.querySelectorAll('.desktop-icons button, .desktop-icons a')];
+  let desktopSelection;
+  function clearDesktopSelection() {
+    shortcuts.forEach(shortcut => shortcut.classList.remove('is-selected'));
+  }
+  function selectionPoint(event) {
+    const bounds = desktop.getBoundingClientRect();
+    return {
+      x: Math.max(0, Math.min(event.clientX - bounds.left, bounds.width)),
+      y: Math.max(0, Math.min(event.clientY - bounds.top, bounds.height)),
+    };
+  }
+  desktop.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.pointerType !== 'mouse' ||
+        event.target.closest('.window, .guide-widget, .profile-widget, .ambient-widget, button, a, input, textarea, select')) return;
+    event.preventDefault();
+    window.getSelection()?.removeAllRanges();
+    const point = selectionPoint(event);
+    const keepSelection = event.ctrlKey || event.metaKey || event.shiftKey;
+    if (!keepSelection) clearDesktopSelection();
+    desktopSelection = { ...point, pointerId: event.pointerId, previous: new Set(keepSelection ? shortcuts.filter(shortcut => shortcut.classList.contains('is-selected')) : []) };
+    desktop.setPointerCapture(event.pointerId);
+    desktop.classList.add('is-selecting');
+    Object.assign(selectionBox.style, { left: point.x + 'px', top: point.y + 'px', width: '0px', height: '0px' });
+  });
+  desktop.addEventListener('pointermove', event => {
+    if (!desktopSelection || event.pointerId !== desktopSelection.pointerId) return;
+    const point = selectionPoint(event);
+    const left = Math.min(point.x, desktopSelection.x);
+    const top = Math.min(point.y, desktopSelection.y);
+    const width = Math.abs(point.x - desktopSelection.x);
+    const height = Math.abs(point.y - desktopSelection.y);
+    selectionBox.hidden = width < 3 && height < 3;
+    Object.assign(selectionBox.style, { left: left + 'px', top: top + 'px', width: width + 'px', height: height + 'px' });
+    const bounds = desktop.getBoundingClientRect();
+    shortcuts.forEach(shortcut => {
+      const box = shortcut.getBoundingClientRect();
+      const intersects = box.width > 0 && box.height > 0 && width > 3 && height > 3 &&
+        box.right > bounds.left + left && box.left < bounds.left + left + width &&
+        box.bottom > bounds.top + top && box.top < bounds.top + top + height;
+      shortcut.classList.toggle('is-selected', intersects || desktopSelection.previous.has(shortcut));
+    });
+  });
+  function stopDesktopSelection() {
+    if (!desktopSelection) return;
+    const pointerId = desktopSelection.pointerId;
+    desktopSelection = null;
+    selectionBox.hidden = true;
+    desktop.classList.remove('is-selecting');
+    if (desktop.hasPointerCapture(pointerId)) desktop.releasePointerCapture(pointerId);
+  }
+  desktop.addEventListener('pointerup', stopDesktopSelection);
+  desktop.addEventListener('pointercancel', stopDesktopSelection);
+  desktop.addEventListener('lostpointercapture', stopDesktopSelection);
+  window.addEventListener('blur', stopDesktopSelection);
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { stopDesktopSelection(); clearDesktopSelection(); }
+  });
+
   const windows = new Map();
   let front = 20;
   let lastFocused;
