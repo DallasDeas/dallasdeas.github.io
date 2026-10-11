@@ -245,3 +245,39 @@ document.querySelectorAll('.network-proof img').forEach(image => {
     }, 1060);
   });
 })();
+
+
+// Glitch effect for all content headings without replacing heading typography or links.
+(() => {
+  // Keep the existing visual layers on the homepage name and apply them
+  // to other h1–h4 words, preserving inline emphasis and natural word wrapping.
+  document.querySelectorAll('main h1, main h2, main h3, main h4').forEach(heading => {
+    heading.classList.add('glitch-heading');
+
+    const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      if (!node.textContent.trim()) continue;
+      if (node.parentElement.closest('.name-glitch')) continue;
+      textNodes.push(node);
+    }
+
+    textNodes.forEach(node => {
+      const fragment = document.createDocumentFragment();
+      node.textContent.split(/(\s+)/).forEach(part => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) {
+          fragment.appendChild(document.createTextNode(part));
+        } else {
+          const word = document.createElement('span');
+          word.className = 'name-glitch';
+          word.setAttribute('data-text', part);
+          word.textContent = part;
+          fragment.appendChild(word);
+        }
+      });
+      node.replaceWith(fragment);
+    });
+  });
+})();
