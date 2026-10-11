@@ -176,3 +176,5 @@ input,textarea{user-select:text}
 [data-theme="light"] .desktop-watermark{color:#ffffff50}
 [data-theme="light"] .window.is-focused{border-color:#9d7e81}
 @media(max-width:600px){.desktop-theme-toggle{font-size:9px!important;padding:7px 6px!important}.system-controls{gap:8px}}
+
+@media(max-width:600px){.system-controls .clock{display:none}}
