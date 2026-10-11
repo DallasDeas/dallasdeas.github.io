@@ -134,7 +134,7 @@
   const themeKey = 'dallas-portfolio-theme';
   let theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
   const preferenceKey = 'dallas-workspace-preferences';
-  let preferences = { rain: !reducedMotion.matches, dim: false };
+  let preferences = { rain: !reducedMotion.matches, dim: false, sirens: true };
   try { preferences = { ...preferences, ...JSON.parse(localStorage.getItem(preferenceKey) || '{}') }; } catch (_) {}
   function notify(message) {
     const toast = document.getElementById('toast');
@@ -215,7 +215,7 @@
     resume: { title: 'Dallas_Deas_Resume.pdf', icon: 'file', width: 800, height: 760, x: .5, y: .045, status: 'RÉSUMÉ / PDF', content: () => `
       <div class="resume-toolbar"><span>Dallas Deas / Résumé</span><a href="/desktop/assets/Dallas_Deas_Resume.pdf" target="_blank" rel="noopener noreferrer">Open PDF ↗</a><a href="/desktop/assets/Dallas_Deas_Resume.pdf" download="Dallas_Deas_Resume.pdf">Download ↓</a></div><div class="resume-preview"><img src="/desktop/assets/resume-preview.webp" alt="Dallas Deas résumé, page 1. Open or download the original PDF using the toolbar links."><img src="/desktop/assets/resume-preview-2.webp" alt="Dallas Deas résumé, page 2."></div>` },
     settings: { title: 'Appearance — workspace settings', icon: 'settings', width: 510, height: 420, x: .6, y: .16, status: 'PREFERENCES SAVED ON THIS DEVICE', content: () => `
-      <div class="detail-content"><span class="eyebrow">MAKE YOURSELF AT HOME</span><div class="settings-row"><div><strong>Desktop theme</strong><small>Day shift in light mode. Night shift in dark mode.</small></div><button class="outline-action" data-theme-toggle>Switch to ${theme === 'dark' ? 'light' : 'dark'} mode</button></div><div class="settings-row"><div><strong>Animated rain</strong><small>Atmosphere over the skyline.<br>Respects reduced motion settings.</small></div><button class="switch" data-preference="rain" aria-label="Animated rain" aria-pressed="${preferences.rain && !reducedMotion.matches}"><span></span></button></div><div class="settings-row"><div><strong>Dim the wallpaper</strong><small>A quieter background for reading.</small></div><button class="switch" data-preference="dim" aria-label="Dim the wallpaper" aria-pressed="${preferences.dim}"><span></span></button></div><div class="action-row"><button class="outline-action" id="reset-workspace">Reset window layout ↺</button></div></div>` },
+      <div class="detail-content"><span class="eyebrow">MAKE YOURSELF AT HOME</span><div class="settings-row"><div><strong>Desktop theme</strong><small>Day shift in light mode. Night shift in dark mode.</small></div><button class="outline-action" data-theme-toggle>Switch to ${theme === 'dark' ? 'light' : 'dark'} mode</button></div><div class="settings-row"><div><strong>Animated rain</strong><small>Atmosphere over the skyline.<br>Respects reduced motion settings.</small></div><button class="switch" data-preference="rain" aria-label="Animated rain" aria-pressed="${preferences.rain && !reducedMotion.matches}"><span></span></button></div><div class="settings-row"><div><strong>Dim the wallpaper</strong><small>A quieter background for reading.</small></div><button class="switch" data-preference="dim" aria-label="Dim the wallpaper" aria-pressed="${preferences.dim}"><span></span></button></div><div class="settings-row"><div><strong>Distant sirens at night</strong><small>Occasional passing sirens, quieter than the rain.</small></div><button class="switch" data-preference="sirens" aria-label="Distant sirens at night" aria-pressed="${preferences.sirens}"><span></span></button></div><div class="action-row"><button class="outline-action" id="reset-workspace">Reset window layout ↺</button></div></div>` },
   };
   Object.entries(projectData).forEach(([id, project]) => {
     apps[`project-${id}`] = { title: `${project.title} — Lab notes`, icon: project.icon, width: 730, height: 690, x: .48, y: .08, status: 'HANDS-ON LAB / DOCUMENTED', content: () => `<div class="detail-content"><span class="eyebrow">${project.label}</span><h2>${project.title}</h2><p class="body-text">${project.summary}</p><div class="pill-row">${project.tools.map(tool => `<span class="pill">${tool}</span>`).join('')}</div><h3>WHAT I CONFIGURED & TESTED</h3><ul class="detail-list">${project.points.map(point => `<li>${point}</li>`).join('')}</ul>${project.image ? `<a href="${project.image}" target="_blank" rel="noopener noreferrer"><img class="evidence-image" src="${project.image}" alt="${project.caption}" loading="lazy"></a><div class="evidence-caption">${project.caption}</div>` : ''}<div class="action-row"><a class="action" href="${project.path}" target="_blank" rel="noopener noreferrer">Read full lab documentation ↗</a><button class="outline-action" data-app="projects">All projects →</button></div></div>` };
@@ -369,7 +369,7 @@
         if (key === 'rain' && reducedMotion.matches) { notify('Rain is off because your device prefers reduced motion.'); return; }
         preferences[key] = !preferences[key];
         button.setAttribute('aria-pressed', String(preferences[key]));
-        applyPreferences();
+        applyPreferences(); syncAmbient();
       }));
       el.querySelector('#reset-workspace').addEventListener('click', resetWorkspace);
     }
@@ -511,18 +511,90 @@
   let playing = false;
   const soundButton = document.getElementById('sound-toggle');
   const soundVolume = document.getElementById('sound-volume');
+  // Layer a wide rain wash, low city rumble, and irregular surface droplets.
+  function createCityRain(context) {
+    const buffer = context.createBuffer(2, context.sampleRate * 24, context.sampleRate);
+    for (let channel = 0; channel < 2; channel++) {
+      const data = buffer.getChannelData(channel);
+      let low = 0, mid = 0, tap = 0, tapPhase = 0, tapFrequency = 2300;
+      for (let i = 0; i < data.length; i++) {
+        const t = i / context.sampleRate;
+        const noise = Math.random() * 2 - 1;
+        low = low * .997 + noise * .003;
+        mid = mid * .87 + noise * .13;
+        const gust = .83 + .11 * Math.sin(2 * Math.PI * t / 24) + .06 * Math.sin(2 * Math.PI * t / 8);
+        if (Math.random() < 15 / context.sampleRate) {
+          tap = .015 + Math.random() * .035;
+          tapFrequency = 1400 + Math.random() * 3000;
+        }
+        tapPhase += 2 * Math.PI * tapFrequency / context.sampleRate;
+        tap *= Math.exp(-1 / (context.sampleRate * .007));
+        const wet = tap * (noise * .7 + Math.sin(tapPhase) * .3);
+        // Very short softened loop boundaries prevent clicks.
+        const edge = Math.min(1, i / (context.sampleRate * .008), (data.length - 1 - i) / (context.sampleRate * .008));
+        data[i] = ((noise * .065 + mid * .105) * gust + low * .08 + wet) * edge;
+      }
+    }
+    return buffer;
+  }
+  let sirenTimer;
+  let sirenVoice;
+  function stopSirens() {
+    clearTimeout(sirenTimer); sirenTimer = null;
+    if (!sirenVoice || !audio) return;
+    const voice = sirenVoice; sirenVoice = null;
+    voice.gain.gain.cancelScheduledValues(audio.currentTime);
+    voice.gain.gain.setTargetAtTime(0, audio.currentTime, .06);
+    voice.oscillator.stop(audio.currentTime + .3);
+  }
+  function scheduleSirens(first = true) {
+    if (!audio || !playing || theme !== 'dark' || !preferences.sirens) {
+      stopSirens(); return;
+    }
+    if (sirenTimer || sirenVoice) return;
+    sirenTimer = setTimeout(() => {
+      sirenTimer = null;
+      if (!playing || theme !== 'dark' || !preferences.sirens) return;
+      const duration = 15;
+      const start = audio.currentTime + .04;
+      const oscillator = audio.createOscillator();
+      oscillator.type = 'sine';
+      const filter = audio.createBiquadFilter();
+      filter.type = 'lowpass'; filter.frequency.value = 1500;
+      const gain = audio.createGain(); gain.gain.value = 0;
+      const pan = audio.createStereoPanner();
+      const curve = new Float32Array(180);
+      for (let i = 0; i < curve.length; i++) {
+        const t = i / (curve.length - 1);
+        // A slow emergency wail with a slight pitch drop as it passes.
+        curve[i] = 820 + 190 * Math.sin(t * Math.PI * 5 - Math.PI / 2) - 95 * t;
+      }
+      oscillator.frequency.setValueCurveAtTime(curve, start, duration);
+      gain.gain.setValueAtTime(0, start);
+      gain.gain.linearRampToValueAtTime(.018, start + 6);
+      gain.gain.linearRampToValueAtTime(.012, start + 9);
+      gain.gain.linearRampToValueAtTime(0, start + duration);
+      pan.pan.setValueAtTime(-.65, start);
+      pan.pan.linearRampToValueAtTime(.65, start + duration);
+      oscillator.connect(filter); filter.connect(gain); gain.connect(pan); pan.connect(nightGain);
+      const voice = { oscillator, filter, gain, pan };
+      sirenVoice = voice;
+      oscillator.onended = () => {
+        oscillator.disconnect(); filter.disconnect(); gain.disconnect(); pan.disconnect();
+        if (sirenVoice === voice) { sirenVoice = null; scheduleSirens(false); }
+      };
+      oscillator.start(start); oscillator.stop(start + duration + .05);
+    }, (first ? 12 + Math.random() * 10 : 50 + Math.random() * 45) * 1000);
+  }
   soundButton.addEventListener('click', async () => {
     try {
       if (!audio) {
         const Audio = window.AudioContext || window.webkitAudioContext;
         if (!Audio) throw new Error('Audio unavailable');
         audio = new Audio();
-        const buffer = audio.createBuffer(1, audio.sampleRate*4, audio.sampleRate);
-        const data = buffer.getChannelData(0);
-        let last = 0;
-        for (let i=0;i<data.length;i++) { last = (last + Math.random()*2-1) / 1.035; data[i] = last*.14; }
+        const buffer = createCityRain(audio);
         audioSource = audio.createBufferSource();audioSource.buffer=buffer;audioSource.loop=true;
-        const filter = audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=1800;
+        const filter = audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=6200;
         volume = audio.createGain();volume.gain.value=0;
         nightGain = audio.createGain(); dayGain = audio.createGain();
         audioSource.connect(filter); filter.connect(nightGain); nightGain.connect(volume);
@@ -560,14 +632,15 @@
   function syncAmbient() {
     const day = theme === 'light';
     document.getElementById('shift-label').textContent = day ? 'Day shift' : 'Night shift';
-    document.getElementById('shift-location').textContent = day ? 'ATLANTA / DAYLIGHT' : 'ATLANTA / AFTER HOURS';
-    const label = (playing ? 'Pause ' : 'Play ') + (day ? 'daytime birds and breeze' : 'ambient rain');
+    document.getElementById('shift-location').textContent = day ? 'ATLANTA / DAYLIGHT' : (preferences.sirens ? 'ATLANTA / RAIN & SIRENS' : 'ATLANTA / CITY RAIN');
+    const label = (playing ? 'Pause ' : 'Play ') + (day ? 'daytime birds and breeze' : (preferences.sirens ? 'city rain and distant sirens' : 'city rain'));
     soundButton.setAttribute('aria-label', label); soundButton.title = label;
     soundVolume.setAttribute('aria-label', day ? 'Day shift volume' : 'Ambient rain volume');
     if (audio && nightGain && dayGain) {
       nightGain.gain.setTargetAtTime(day ? 0 : 1, audio.currentTime, .25);
       dayGain.gain.setTargetAtTime(day ? 1 : 0, audio.currentTime, .25);
     }
+    scheduleSirens();
     document.querySelectorAll('[data-theme-toggle]').forEach(button => {
       const next = day ? 'dark' : 'light';
       button.textContent = button.classList.contains('desktop-theme-toggle') ? (day ? 'Dark mode' : 'Light mode') : 'Switch to ' + next + ' mode';
