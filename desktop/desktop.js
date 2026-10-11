@@ -349,8 +349,53 @@
   soundVolume.addEventListener('input', () => { if (playing && volume) volume.gain.setTargetAtTime(Number(soundVolume.value)/100,audio.currentTime,.1); });
   const guide = document.getElementById('guide-widget');
   const guideToggle = document.getElementById('guide-toggle');
+  const guideHeader = guide.querySelector('header');
+  guideHeader.tabIndex = 0;
+  guideHeader.setAttribute('aria-label', 'Move portfolio guide. Drag or use arrow keys.');
+  guideHeader.title = 'Drag to move · Arrow keys to move';
+  let guideDrag;
+  let guideMoved = false;
+  function positionGuide(left, top) {
+    const width = Math.min(guide.offsetWidth, desktop.clientWidth - 24);
+    guide.style.width = width + 'px';
+    guide.style.right = 'auto';
+    guide.style.bottom = 'auto';
+    guide.style.left = Math.max(12, Math.min(left, desktop.clientWidth - width - 12)) + 'px';
+    guide.style.top = Math.max(12, Math.min(top, desktop.clientHeight - guide.offsetHeight - 96)) + 'px';
+    guideMoved = true;
+  }
+  guideHeader.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.target.closest('button')) return;
+    guideDrag = { x: event.clientX, y: event.clientY, left: guide.offsetLeft, top: guide.offsetTop };
+    guideHeader.setPointerCapture(event.pointerId);
+    guideHeader.classList.add('is-dragging');
+  });
+  guideHeader.addEventListener('pointermove', event => {
+    if (!guideDrag) return;
+    positionGuide(guideDrag.left + event.clientX - guideDrag.x, guideDrag.top + event.clientY - guideDrag.y);
+  });
+  function stopGuideDrag() {
+    guideDrag = null;
+    guideHeader.classList.remove('is-dragging');
+  }
+  guideHeader.addEventListener('pointerup', stopGuideDrag);
+  guideHeader.addEventListener('pointercancel', stopGuideDrag);
+  guideHeader.addEventListener('lostpointercapture', stopGuideDrag);
+  guideHeader.addEventListener('keydown', event => {
+    if (event.target !== guideHeader) return;
+    const direction = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
+    if (!direction) return;
+    event.preventDefault();
+    const step = event.shiftKey ? 30 : 10;
+    positionGuide(guide.offsetLeft + direction[0] * step, guide.offsetTop + direction[1] * step);
+  });
+  window.addEventListener('resize', () => {
+    if (guideMoved && !guide.hidden) positionGuide(guide.offsetLeft, guide.offsetTop);
+  });
+
   function setGuide(open) {
     guide.hidden = !open;
+    if (open && guideMoved) positionGuide(guide.offsetLeft, guide.offsetTop);
     guideToggle.setAttribute('aria-expanded',String(open));
     guideToggle.classList.toggle('is-open',open);
     if (open) document.getElementById('guide-input').focus(); else guideToggle.focus();
