@@ -36,7 +36,7 @@
   function show(mode, destination) {
     label.replaceChildren(document.createTextNode(destination));
     const detail = document.createElement('small');
-    detail.textContent = 'DALLAS DEAS / WORKSPACE';
+    detail.textContent = 'DALLAS DEAS / PORTFOLIO';
     label.appendChild(detail);
     overlay.className = 'view-transition is-active ' + mode;
   }
