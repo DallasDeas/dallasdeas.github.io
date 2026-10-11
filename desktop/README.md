@@ -1,4 +1,4 @@
-# Dallas Workspace
+# Dallas Portfolio
 
 A GitHub Pages-compatible desktop portfolio inspired by the supplied website reference video. Built with HTML, CSS and JavaScript; no build step or server backend is required for the published site.
 
