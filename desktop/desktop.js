@@ -569,8 +569,9 @@
       dayGain.gain.setTargetAtTime(day ? 1 : 0, audio.currentTime, .25);
     }
     document.querySelectorAll('[data-theme-toggle]').forEach(button => {
-      button.textContent = 'Switch to ' + (day ? 'dark' : 'light') + ' mode';
-      button.setAttribute('aria-label', button.textContent);
+      const next = day ? 'dark' : 'light';
+      button.textContent = button.classList.contains('desktop-theme-toggle') ? (day ? 'Dark mode' : 'Light mode') : 'Switch to ' + next + ' mode';
+      button.setAttribute('aria-label', 'Switch to ' + next + ' mode');
     });
   }
   document.addEventListener('click', event => {
