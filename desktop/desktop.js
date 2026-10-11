@@ -11,6 +11,7 @@
     github: '<path d="M9 19c-4 1-4-2-6-2m12 5v-4c0-1 .1-2-.8-3 3-.3 6-1.3 6-6A5 5 0 0 0 19 5.5 5 5 0 0 0 18.8 2S17.5 1.6 15 3.4a13 13 0 0 0-6 0C6.5 1.6 5.2 2 5.2 2A5 5 0 0 0 5 5.5 5 5 0 0 0 3.8 9c0 4.7 3 5.7 6 6-.9 1-1 2-1 3v4"/>',
     settings: '<path d="m10 2 4 0 .8 3 2 .9 2.8-.9 2 3.5-2 2.2v2.6l2 2.2-2 3.5-2.8-.9-2 .9L14 22h-4l-.8-3-2-.9-2.8.9-2-3.5 2-2.2v-2.6l-2-2.2 2-3.5 2.8.9 2-.9Z"/><circle cx="12" cy="12" r="3"/>',
     pin: '<path d="M19 10c0 5-7 12-7 12S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2"/>',
+    volumeOff: '<path d="M11 4 6 8H2v8h4l5 4Z"/><path d="m16 9 6 6m0-6-6 6"/>',
     volume: '<path d="M11 4 6 8H2v8h4l5 4Zm4 4a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
     spark: '<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5ZM20 2v4m-2-2h4"/>',
     cloud: '<path d="M7 18a5 5 0 1 1 0-10 6 6 0 0 1 11-1 5 5 0 1 1 1 11Z"/>',
@@ -170,18 +171,18 @@
     about: { title: 'About_Dallas.md', icon: 'user', width: 560, height: 700, x: .08, y: .08, status: 'PROFILE / ABOUT ME', content: () => `
       <div class="about-banner"></div>
       <div class="about-heading"><img src="/desktop/assets/headshot.webp" alt="Dallas Deas" width="61" height="61"><div><h1 class="glitch" data-text="Dallas Deas">Dallas Deas</h1><p>IT support · Networking · Systems</p></div></div>
-      <div class="about-body"><span class="eyebrow">THE PERSON BEHIND THE WORKSPACE</span>
+      <div class="about-body"><span class="eyebrow">THE PERSON BEHIND THE PORTFOLIO</span>
         <p class="body-text">I'm Dallas, an IT professional based in <strong>Atlanta, Georgia</strong>. I work across end-user support and business systems, and I'm building deeper skills in networking, systems administration and cloud infrastructure.</p>
-        <p class="body-text">This workspace brings together the labs I've built, the problems I've investigated, and the technical work I've documented.</p>
+        <p class="body-text">This portfolio brings together the labs I've built, the problems I've investigated, and the technical work I've documented.</p>
         <div class="about-focus"><span class="eyebrow">WHAT I WORK WITH</span><div class="focus-grid"><span>Networks & routing</span><span>Windows & identity</span><span>Cloud fundamentals</span><span>Technical support</span></div></div>
         <div class="action-row"><button class="action" data-app="projects">Explore projects <span>↗</span></button><button class="outline-action" data-app="resume">View résumé <span>→</span></button></div>
       </div>` },
-    terminal: { title: 'Terminal — dallas@workspace', icon: 'terminal', width: 640, height: 540, x: .94, y: .22, status: 'LOCAL PORTFOLIO TERMINAL', content: () => `
-      <div class="terminal-content"><p class="terminal-welcome">Dallas Workspace <b>[Version 2026.10]</b><br>Type <b>help</b> to explore. Welcome in.</p>
+    terminal: { title: 'Terminal — dallas@portfolio', icon: 'terminal', width: 640, height: 540, x: .94, y: .22, status: 'LOCAL PORTFOLIO TERMINAL', content: () => `
+      <div class="terminal-content"><p class="terminal-welcome">Dallas Portfolio <b>[Version 2026.10]</b><br>Type <b>help</b> to explore. Welcome in.</p>
         <div class="terminal-logo" aria-hidden="true">D A L L A S / D E A S<br>─────────────────────</div>
         <dl class="terminal-facts"><dt>user</dt><dd>Dallas Deas</dd><dt>location</dt><dd>Atlanta, Georgia</dd><dt>focus</dt><dd>IT support, networking & systems</dd><dt>credentials</dt><dd>CCNA · Security+ · AZ-900</dd><dt>projects</dt><dd>Active Directory / Cisco / Azure</dd><dt>status</dt><dd>Open to IT opportunities</dd></dl>
         <div class="terminal-history" role="log" aria-live="polite"></div>
-        <form class="terminal-form"><label class="prompt" for="terminal-input">dallas@workspace:~$</label><input id="terminal-input" aria-label="Terminal command" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="200"></form>
+        <form class="terminal-form"><label class="prompt" for="terminal-input">dallas@portfolio:~$</label><input id="terminal-input" aria-label="Terminal command" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="200"></form>
         <div class="terminal-help">try: help · projects · about · contact</div>
       </div>` },
     projects: { title: 'Projects — File Explorer', icon: 'folder', width: 640, height: 450, x: .48, y: .13, status: '3 PROJECT FOLDERS', content: () => `
@@ -214,8 +215,8 @@
       <div class="contact-card"><span>LinkedIn</span><a href="https://www.linkedin.com/in/dallas-deas" target="_blank" rel="noopener noreferrer">dallas-deas ↗</a></div><div class="contact-card"><span>GitHub</span><a href="https://github.com/DallasDeas" target="_blank" rel="noopener noreferrer">DallasDeas ↗</a></div></div>` },
     resume: { title: 'Dallas_Deas_Resume.pdf', icon: 'file', width: 800, height: 760, x: .5, y: .045, status: 'RÉSUMÉ / PDF', content: () => `
       <div class="resume-toolbar"><span>Dallas Deas / Résumé</span><a href="/desktop/assets/Dallas_Deas_Resume.pdf" target="_blank" rel="noopener noreferrer">Open PDF ↗</a><a href="/desktop/assets/Dallas_Deas_Resume.pdf" download="Dallas_Deas_Resume.pdf">Download ↓</a></div><div class="resume-preview"><img src="/desktop/assets/resume-preview.webp" alt="Dallas Deas résumé, page 1. Open or download the original PDF using the toolbar links."><img src="/desktop/assets/resume-preview-2.webp" alt="Dallas Deas résumé, page 2."></div>` },
-    settings: { title: 'Appearance — workspace settings', icon: 'settings', width: 510, height: 420, x: .6, y: .16, status: 'PREFERENCES SAVED ON THIS DEVICE', content: () => `
-      <div class="detail-content"><span class="eyebrow">MAKE YOURSELF AT HOME</span><div class="settings-row"><div><strong>Desktop theme</strong><small>Day shift in light mode. Night shift in dark mode.</small></div><button class="outline-action" data-theme-toggle>Switch to ${theme === 'dark' ? 'light' : 'dark'} mode</button></div><div class="settings-row"><div><strong>Animated rain</strong><small>Atmosphere over the skyline.<br>Respects reduced motion settings.</small></div><button class="switch" data-preference="rain" aria-label="Animated rain" aria-pressed="${preferences.rain && !reducedMotion.matches}"><span></span></button></div><div class="settings-row"><div><strong>Dim the wallpaper</strong><small>A quieter background for reading.</small></div><button class="switch" data-preference="dim" aria-label="Dim the wallpaper" aria-pressed="${preferences.dim}"><span></span></button></div><div class="settings-row"><div><strong>Distant sirens at night</strong><small>Occasional passing sirens, quieter than the rain.</small></div><button class="switch" data-preference="sirens" aria-label="Distant sirens at night" aria-pressed="${preferences.sirens}"><span></span></button></div><div class="action-row"><button class="outline-action" id="reset-workspace">Reset window layout ↺</button></div></div>` },
+    settings: { title: 'Appearance — portfolio settings', icon: 'settings', width: 510, height: 420, x: .6, y: .16, status: 'PREFERENCES SAVED ON THIS DEVICE', content: () => `
+      <div class="detail-content"><span class="eyebrow">MAKE YOURSELF AT HOME</span><div class="settings-row"><div><strong>Desktop theme</strong><small>Day shift in light mode. Night shift in dark mode.</small></div><button class="outline-action" data-theme-toggle>Switch to ${theme === 'dark' ? 'light' : 'dark'} mode</button></div><div class="settings-row"><div><strong>Animated rain</strong><small>Atmosphere over the skyline.<br>Respects reduced motion settings.</small></div><button class="switch" data-preference="rain" aria-label="Animated rain" aria-pressed="${preferences.rain && !reducedMotion.matches}"><span></span></button></div><div class="settings-row"><div><strong>Dim the wallpaper</strong><small>A quieter background for reading.</small></div><button class="switch" data-preference="dim" aria-label="Dim the wallpaper" aria-pressed="${preferences.dim}"><span></span></button></div><div class="settings-row"><div><strong>Distant sirens at night</strong><small>Occasional passing sirens, quieter than the rain.</small></div><button class="switch" data-preference="sirens" aria-label="Distant sirens at night" aria-pressed="${preferences.sirens}"><span></span></button></div><div class="action-row"><button class="outline-action" id="reset-portfolio">Reset window layout ↺</button></div></div>` },
   };
   Object.entries(projectData).forEach(([id, project]) => {
     apps[`project-${id}`] = { title: `${project.title} — Lab notes`, icon: project.icon, width: 730, height: 690, x: .48, y: .08, status: 'HANDS-ON LAB / DOCUMENTED', content: () => `<div class="detail-content"><span class="eyebrow">${project.label}</span><h2>${project.title}</h2><p class="body-text">${project.summary}</p><div class="pill-row">${project.tools.map(tool => `<span class="pill">${tool}</span>`).join('')}</div><h3>WHAT I CONFIGURED & TESTED</h3><ul class="detail-list">${project.points.map(point => `<li>${point}</li>`).join('')}</ul>${project.image ? `<a href="${project.image}" target="_blank" rel="noopener noreferrer"><img class="evidence-image" src="${project.image}" alt="${project.caption}" loading="lazy"></a><div class="evidence-caption">${project.caption}</div>` : ''}<div class="action-row"><a class="action" href="${project.path}" target="_blank" rel="noopener noreferrer">Read full lab documentation ↗</a><button class="outline-action" data-app="projects">All projects →</button></div></div>` };
@@ -371,7 +372,7 @@
         button.setAttribute('aria-pressed', String(preferences[key]));
         applyPreferences(); syncAmbient();
       }));
-      el.querySelector('#reset-workspace').addEventListener('click', resetWorkspace);
+      el.querySelector('#reset-portfolio').addEventListener('click', resetPortfolio);
     }
     fitWindow(el);
     focusWindow(state);
@@ -406,13 +407,13 @@
       button.title = 'Restore';
     }
   }
-  function resetWorkspace() {
+  function resetPortfolio() {
     windows.forEach(state => state.el.remove());
     windows.clear();
     lastFocused = undefined;
     openApp('terminal', false);
     openApp('about', false);
-    notify('Workspace layout reset');
+    notify('Portfolio layout reset');
   }
   document.addEventListener('click', e => { const button = e.target.closest('[data-app]'); if (button) openApp(button.dataset.app); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { if (!document.getElementById('guide-widget').hidden) setGuide(false); else if (lastFocused && !lastFocused.el.hidden) closeApp(lastFocused.id); } });
@@ -433,14 +434,14 @@
       if (!raw) return;
       state.commands.push(raw);
       state.historyIndex = state.commands.length;
-      append('dallas@workspace:~$ ' + raw, 'terminal-command');
+      append('dallas@portfolio:~$ ' + raw, 'terminal-command');
       const [command, ...args] = raw.toLowerCase().split(/\s+/);
       const commandApps = { about:'about', projects:'projects', skills:'skills', certs:'certifications', certifications:'certifications', resume:'resume', contact:'contact' };
       if (command === 'clear') history.replaceChildren();
-      else if (command === 'help') append('Available commands:\n  about       Meet Dallas\n  projects    Open the lab folders\n  skills      Explore the toolbox\n  certs       View credentials\n  resume      Open the résumé\n  contact     Find contact details\n  open <app>  Open a workspace app\n  ls          List portfolio folders\n  whoami      Show profile\n  date        Show current time\n  clear       Clear this history\n\nUse ↑ / ↓ for command history.', 'terminal-output');
+      else if (command === 'help') append('Available commands:\n  about       Meet Dallas\n  projects    Open the lab folders\n  skills      Explore the toolbox\n  certs       View credentials\n  resume      Open the résumé\n  contact     Find contact details\n  open <app>  Open a portfolio app\n  ls          List portfolio folders\n  whoami      Show profile\n  date        Show current time\n  clear       Clear this history\n\nUse ↑ / ↓ for command history.', 'terminal-output');
       else if (command === 'whoami') append('Dallas Deas\nIT support · Networking · Systems\nAtlanta, Georgia\nCCNA · CompTIA Security+ · Azure Fundamentals', 'terminal-output');
       else if (command === 'ls') append('about.md  projects/  skills.json  credentials/\nresume.pdf  contact.txt\n\nprojects/: active-directory/  cisco-network/  azure/', 'terminal-output');
-      else if (command === 'pwd') append('/home/dallas/workspace', 'terminal-output');
+      else if (command === 'pwd') append('/home/dallas/portfolio', 'terminal-output');
       else if (command === 'date') append(new Date().toLocaleString('en-US', { timeZone:'America/New_York', timeZoneName:'short' }), 'terminal-output');
       else if (commandApps[command]) { append('Opening ' + command + '…', 'terminal-output'); openApp(commandApps[command]); }
       else if (command === 'open') {
@@ -630,6 +631,9 @@
   soundVolume.addEventListener('input', () => { if (playing && volume) volume.gain.setTargetAtTime(Number(soundVolume.value)/100,audio.currentTime,.1); });
   function syncAmbient() {
     const day = theme === 'light';
+    const soundIcon = soundButton.querySelector('[data-icon]');
+    soundIcon.dataset.icon = playing ? 'volume' : 'volumeOff';
+    soundIcon.innerHTML = svg(soundIcon.dataset.icon);
     document.getElementById('shift-label').textContent = day ? 'Day shift' : 'Night shift';
     document.getElementById('shift-location').textContent = day ? 'ATLANTA / DAYLIGHT' : (preferences.sirens ? 'ATLANTA / RAIN & SIRENS' : 'ATLANTA / CITY RAIN');
     const label = (playing ? 'Pause ' : 'Play ') + (day ? 'morning birdsong' : (preferences.sirens ? 'city rain and distant sirens' : 'city rain'));
