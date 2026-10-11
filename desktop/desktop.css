@@ -59,3 +59,58 @@
 .ambient-widget{width:205px}
 }
 @media(max-width:360px){.dock button{width:37px;padding:7px}.dock button>[data-icon]{width:23px;height:26px}}
+
+/* Roomier windows and readable content. */
+.titlebar{height:42px;min-height:42px;padding:0 15px}
+.window-controls{gap:8px}
+.window-controls button{width:14px;height:14px}
+.window-title{font-size:12px}
+.window-id,.window-status{font-size:10px}
+.window-status{height:28px;min-height:28px}
+.about-body,.detail-content{padding:28px}
+.about-heading h1{font-size:26px}
+.about-heading p,.eyebrow,.focus-grid,.action,.outline-action{font-size:12px}
+.body-text{font-size:15px;line-height:1.8}
+.terminal-content{padding:26px;font-size:14px;line-height:1.85}
+.terminal-logo{font-size:15px}
+.terminal-facts{font-size:13px;grid-template-columns:100px 1fr;gap:5px 18px}
+.terminal-form input{font-size:14px}
+.terminal-help{font-size:11px}
+.window-toolbar,.resume-toolbar{font-size:12px}
+.folder{min-height:155px}
+.folder strong{font-size:13px}
+.folder small,.evidence-caption{font-size:11px}
+.folder-bottom{font-size:12px}
+.detail-content h2{font-size:28px}
+.detail-content h3,.skills-group h3,.pill{font-size:12px}
+.detail-list{font-size:14px}
+.credential h3{font-size:17px}
+.credential p{font-size:12px}
+.credential small{font-size:11px}
+.contact-address{font-size:17px}
+.contact-card{font-size:13px}
+.settings-row strong{font-size:15px}
+.settings-row small{font-size:12px}
+.guide-widget{width:360px}
+.guide-widget header{font-size:13px}
+.guide-messages{height:240px}
+.guide-messages p{font-size:13px}
+.guide-options button,#guide-input{font-size:12px}
+.guide-note{font-size:10px}
+@media(max-width:700px){
+.about-body,.detail-content{padding:20px}
+.about-heading{gap:12px}
+.about-heading h1{font-size:23px}
+.about-heading p{font-size:10px}
+.body-text{font-size:14px}
+.terminal-content{padding:20px;font-size:13px}
+.terminal-facts{font-size:12px;grid-template-columns:85px 1fr;gap:5px 10px}
+.terminal-form{gap:6px}
+.terminal-form input{font-size:13px}
+.focus-grid{font-size:11px}
+.contact-address{font-size:14px}
+.window-title{font-size:11px}
+.window-status{font-size:8px}
+.guide-widget{width:auto}
+.resume-toolbar{font-size:10px;padding:12px;gap:8px;flex-wrap:wrap}
+}
