@@ -508,6 +508,8 @@
   let volume;
   let nightGain;
   let dayGain;
+  let dayRecording;
+  let dayPauseTimer;
   let playing = false;
   const soundButton = document.getElementById('sound-toggle');
   const soundVolume = document.getElementById('sound-volume');
@@ -598,29 +600,21 @@
         volume = audio.createGain();volume.gain.value=0;
         nightGain = audio.createGain(); dayGain = audio.createGain();
         audioSource.connect(filter); filter.connect(nightGain); nightGain.connect(volume);
-        const dayBuffer = audio.createBuffer(1, audio.sampleRate * 12, audio.sampleRate);
-        const dayData = dayBuffer.getChannelData(0);
-        let breeze = 0;
-        const chirps = [1.1, 1.4, 3.8, 4.15, 7.4, 7.8, 10.1];
-        for (let i = 0; i < dayData.length; i++) {
-          const t = i / audio.sampleRate;
-          breeze = (breeze + Math.random() * 2 - 1) / 1.035;
-          let sample = breeze * .025;
-          chirps.forEach((start, n) => {
-            const u = t - start;
-            if (u >= 0 && u < .22) {
-              const envelope = Math.sin(Math.PI * u / .22) ** 2;
-              sample += .045 * envelope * Math.sin(2 * Math.PI * ((1700 + n * 75) * u + 1600 * u * u));
-            }
-          });
-          dayData[i] = sample;
-        }
-        const daySource = audio.createBufferSource(); daySource.buffer = dayBuffer; daySource.loop = true;
+        // Real morning birds recorded by Joseph Sardin; released under CC0.
+        // https://commons.wikimedia.org/wiki/File:R%C3%A9veil_des_oiseaux.ogg
+        dayRecording = new window.Audio('https://upload.wikimedia.org/wikipedia/commons/3/33/R%C3%A9veil_des_oiseaux.ogg');
+        dayRecording.crossOrigin = 'anonymous';
+        dayRecording.preload = 'none';
+        dayRecording.loop = true;
+        const daySource = audio.createMediaElementSource(dayRecording);
         daySource.connect(dayGain); dayGain.connect(volume);
-        volume.connect(audio.destination); audioSource.start(); daySource.start();
+        volume.connect(audio.destination); audioSource.start();
         syncAmbient();
       }
       await audio.resume();
+      if (!playing && theme === 'light') {
+        await dayRecording.play();
+      }
       playing = !playing;
       volume.gain.setTargetAtTime(playing ? Number(soundVolume.value)/100 : 0, audio.currentTime, .25);
       soundButton.setAttribute('aria-pressed', String(playing));
@@ -633,12 +627,27 @@
     const day = theme === 'light';
     document.getElementById('shift-label').textContent = day ? 'Day shift' : 'Night shift';
     document.getElementById('shift-location').textContent = day ? 'ATLANTA / DAYLIGHT' : (preferences.sirens ? 'ATLANTA / RAIN & SIRENS' : 'ATLANTA / CITY RAIN');
-    const label = (playing ? 'Pause ' : 'Play ') + (day ? 'daytime birds and breeze' : (preferences.sirens ? 'city rain and distant sirens' : 'city rain'));
+    const label = (playing ? 'Pause ' : 'Play ') + (day ? 'morning birdsong' : (preferences.sirens ? 'city rain and distant sirens' : 'city rain'));
     soundButton.setAttribute('aria-label', label); soundButton.title = label;
     soundVolume.setAttribute('aria-label', day ? 'Day shift volume' : 'Ambient rain volume');
     if (audio && nightGain && dayGain) {
       nightGain.gain.setTargetAtTime(day ? 0 : 1, audio.currentTime, .25);
       dayGain.gain.setTargetAtTime(day ? 1 : 0, audio.currentTime, .25);
+    }
+    if (dayRecording) {
+      clearTimeout(dayPauseTimer);
+      if (playing && day) {
+        dayRecording.play().catch(() => {
+          notify('Birdsong could not load. Check your connection and try Play again.');
+          playing = false;
+          volume.gain.setTargetAtTime(0, audio.currentTime, .1);
+          soundButton.setAttribute('aria-pressed', 'false');
+          document.body.classList.remove('sound-playing');
+          syncAmbient();
+        });
+      } else {
+        dayPauseTimer = setTimeout(() => dayRecording.pause(), 500);
+      }
     }
     scheduleSirens();
     document.querySelectorAll('[data-theme-toggle]').forEach(button => {
