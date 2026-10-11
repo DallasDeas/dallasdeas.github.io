@@ -266,6 +266,11 @@
     el.style.left = Math.round(12 + Math.max(0, desktop.clientWidth - app.width - 24) * app.x) + 'px';
     el.style.top = Math.round(desktop.clientHeight * app.y) + 'px';
     el.innerHTML = `<header class="titlebar"><div class="window-controls"><button class="control-close" aria-label="Close ${app.title}" title="Close">×</button><button class="control-minimize" aria-label="Minimize ${app.title}" title="Minimize">−</button><button class="control-maximize" aria-label="Maximize ${app.title}" title="Maximize">+</button></div><span class="window-title" id="title-${id}"><span class="title-icon">${svg(app.icon)}</span>${app.title}</span><span class="window-id">D / ${String(Object.keys(apps).indexOf(id) + 1).padStart(2,'0')}</span></header><div class="window-content">${app.content()}</div><footer class="window-status"><span>${app.status}</span><span>Dallas Deas</span></footer>`;
+    // Reuse the name's hover effect for every heading in newly opened windows.
+    el.querySelectorAll('.window-content h1, .window-content h2, .window-content h3, .window-content .eyebrow').forEach(heading => {
+      heading.classList.add('glitch');
+      heading.dataset.text = heading.textContent.trim();
+    });
     layer.append(el);
     const state = { id, el, commands: [], historyIndex: 0, previousGeometry: null, trigger: document.activeElement };
     windows.set(id, state);
