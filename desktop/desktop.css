@@ -178,3 +178,7 @@ input,textarea{user-select:text}
 @media(max-width:600px){.desktop-theme-toggle{font-size:9px!important;padding:7px 6px!important}.system-controls{gap:8px}}
 
 @media(max-width:600px){.system-controls .clock{display:none}}
+
+[data-theme="light"] :is(.focus-grid,.outline-action,.terminal-command,.terminal-welcome,.terminal-help){color:var(--muted)}
+[data-theme="light"] :is(.action,.profile-contact,.guide-messages .guide-question){color:var(--accent-bright)}
+[data-theme="light"] .dock-tooltip{background:#fffaf2;color:var(--text);border-color:var(--border)}
