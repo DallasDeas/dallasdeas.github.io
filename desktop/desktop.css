@@ -14,45 +14,45 @@
 @media(max-width:700px){.classic-view-button{font-size:9px;padding:7px 9px}.system-controls{gap:10px}}
 
 /* Larger shortcuts and clear dock labels. */
-.desktop-icons{grid-template-columns:repeat(2,92px)}
-.desktop-icons button,.desktop-icons a{font-size:11px;min-height:88px;gap:10px}
-.app-icon{width:40px;height:40px}
-.dock button{width:48px;height:48px;padding:10px;flex-shrink:0}
-.dock button>[data-icon]{display:block;width:28px;height:28px}
+.desktop-icons{grid-template-columns:repeat(2,106px)}
+.desktop-icons button,.desktop-icons a{font-size:12px;min-height:100px;gap:11px}
+.app-icon{width:48px;height:48px}
+.dock button{width:56px;height:56px;padding:11px;flex-shrink:0}
+.dock button>[data-icon]{display:block;width:34px;height:34px}
 .dock-tooltip{position:absolute;bottom:calc(100% + 14px);left:50%;transform:translateX(-50%);padding:8px 12px;border:1px solid #f15a7050;border-radius:5px;background:#171a25;color:#f1f3fa;font:500 12px var(--mono);white-space:nowrap;box-shadow:0 5px 18px #0007;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s}
 .dock-tooltip:after{content:'';position:absolute;top:100%;left:calc(50% - 5px);border:5px solid transparent;border-top-color:#171a25}
 .dock button:hover .dock-tooltip,.dock button:focus-visible .dock-tooltip{opacity:1;visibility:visible}
-.profile-widget{width:260px}
-.profile-avatar{width:80px;height:80px}
-.profile-widget h2{font-size:21px}
+.profile-widget{width:300px}
+.profile-avatar{width:96px;height:96px}
+.profile-widget h2{font-size:24px}
 .widget-topline{font-size:9px}
-.profile-role,.profile-location,.profile-links{font-size:10px}
-.profile-tags span{font-size:9px}
+.profile-role,.profile-location,.profile-links{font-size:11px}
+.profile-tags span{font-size:10px}
 .profile-contact{font-size:11px;padding:11px 12px}
 .profile-location span{width:14px;height:14px}
-.about-heading img{width:76px;height:76px;flex-shrink:0}
-.folder-icon{width:46px;height:46px}
-.credential-icon{width:38px;height:38px}
+.about-heading img{width:90px;height:90px;flex-shrink:0}
+.folder-icon{width:54px;height:54px}
+.credential-icon{width:44px;height:44px}
 .window-title .title-icon{width:16px;height:16px;vertical-align:-3px}
 .system-controls button{width:22px;height:22px}
 .ambient-title button{width:30px;height:30px;padding:7px}
 .ambient-widget{width:220px}
 .ambient-title{font-size:12px}
 .ambient-bottom,.volume-label{font-size:9px}
-@media(min-width:1800px){.profile-widget{width:280px}}
+@media(min-width:1800px){.profile-widget{width:320px}}
 @media(min-width:701px) and (max-width:1100px){
-.desktop-icons{grid-template-columns:repeat(2,84px);gap:8px 4px}
-.desktop-icons button,.desktop-icons a{min-height:80px;font-size:10px}
-.app-icon{width:34px;height:34px}
-.profile-widget{width:240px}
+.desktop-icons{grid-template-columns:repeat(2,94px);gap:8px 4px}
+.desktop-icons button,.desktop-icons a{min-height:90px;font-size:11px}
+.app-icon{width:40px;height:40px}
+.profile-widget{width:270px}
 }
 @media(max-width:700px){
 .desktop-icons{grid-template-columns:repeat(5,1fr)}
-.desktop-icons button,.desktop-icons a{font-size:9px;min-height:76px;gap:7px}
-.app-icon{width:34px;height:34px}
+.desktop-icons button,.desktop-icons a{font-size:10px;min-height:82px;gap:8px}
+.app-icon{width:38px;height:38px}
 .dock{padding:6px;gap:2px}
-.dock button{width:42px;height:44px;padding:9px}
-.dock button>[data-icon]{width:24px;height:24px}
+.dock button{width:44px;height:48px;padding:8px}
+.dock button>[data-icon]{width:28px;height:28px}
 .dock-tooltip{font-size:11px;padding:8px 9px}
 .dock button:first-child .dock-tooltip{left:0;transform:none}
 .dock button:last-child .dock-tooltip{left:auto;right:0;transform:none}
