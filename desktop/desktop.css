@@ -182,3 +182,165 @@ input,textarea{user-select:text}
 [data-theme="light"] :is(.focus-grid,.outline-action,.terminal-command,.terminal-welcome,.terminal-help){color:var(--muted)}
 [data-theme="light"] :is(.action,.profile-contact,.guide-messages .guide-question){color:var(--accent-bright)}
 [data-theme="light"] .dock-tooltip{background:#fffaf2;color:var(--text);border-color:var(--border)}
+
+/* Match the classic view's daybreak / nightfall transition. */
+.theme-morph{
+  --origin-x:50vw;
+  --origin-y:45px;
+  --fx-wash:#f7f0e6;
+  --fx-glow:rgba(238,164,147,.45);
+  --fx-accent:#ffc8ae;
+  --fx-dots:rgba(191,82,82,.6);
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  pointer-events:none;
+  overflow:hidden;
+  isolation:isolate;
+  contain:layout paint;
+}
+.theme-morph--dark{
+  --fx-wash:#101019;
+  --fx-glow:rgba(183,83,83,.65);
+  --fx-accent:#ffb5a7;
+  --fx-dots:rgba(250,170,154,.66);
+}
+.theme-morph__veil{
+  position:absolute;
+  inset:0;
+  background:var(--fx-wash);
+  clip-path:circle(0 at var(--origin-x) var(--origin-y));
+  animation:theme-portal-unfold 1050ms cubic-bezier(.16,.79,.23,1) both;
+  will-change:clip-path,opacity;
+}
+.theme-morph__texture{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  background-image:radial-gradient(circle,var(--fx-dots) 1.1px,transparent 1.7px);
+  background-size:18px 18px;
+  mask-image:radial-gradient(circle 310px at var(--origin-x) var(--origin-y),#000 15%,transparent 95%);
+  animation:theme-portal-texture 940ms ease-out both;
+}
+.theme-morph__ring,
+.theme-morph__orb,
+.theme-morph__word,
+.theme-morph__spark{
+  position:absolute;
+  left:var(--origin-x);
+  top:var(--origin-y);
+  pointer-events:none;
+}
+.theme-morph__ring{
+  width:112px;
+  height:112px;
+  border:2px solid var(--fx-accent);
+  border-radius:50%;
+  box-shadow:0 0 20px var(--fx-glow),inset 0 0 23px var(--fx-glow);
+  transform:translate(-50%,-50%) scale(.2);
+  opacity:0;
+  animation:theme-portal-ring 830ms ease-out both;
+}
+.theme-morph__ring--two{
+  border-color:var(--fx-dots);
+  animation-delay:120ms;
+}
+.theme-morph__orb{
+  display:block;
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  transform:translate(-50%,-50%) scale(.18) rotate(-30deg);
+  background:radial-gradient(circle at 33% 27%,#ffe2ce,#f2a78d 62%,#d17b6d);
+  box-shadow:0 0 36px rgba(251,173,138,.52);
+  animation:theme-portal-orb 900ms cubic-bezier(.17,.72,.22,1) both;
+}
+.theme-morph--dark .theme-morph__orb{
+  background:radial-gradient(circle at 30% 30%,#ffe7d6,#f0a79c 62%,#ac5661);
+  box-shadow:0 0 40px rgba(209,83,79,.55);
+}
+.theme-morph--dark .theme-morph__orb::before{
+  content:"";
+  position:absolute;
+  width:66px;
+  height:66px;
+  border-radius:50%;
+  right:-10px;
+  top:-13px;
+  background:#101019;
+}
+.theme-morph--light .theme-morph__orb::before{
+  content:"";
+  position:absolute;
+  inset:-24px;
+  border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,rgba(252,196,162,.88) 0deg 4deg,transparent 5deg 45deg);
+  mask-image:radial-gradient(circle,transparent 0 49%,#000 53% 62%,transparent 66%);
+}
+.theme-morph__word{
+  font:800 11px/1 system-ui,-apple-system,"Segoe UI",sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.25em;
+  color:#9f3f47;
+  white-space:nowrap;
+  opacity:0;
+  transform:translate(-50%,44px) scale(.85);
+  animation:theme-portal-label 940ms ease-out both;
+}
+.theme-morph--dark .theme-morph__word{color:#f9d0bd}
+.theme-morph__spark{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--fx-accent);
+  box-shadow:0 0 11px var(--fx-glow);
+  opacity:0;
+  transform:rotate(var(--ray)) translateX(8px) scale(.2);
+  animation:theme-portal-spark 850ms cubic-bezier(.2,.74,.26,1) both;
+  animation-delay:var(--delay);
+}
+[data-theme-toggle].is-morphing{border-color:var(--blue)}
+[data-theme-toggle].is-morphing svg{animation:theme-toggle-twist 600ms cubic-bezier(.15,.75,.25,1)}
+@keyframes theme-portal-unfold{
+  0%{clip-path:circle(0 at var(--origin-x) var(--origin-y));opacity:.96}
+  46%{clip-path:circle(160vmax at var(--origin-x) var(--origin-y));opacity:.99}
+  56%{clip-path:circle(160vmax at var(--origin-x) var(--origin-y));opacity:.98}
+  100%{clip-path:circle(160vmax at var(--origin-x) var(--origin-y));opacity:0}
+}
+@keyframes theme-portal-texture{
+  0%,13%{opacity:0;transform:scale(.94)}
+  29%{opacity:.44}
+  65%{opacity:.22}
+  100%{opacity:0;transform:scale(1.1)}
+}
+@keyframes theme-portal-ring{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.24)}
+  15%{opacity:.88}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(10)}
+}
+@keyframes theme-portal-orb{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.18) rotate(-45deg)}
+  28%{opacity:1;transform:translate(-50%,-50%) scale(1.05) rotate(0deg)}
+  58%{opacity:.92;transform:translate(-50%,-50%) scale(1.2) rotate(8deg)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.5) rotate(20deg)}
+}
+@keyframes theme-portal-label{
+  0%,15%{opacity:0;transform:translate(-50%,44px) scale(.85)}
+  35%,60%{opacity:1;transform:translate(-50%,69px) scale(1)}
+  100%{opacity:0;transform:translate(-50%,85px) scale(1.05)}
+}
+@keyframes theme-portal-spark{
+  0%,12%{opacity:0;transform:rotate(var(--ray)) translateX(6px) scale(.2)}
+  30%{opacity:1}
+  100%{opacity:0;transform:rotate(var(--ray)) translateX(var(--distance)) scale(.2)}
+}
+@keyframes theme-toggle-twist{
+  0%{transform:rotate(0) scale(1)}
+  48%{transform:rotate(165deg) scale(.68)}
+  100%{transform:rotate(360deg) scale(1)}
+}
+/* Theme changes instantly for motion-sensitive visitors. */
+@media(prefers-reduced-motion:reduce){
+  .theme-morph{display:none!important}
+  [data-theme-toggle].is-morphing svg{animation:none!important}
+}
