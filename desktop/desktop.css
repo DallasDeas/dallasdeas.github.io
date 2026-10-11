@@ -153,3 +153,26 @@ input,textarea{user-select:text}
 .contact-form-actions button:disabled{opacity:.65}
 .contact-direct{border-top:1px solid var(--border);padding-top:22px;margin-top:26px}
 @media(max-width:700px){.contact-form-row{grid-template-columns:1fr;gap:18px}.desktop-contact-form input,.desktop-contact-form textarea{font-size:16px}.contact-form-actions{align-items:flex-start;flex-direction:column}}
+
+/* Day shift: same desktop, warm readable panels and a separate daytime photograph. */
+.desktop-theme-toggle{width:auto!important;height:auto!important;padding:8px 12px!important;border:1px solid var(--border);border-radius:6px;font:10px var(--mono);color:var(--text)!important;white-space:nowrap}
+:root[data-theme="light"]{color-scheme:light;--accent:#b72e49;--accent-bright:#a9243e;--ink:#f7f0e6;--panel:rgba(255,251,245,.97);--text:#302831;--muted:#665e6b;--border:rgba(69,47,57,.2)}
+[data-theme="light"] body{background:#bdd7e8}
+[data-theme="light"] .wallpaper{background:linear-gradient(90deg,rgba(255,245,226,.08),transparent),var(--day-wallpaper) center/cover}
+[data-theme="light"] .wallpaper:after{background:linear-gradient(0deg,rgba(39,52,64,.15),transparent 40%)}
+[data-theme="light"] .system-bar{background:rgba(255,250,241,.95)}
+[data-theme="light"] :is(.titlebar,.guide-widget header){background:#eee5dc}
+[data-theme="light"] :is(.profile-widget,.ambient-widget,.guide-widget,.dock){background:rgba(255,250,242,.96);border-color:var(--border)}
+[data-theme="light"] :is(.window-title,.system-title,.clock,.window-status,.workspace-label,.window-id,.body-text,.detail-list,.contact-card span,.contact-card a,.profile-location,.profile-links a,.terminal-content,.terminal-profile dd,.terminal-output,.terminal-hint,.guide-messages p,.guide-note,.folder,.folder-bottom,.credential p,.credential small,.experience-row p,.settings-row small,.pill,.ambient-bottom,.volume-label,.widget-topline,.profile-tags span,.contact-form-actions small){color:var(--muted)}
+[data-theme="light"] :is(.body-text strong,.folder-bottom b,.profile-widget h2,.detail-content h2,.about-heading h1,.settings-row strong,.terminal-form input,#guide-input){color:var(--text)}
+[data-theme="light"] .about-banner{background:linear-gradient(0deg,#fffaf2,transparent),var(--day-wallpaper) center 66%/cover}
+[data-theme="light"] .about-heading img{border-color:#fffaf2}
+[data-theme="light"] :is(.dock button,.system-controls button,.terminal-icon){color:#5c5263}
+[data-theme="light"] .desktop-icons :is(button,a){color:#282336;text-shadow:0 1px 5px #fff,0 0 12px #fff}
+[data-theme="light"] .desktop-icons :is(button:hover,a:hover,button.is-open){background:#fff9e9b8}
+[data-theme="light"] :is(.desktop-contact-form input,.desktop-contact-form textarea){background:#fffdf8;color:var(--text);border-color:var(--border)}
+[data-theme="light"] :is(.profile-tags span,.pill){background:#fff8ed}
+[data-theme="light"] .desktop-footer{color:#fff;text-shadow:0 1px 4px #000}
+[data-theme="light"] .desktop-watermark{color:#ffffff50}
+[data-theme="light"] .window.is-focused{border-color:#9d7e81}
+@media(max-width:600px){.desktop-theme-toggle{font-size:9px!important;padding:7px 6px!important}.system-controls{gap:8px}}
