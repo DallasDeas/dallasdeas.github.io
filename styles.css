@@ -567,15 +567,15 @@ a.edition-project-row:hover .edition-row-marker{background:var(--blue);color:whi
 @media(prefers-reduced-motion:reduce){.edition-stickers>span:hover{transform:none}}
 
 
-/* Dallas Deas homepage name glitch — decoration only; short, one-shot animation */
-.edition-title .name-glitch{
+/* Site-wide heading glitch — same blue/teal animation used on Dallas Deas masthead */
+.glitch-heading .name-glitch{
   display:inline-block;
   position:relative;
   isolation:isolate;
   white-space:nowrap;
 }
-.edition-title .name-glitch::before,
-.edition-title .name-glitch::after{
+.glitch-heading .name-glitch::before,
+.glitch-heading .name-glitch::after{
   content:attr(data-text);
   position:absolute;
   inset:0;
@@ -588,22 +588,22 @@ a.edition-project-row:hover .edition-row-marker{background:var(--blue);color:whi
   user-select:none;
   mix-blend-mode:normal;
 }
-.edition-title .name-glitch::before{
+.glitch-heading .name-glitch::before{
   color:var(--teal);
   text-shadow:-2px 0 var(--bg);
 }
-.edition-title .name-glitch::after{
+.glitch-heading .name-glitch::after{
   color:var(--blue);
   text-shadow:2px 0 var(--bg);
 }
 @media(hover:hover) and (pointer:fine){
-  .edition-title:hover .name-glitch{
+  .glitch-heading:hover .name-glitch{
     animation:name-glitch-base .72s steps(1,end) both;
   }
-  .edition-title:hover .name-glitch::before{
+  .glitch-heading:hover .name-glitch::before{
     animation:name-glitch-upper .78s steps(1,end) both;
   }
-  .edition-title:hover .name-glitch::after{
+  .glitch-heading:hover .name-glitch::after{
     animation:name-glitch-lower .78s steps(1,end) both;
   }
 }
@@ -629,9 +629,9 @@ a.edition-project-row:hover .edition-row-marker{background:var(--blue);color:whi
   69%,73%{opacity:.9;transform:translate(-3px,-1px);clip-path:inset(7% 0 75% 0)}
 }
 @media(prefers-reduced-motion:reduce){
- .edition-title .name-glitch,
- .edition-title .name-glitch::before,
- .edition-title .name-glitch::after{animation:none!important;transform:none!important}
- .edition-title .name-glitch::before,
- .edition-title .name-glitch::after{content:none!important}
+ .glitch-heading .name-glitch,
+ .glitch-heading .name-glitch::before,
+ .glitch-heading .name-glitch::after{animation:none!important;transform:none!important}
+ .glitch-heading .name-glitch::before,
+ .glitch-heading .name-glitch::after{content:none!important}
 }
