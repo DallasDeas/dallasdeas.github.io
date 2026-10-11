@@ -7,8 +7,10 @@
   <meta name="description" content="Explore Dallas Deas's IT support, networking, systems and cloud portfolio through an interactive desktop.">
   <title>Dallas Deas — Workspace</title>
   <link rel="icon" href="/desktop/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/desktop/desktop.css?v=heading-glitch-20261011">
-  <script src="/desktop/desktop.js?v=heading-glitch-20261011" defer></script>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('dallas-portfolio-theme')==='light'?'light':'dark';}catch(e){document.documentElement.dataset.theme='dark';}</script>
+  <link rel="stylesheet" href="/desktop/day-wallpaper.css?v=day-night-20261011">
+  <link rel="stylesheet" href="/desktop/desktop.css?v=day-night-20261011">
+  <script src="/desktop/desktop.js?v=day-night-20261011" defer></script>
 <script src="/view-transition.js?v=portfolio-label-20261011" defer></script></head>
 <body>
   <a class="skip-link" href="#desktop-icons">Skip to portfolio shortcuts</a>
@@ -17,7 +19,7 @@
   <header class="system-bar">
     <button class="brand" data-app="about" aria-label="Open About Dallas"><span class="brand-mark">D<span>›</span></span><b>Dallas Deas</b><span class="bar-divider">/</span><span class="workspace-label">Workspace</span></button>
     <span class="system-title"><span class="status-dot"></span> PERSONAL IT PORTFOLIO</span>
-    <div class="system-controls"><a class="classic-view-button" href="/classic/">Classic view <span aria-hidden="true">↗</span></a><button data-app="settings" aria-label="Open appearance settings" title="Appearance"><span data-icon="settings"></span></button><span class="clock" id="clock"></span></div>
+    <div class="system-controls"><button class="desktop-theme-toggle" data-theme-toggle aria-label="Switch to light mode">Switch to light mode</button><a class="classic-view-button" href="/classic/">Classic view <span aria-hidden="true">↗</span></a><button data-app="settings" aria-label="Open appearance settings" title="Appearance"><span data-icon="settings"></span></button><span class="clock" id="clock"></span></div>
   </header>
   <main id="workspace" aria-label="Dallas Deas portfolio desktop">
     <nav class="desktop-icons" id="desktop-icons" tabindex="-1" aria-label="Portfolio shortcuts">
@@ -44,8 +46,8 @@
       <button class="profile-contact" data-app="contact">Let's connect <span>→</span></button>
     </aside>
     <section class="ambient-widget" aria-label="Ambient sound and motion controls">
-      <div class="ambient-title"><span class="status-dot"></span><span>Night shift</span><button id="sound-toggle" aria-label="Play ambient rain" aria-pressed="false" title="Play ambient rain"><span data-icon="volume"></span></button></div>
-      <div class="ambient-bottom"><span>ATLANTA / AFTER HOURS</span><div class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="ambient-title"><span class="status-dot"></span><span id="shift-label">Night shift</span><button id="sound-toggle" aria-label="Play ambient rain" aria-pressed="false" title="Play ambient rain"><span data-icon="volume"></span></button></div>
+      <div class="ambient-bottom"><span id="shift-location">ATLANTA / AFTER HOURS</span><div class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>
       <label class="volume-label">Volume<input id="sound-volume" type="range" min="0" max="100" value="30" aria-label="Ambient rain volume"></label>
     </section>
     <aside class="guide-widget" id="guide-widget" hidden aria-label="Portfolio guide">
