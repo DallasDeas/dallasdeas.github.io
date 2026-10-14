@@ -306,3 +306,10 @@ document.querySelectorAll('.network-proof img').forEach(image => {
   script.src = '/portfolio-guide.js?v=free-guide-20261014-v3';
   document.body.appendChild(script);
 })();
+
+// Open screenshot evidence within the current page.
+(() => {
+  const viewer = document.createElement('script');
+  viewer.src = '/screenshot-viewer.js?v=20261014';
+  document.body.appendChild(viewer);
+})();
