@@ -759,8 +759,8 @@ a.edition-project-row:hover .edition-row-marker{background:var(--blue);color:whi
   :root[data-theme="dark"] .nav{background:#211719}
 }
 
-/* Keep classic navigation readable with the desktop switch. */
-@media(min-width:621px) and (max-width:900px){
+/* Keep classic navigation readable with the desktop and GitHub profile switches. */
+@media(min-width:621px) and (max-width:1100px){
 .header-inner .menu-toggle{display:block;color:var(--text)}
 .header-inner .theme-toggle{margin-left:auto}
 .header-inner .nav{display:none;position:absolute;top:70px;left:0;right:0;margin-left:0;align-items:stretch;flex-direction:column;gap:0;padding:10px 24px 18px;border-bottom:1px solid var(--border)}
