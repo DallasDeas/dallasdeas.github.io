@@ -353,3 +353,23 @@ input,textarea{user-select:text}
 @media(max-width:700px){.github-profile-button{font-size:9px;padding:7px 6px;gap:4px}.github-profile-icon,.github-profile-suffix{display:none}.system-controls{gap:7px}}
 
 @media(max-width:380px){.system-bar .brand b{display:none}}
+
+/* Clear running-app outlines and restrained window transitions. */
+.desktop-icons button.is-open {
+  border: 2px solid var(--accent-bright);
+  background: rgba(241,90,112,.16);
+  box-shadow: 0 0 0 1px rgba(241,90,112,.22), 0 3px 16px rgba(241,90,112,.18);
+}
+.desktop-icons button.is-open .app-icon svg {stroke-width:2.2}
+[data-theme="light"] .desktop-icons button.is-open {background:#fff3e7; border-color:#b52945; box-shadow:0 0 0 1px #b5294530,0 3px 14px #b5294520}
+.dock button.is-open {outline:2px solid var(--accent-bright);outline-offset:-3px;background:#f15a7020;border-radius:9px}
+.window {animation:window-open .26s cubic-bezier(.2,.7,.2,1)}
+.window.is-closing {animation:window-close .18s ease-in forwards;pointer-events:none}
+@keyframes window-close {from{opacity:1;translate:0 0;scale:1}to{opacity:0;translate:0 7px;scale:.98}}
+@media(hover:hover) and (pointer:fine) {
+  body,#workspace,#workspace.is-selecting,#workspace.is-selecting * {cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M5%203v23l6-6%205%2010%205-3-5-9%209-1Z%22%20fill%3D%22%23f15a70%22%20stroke%3D%22%23fff6ef%22%20stroke-width%3D%221.6%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M8%208v10%22%20stroke%3D%22%238b2036%22%20stroke-width%3D%221.5%22%2F%3E%3C%2Fsvg%3E") 5 3, auto!important}
+  a,button,button:disabled,.desktop-icons a,.desktop-icons button {cursor:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20d%3D%22M12%2016V5a3%203%200%200%201%206%200v8l3-1%203%202%203%201v8l-4%207H12L5%2020a3%203%200%200%201%204-4l3%203Z%22%20fill%3D%22%23f15a70%22%20stroke%3D%22%23fff6ef%22%20stroke-width%3D%221.6%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") 15 5, pointer!important}
+  input,textarea,[contenteditable="true"],.window-content p,.window-content li,.window-content dd {cursor:text!important}
+  .titlebar,.guide-widget header {cursor:grab!important}
+  .titlebar:active,.guide-widget header.is-dragging {cursor:grabbing!important}
+}
