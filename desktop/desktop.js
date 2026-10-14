@@ -820,26 +820,9 @@
   }
   guideToggle.addEventListener('click', () => setGuide(guide.hidden));
   document.getElementById('guide-close').addEventListener('click', () => setGuide(false));
-  function answerGuide(question) {
-    const log = document.getElementById('guide-messages');
-    const questionEl = document.createElement('p');questionEl.className='guide-question';questionEl.textContent=question;log.append(questionEl);
-    const text = question.toLowerCase();
-    let reply = 'Try asking about projects, skills, credentials, the résumé, or contact details. You can also explore using the desktop icons.';
-    let app;
-    if (/azure|cloud/.test(text)) { app='project-azure';reply='The Azure lab covers Entra ID, group-based RBAC and cost monitoring. I’ve opened the lab overview.'; }
-    else if (/active directory|domain|windows server/.test(text)) { app='project-directory';reply='The Active Directory lab covers a virtual Windows domain, users, Group Policy, file shares and remote access. I’ve opened it.'; }
-    else if (/network|cisco/.test(text)) { app='project-network';reply='The Cisco lab documents VLANs, OSPF, EtherChannel, DHCP, NAT and connectivity tests. I’ve opened the overview.'; }
-    else if (/project|lab/.test(text)) { app='projects';reply='Dallas has documented Active Directory, Cisco networking and Azure identity labs. Open a folder for an overview and the full documentation.'; }
-    else if (/skill|tool/.test(text)) { app='skills';reply='His toolbox includes Cisco IOS, Windows Server, Active Directory, Azure, Entra ID, Excel and Power Query. I’ve opened the full list.'; }
-    else if (/cert|credential/.test(text)) { app='certifications';reply='Dallas holds CCNA, CompTIA Security+ and Microsoft Azure Fundamentals. I’ve opened the credentials window.'; }
-    else if (/resume|résumé|cv/.test(text)) { app='resume';reply='I’ve opened the résumé. You can view or download the PDF from its toolbar.'; }
-    else if (/contact|email|hire|linkedin/.test(text)) { app='contact';reply='You can reach Dallas at dallasjdeas03@gmail.com or through LinkedIn. I’ve opened the contact details.'; }
-    else if (/about|background|experience|who/.test(text)) { app='about';reply='Dallas is based in Atlanta and focuses on IT support, networking and systems, with experience supporting business applications and Windows environments.'; }
-    const answer = document.createElement('p');answer.className='guide-response';answer.textContent=reply;log.append(answer);log.scrollTop=log.scrollHeight;
-    if (app) openApp(app,false);
-  }
-  document.querySelectorAll('[data-guide]').forEach(button => button.addEventListener('click', () => answerGuide(button.dataset.guide)));
-  document.getElementById('guide-form').addEventListener('submit', e => { e.preventDefault(); const input=document.getElementById('guide-input');const value=input.value.trim();if(value) answerGuide(value);input.value=''; });
+  window.addEventListener('portfolio-guide-open', event => {
+    if (typeof event.detail === 'string' && Object.hasOwn(apps, event.detail)) openApp(event.detail, false);
+  });
   openApp('terminal', false);
   openApp('about', false);
 })();
