@@ -351,3 +351,5 @@ input,textarea{user-select:text}
 .github-profile-icon{display:inline-flex;width:14px;height:14px;color:var(--accent)}
 @media(max-width:1250px){.system-title{display:none}}
 @media(max-width:700px){.github-profile-button{font-size:9px;padding:7px 6px;gap:4px}.github-profile-icon,.github-profile-suffix{display:none}.system-controls{gap:7px}}
+
+@media(max-width:380px){.system-bar .brand b{display:none}}
