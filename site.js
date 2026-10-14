@@ -299,3 +299,10 @@ document.querySelectorAll('.network-proof img').forEach(image => {
     if (!document.hidden) updateCurrentYear();
   });
 })();
+
+// Share the free portfolio search guide across all classic pages.
+(() => {
+  const script = document.createElement('script');
+  script.src = '/portfolio-guide.js?v=free-guide-20261014';
+  document.body.appendChild(script);
+})();
