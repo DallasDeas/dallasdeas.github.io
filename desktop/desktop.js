@@ -590,7 +590,7 @@
   const soundButton = document.getElementById('sound-toggle');
   const soundVolume = document.getElementById('sound-volume');
   const mobileAudio = document.getElementById('mobile-audio-toggle');
-  mobileAudio.addEventListener('click', () => soundButton.click());
+
   // Layer a wide rain wash, low city rumble, and irregular surface droplets.
   function createCityRain(context) {
     const buffer = context.createBuffer(2, context.sampleRate * 24, context.sampleRate);
@@ -666,7 +666,13 @@
       oscillator.start(start); oscillator.stop(start + duration + .05);
     }, (first ? 12 + Math.random() * 10 : 50 + Math.random() * 45) * 1000);
   }
-  soundButton.addEventListener('click', async () => {
+  let audioStarting = false;
+  async function toggleAmbientSound() {
+    if (audioStarting) return;
+    audioStarting = true;
+    let startTimer;
+    try { if ('audioSession' in navigator) navigator.audioSession.type = 'playback'; } catch (_) {}
+    soundButton.disabled = mobileAudio.disabled = true;
     try {
       if (!audio) {
         const Audio = window.AudioContext || window.webkitAudioContext;
@@ -680,9 +686,10 @@
         audioSource.connect(filter); filter.connect(nightGain); nightGain.connect(volume);
         // Real morning birds recorded by Joseph Sardin; released under CC0.
         // https://commons.wikimedia.org/wiki/File:R%C3%A9veil_des_oiseaux.ogg
-        dayRecording = new window.Audio('https://upload.wikimedia.org/wikipedia/commons/3/33/R%C3%A9veil_des_oiseaux.ogg');
+        dayRecording = new window.Audio('https://upload.wikimedia.org/wikipedia/commons/transcoded/3/33/R%C3%A9veil_des_oiseaux.ogg/R%C3%A9veil_des_oiseaux.ogg.mp3');
         dayRecording.crossOrigin = 'anonymous';
-        dayRecording.preload = 'none';
+        dayRecording.preload = 'auto';
+        dayRecording.setAttribute('playsinline', '');
         dayRecording.loop = true;
         dayRecording.id = 'day-birdsong-recording';
         dayRecording.hidden = true;
@@ -693,18 +700,37 @@
         volume.connect(audio.destination); audioSource.start();
         syncAmbient();
       }
-      await audio.resume();
-      if (!playing && theme === 'light') {
-        clearTimeout(dayPauseTimer);
-        await dayRecording.play();
-      }
+      // Safari must receive both playback requests synchronously from the tap.
+      clearTimeout(dayPauseTimer);
+      try { if ('audioSession' in navigator) navigator.audioSession.type = 'playback'; } catch (_) {}
+      const contextReady = audio.resume();
+      const recordingReady = !playing && theme === 'light' ? dayRecording.play() : Promise.resolve();
+      await Promise.race([
+        Promise.all([contextReady, recordingReady]),
+        new Promise((_, reject) => {startTimer = setTimeout(() => reject(new Error('Audio startup timed out')), 10000);}),
+      ]);
+      if (audio.state !== 'running') throw new Error('Audio context did not start');
       playing = !playing;
       volume.gain.setTargetAtTime(playing ? Number(soundVolume.value)/100 : 0, audio.currentTime, .25);
       soundButton.setAttribute('aria-pressed', String(playing));
       syncAmbient();
       document.body.classList.toggle('sound-playing', playing);
-    } catch (_) { notify('Ambient audio is unavailable in this browser.'); }
-  });
+    } catch (_) {
+      playing = false;
+      if (volume && audio) volume.gain.setTargetAtTime(0, audio.currentTime, .1);
+      if (dayRecording) dayRecording.pause();
+      soundButton.setAttribute('aria-pressed', 'false');
+      document.body.classList.remove('sound-playing');
+      syncAmbient();
+      notify('Audio did not start. Tap the speaker again and check your phone’s media volume.');
+    } finally {
+      clearTimeout(startTimer);
+      audioStarting = false;
+      soundButton.disabled = mobileAudio.disabled = false;
+    }
+  }
+  soundButton.addEventListener('click', toggleAmbientSound);
+  mobileAudio.addEventListener('click', toggleAmbientSound);
   soundVolume.addEventListener('input', () => { if (playing && volume) volume.gain.setTargetAtTime(Number(soundVolume.value)/100,audio.currentTime,.1); });
   function syncAmbient() {
     const day = theme === 'light';
@@ -767,6 +793,11 @@
     const button = event.target.closest('[data-theme-toggle]');
     if (!button || themeTransition) return;
     const next = theme === 'dark' ? 'light' : 'dark';
+    // Unlock the day recording while the theme button's tap is still active.
+    if (next === 'light' && playing && dayRecording) {
+      clearTimeout(dayPauseTimer);
+      dayRecording.play().catch(() => {});
+    }
     if (reducedMotion.matches || !CSS.supports('clip-path', 'circle(10px at 10px 10px)')) {
       setDesktopTheme(next); return;
     }
