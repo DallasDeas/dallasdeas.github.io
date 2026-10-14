@@ -178,7 +178,7 @@
         <div class="action-row"><button class="action" data-app="projects">Explore projects <span>↗</span></button><button class="outline-action" data-app="resume">View résumé <span>→</span></button></div>
       </div>` },
     terminal: { title: 'Terminal — dallas@portfolio', icon: 'terminal', width: 640, height: 540, x: .94, y: .22, status: 'LOCAL PORTFOLIO TERMINAL', content: () => `
-      <div class="terminal-content"><p class="terminal-welcome">Dallas Portfolio <b>[Version 2026.10]</b><br>Type <b>help</b> to explore. Welcome in.</p>
+      <div class="terminal-content"><p class="terminal-welcome">Dallas Portfolio <b data-terminal-version>[Version ${portfolioVersion()}]</b><br>Type <b>help</b> to explore. Welcome in.</p>
         <div class="terminal-logo" aria-hidden="true">D A L L A S / D E A S<br>─────────────────────</div>
         <dl class="terminal-facts"><dt>user</dt><dd>Dallas Deas</dd><dt>location</dt><dd>Atlanta, Georgia</dd><dt>focus</dt><dd>IT support, networking & systems</dd><dt>credentials</dt><dd>CCNA · Security+ · AZ-900</dd><dt>projects</dt><dd>Active Directory / Cisco / Azure</dd><dt>status</dt><dd>Open to IT opportunities</dd></dl>
         <div class="terminal-history" role="log" aria-live="polite"></div>
@@ -502,8 +502,24 @@
   }
   if (ctx) { sizeRain(); window.addEventListener('resize', sizeRain); document.addEventListener('visibilitychange', updateRain); }
   reducedMotion.addEventListener('change', () => { applyPreferences(); const button = document.querySelector('[data-preference="rain"]'); button?.setAttribute('aria-pressed', String(preferences.rain && !reducedMotion.matches)); });
-  function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { timeZone:'America/New_York', hour:'2-digit', minute:'2-digit' }) + ' ET'; }
+  function portfolioVersion(date = new Date()) {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/New_York', year: 'numeric', month: '2-digit',
+    }).formatToParts(date);
+    return parts.find(part => part.type === 'year').value + '.' +
+      parts.find(part => part.type === 'month').value;
+  }
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { timeZone:'America/New_York', hour:'2-digit', minute:'2-digit' }) + ' ET';
+    const version = '[Version ' + portfolioVersion(now) + ']';
+    document.querySelectorAll('[data-terminal-version]').forEach(label => {
+      if (label.textContent !== version) label.textContent = version;
+    });
+  }
   updateClock();setInterval(updateClock, 30000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) updateClock(); });
+  window.addEventListener('pageshow', updateClock);
   let audio;
   let audioSource;
   let volume;
