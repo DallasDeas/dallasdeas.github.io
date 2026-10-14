@@ -770,3 +770,24 @@ a.edition-project-row:hover .edition-row-marker{background:var(--blue);color:whi
 :root[data-theme="light"] .header-inner .nav{background:#f7f0e6}
 :root[data-theme="dark"] .header-inner .nav{background:#211719}
 }
+
+/* Project constellation: independent labs, connected infrastructure skills. */
+.project-constellation{overflow:hidden;min-height:440px}
+.constellation-svg{height:auto;aspect-ratio:390/400;width:95%;margin:32px auto 42px}
+.constellation-orbit{fill:none;stroke:currentColor;stroke-width:1;stroke-dasharray:3 8;opacity:.28}
+.constellation-connections{fill:var(--blue);stroke:var(--blue);stroke-width:2;stroke-linecap:round}
+.constellation-connections path{fill:none}
+.constellation-halo{fill:none;stroke:var(--blue);stroke-width:1;opacity:.28}
+.constellation-core{fill:var(--blue)}
+.constellation-core-text{fill:var(--bg);font:800 19px var(--mono);letter-spacing:1px}
+.constellation-core-text .constellation-small{font:600 7.5px var(--mono);letter-spacing:.5px}
+.constellation-node rect{fill:var(--surface);stroke:var(--blue);stroke-width:1.4;transition:fill .18s,stroke-width .18s}
+.constellation-node-title{fill:var(--text);font:750 12px var(--mono);letter-spacing:.3px}
+.constellation-node-detail{fill:var(--muted);font:12px system-ui,sans-serif}
+.constellation-node-meta{fill:var(--blue);font:9px var(--mono)}
+.constellation-glyph{fill:none;stroke:var(--blue);stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round}
+.constellation-svg a{cursor:pointer}
+.constellation-svg a:hover .constellation-node rect,.constellation-svg a:focus .constellation-node rect{fill:var(--bg-alt);stroke-width:2.6}
+.project-constellation .edition-art-caption{bottom:13px;line-height:1.6}
+.project-constellation .edition-art-caption span{font-size:.55rem;letter-spacing:.04em;opacity:.8}
+@media(max-width:600px){.project-constellation{min-height:0}.constellation-svg{margin-bottom:49px}}
