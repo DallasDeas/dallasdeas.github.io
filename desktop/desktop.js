@@ -252,7 +252,11 @@
     if (!apps[id]) return;
     if (windows.has(id)) {
       const state = windows.get(id);
+      const wasHidden = state.el.hidden;
       state.el.hidden = false;
+      if (wasHidden && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        state.el.animate([{opacity:0,translate:'0 8px',scale:'.985'}, {opacity:1,translate:'0 0',scale:'1'}], {duration:260,easing:'cubic-bezier(.2,.7,.2,1)'});
+      }
       focusWindow(state);
       updateDock();
       if (focus) focusApp(state);
@@ -383,7 +387,15 @@
   function closeApp(id) {
     const state = windows.get(id);
     if (!state) return;
-    state.el.remove();
+    state.el.inert = true;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || state.el.hidden) {
+      state.el.remove();
+    } else {
+      state.el.classList.add('is-closing');
+      state.el.addEventListener('animationend', () => state.el.remove(), {once:true});
+      // Also remove if animation events are interrupted by a theme or tab change.
+      window.setTimeout(() => state.el.remove(), 240);
+    }
     windows.delete(id);
     updateDock();
     if (lastFocused === state) lastFocused = undefined;
