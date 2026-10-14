@@ -281,3 +281,21 @@ document.querySelectorAll('.network-proof img').forEach(image => {
     });
   });
 })();
+
+// Keep present-day portfolio labels in sync with the year in Atlanta.
+(() => {
+  function updateCurrentYear(date = new Date()) {
+    const year = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/New_York', year: 'numeric',
+    }).format(date);
+    document.querySelectorAll('[data-current-year]').forEach(label => {
+      if (label.textContent !== year) label.textContent = year;
+    });
+  }
+  updateCurrentYear();
+  window.setInterval(updateCurrentYear, 30000);
+  window.addEventListener('pageshow', () => updateCurrentYear());
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) updateCurrentYear();
+  });
+})();
