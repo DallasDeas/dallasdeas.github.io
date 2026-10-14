@@ -169,7 +169,7 @@
   };
   const apps = {
     about: { title: 'About_Dallas.md', icon: 'user', width: 560, height: 700, x: .08, y: .08, status: 'PROFILE / ABOUT ME', content: () => `
-      <div class="about-banner"></div>
+      <div class="about-banner" data-location-year="ATLANTA, GA / ${portfolioVersion().split('.')[0]}"></div>
       <div class="about-heading"><img src="/desktop/assets/headshot.webp" alt="Dallas Deas" width="61" height="61"><div><h1 class="glitch" data-text="Dallas Deas">Dallas Deas</h1><p>IT support · Networking · Systems</p></div></div>
       <div class="about-body"><span class="eyebrow">THE PERSON BEHIND THE PORTFOLIO</span>
         <p class="body-text">I'm Dallas, an IT professional based in <strong>Atlanta, Georgia</strong>. I work across end-user support and business systems, and I'm building deeper skills in networking, systems administration and cloud infrastructure.</p>
@@ -512,7 +512,15 @@
   function updateClock() {
     const now = new Date();
     document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { timeZone:'America/New_York', hour:'2-digit', minute:'2-digit' }) + ' ET';
-    const version = '[Version ' + portfolioVersion(now) + ']';
+    const currentVersion = portfolioVersion(now);
+    const year = currentVersion.split('.')[0];
+    document.querySelectorAll('[data-current-year]').forEach(label => {
+      if (label.textContent !== year) label.textContent = year;
+    });
+    document.querySelectorAll('[data-location-year]').forEach(banner => {
+      banner.setAttribute('data-location-year', 'ATLANTA, GA / ' + year);
+    });
+    const version = '[Version ' + currentVersion + ']';
     document.querySelectorAll('[data-terminal-version]').forEach(label => {
       if (label.textContent !== version) label.textContent = version;
     });
