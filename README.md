@@ -1,2 +1,2 @@
 # dallasdeas.github.io
-Personal IT &amp; Cloud Portfolio
+[Visit my portfolio → https://dallasdeas.github.io](https://dallasdeas.github.io/)
