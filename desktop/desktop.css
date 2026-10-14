@@ -344,3 +344,10 @@ input,textarea{user-select:text}
   .theme-morph{display:none!important}
   [data-theme-toggle].is-morphing svg{animation:none!important}
 }
+
+/* Direct return to the GitHub profile and its README. */
+.github-profile-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:7px 12px;min-height:31px;border:1px solid var(--accent);border-radius:4px;background:rgba(241,90,112,.1);color:var(--text);font:600 10px var(--mono);white-space:nowrap;transition:background .2s,border-color .2s}
+.github-profile-button:hover{background:rgba(241,90,112,.2);border-color:var(--accent-bright)}
+.github-profile-icon{display:inline-flex;width:14px;height:14px;color:var(--accent)}
+@media(max-width:1250px){.system-title{display:none}}
+@media(max-width:700px){.github-profile-button{font-size:9px;padding:7px 6px;gap:4px}.github-profile-icon,.github-profile-suffix{display:none}.system-controls{gap:7px}}
