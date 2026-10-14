@@ -589,6 +589,8 @@
   let playing = false;
   const soundButton = document.getElementById('sound-toggle');
   const soundVolume = document.getElementById('sound-volume');
+  const mobileAudio = document.getElementById('mobile-audio-toggle');
+  mobileAudio.addEventListener('click', () => soundButton.click());
   // Layer a wide rain wash, low city rumble, and irregular surface droplets.
   function createCityRain(context) {
     const buffer = context.createBuffer(2, context.sampleRate * 24, context.sampleRate);
@@ -713,6 +715,10 @@
     document.getElementById('shift-location').textContent = day ? 'ATLANTA / DAYLIGHT' : (preferences.sirens ? 'ATLANTA / RAIN & SIRENS' : 'ATLANTA / CITY RAIN');
     const label = (playing ? 'Pause ' : 'Play ') + (day ? 'morning birdsong' : (preferences.sirens ? 'city rain and distant sirens' : 'city rain'));
     soundButton.setAttribute('aria-label', label); soundButton.title = label;
+    const mobileLabel = (playing ? 'Mute ' : 'Play ') + (day ? 'Day shift audio' : 'Night shift audio');
+    mobileAudio.setAttribute('aria-pressed', String(playing));
+    mobileAudio.setAttribute('aria-label', mobileLabel); mobileAudio.title = mobileLabel;
+    mobileAudio.querySelector('[data-icon]').innerHTML = svg(playing ? 'volume' : 'volumeOff');
     soundVolume.setAttribute('aria-label', day ? 'Day shift volume' : 'Ambient rain volume');
     if (audio && nightGain && dayGain) {
       nightGain.gain.setTargetAtTime(day ? 0 : 1, audio.currentTime, .25);
