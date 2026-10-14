@@ -63,77 +63,77 @@
  <section class="network-proof-group" id="azure-section-1">
 <div class="network-proof-heading"><h3>01 / Azure resource organization</h3><p>Subscription and resource-group structure in the Azure portal.</p></div>
 <figure class="network-proof">
-  <a class="network-image-link" href="/images/azure-resource-manager.webp" target="_blank" rel="noopener noreferrer" aria-label="View screenshot: Azure resource manager — lab resource group"><img src="/images/azure-resource-manager.webp" alt="Azure resource manager — lab resource group" loading="lazy" decoding="async"></a>
+  <a class="network-image-link" href="/images/azure-resource-manager.webp" rel="noopener noreferrer" aria-label="View screenshot: Azure resource manager — lab resource group"><img src="/images/azure-resource-manager.webp" alt="Azure resource manager — lab resource group" loading="lazy" decoding="async"></a>
   <figcaption>
     <h4>Azure resource manager — lab resource group</h4>
     <p>The Azure Resource Manager view identifies the dd-lab-core resource group in the lab subscription, located in East US. A resource group is the management scope used for the IAM assignments in this project.</p>
     <p class="network-proves"><strong>What it verifies:</strong> Confirms the resource-group context and subscription used for the identity and access-control exercises.</p>
-    <a class="section-link" href="/images/azure-resource-manager.webp" target="_blank" rel="noopener noreferrer">View full-size screenshot ↗</a>
+    <a class="section-link" href="/images/azure-resource-manager.webp" rel="noopener noreferrer">View full-size screenshot ↗</a>
   </figcaption>
 </figure>
 </section>
 <section class="network-proof-group" id="azure-section-2">
 <div class="network-proof-heading"><h3>02 / Entra ID users and security groups</h3><p>Creating identities and grouping users by intended administrative responsibility.</p></div>
 <figure class="network-proof">
-  <a class="network-image-link" href="/images/azure-users.webp" target="_blank" rel="noopener noreferrer" aria-label="View screenshot: Microsoft Entra ID — lab users"><img src="/images/azure-users.webp" alt="Microsoft Entra ID — lab users" loading="lazy" decoding="async"></a>
+  <a class="network-image-link" href="/images/azure-users.webp" rel="noopener noreferrer" aria-label="View screenshot: Microsoft Entra ID — lab users"><img src="/images/azure-users.webp" alt="Microsoft Entra ID — lab users" loading="lazy" decoding="async"></a>
   <figcaption>
     <h4>Microsoft Entra ID — lab users</h4>
     <p>The directory shows four accounts: an audit-readonly account, a lab administrator account, a VM operations account, and the primary account. The screenshot documents identity provisioning, not each user's effective Azure permissions.</p>
     <p class="network-proves"><strong>What it verifies:</strong> Supports the existence of the separate lab identities.</p>
-    <a class="section-link" href="/images/azure-users.webp" target="_blank" rel="noopener noreferrer">View full-size screenshot ↗</a>
+    <a class="section-link" href="/images/azure-users.webp" rel="noopener noreferrer">View full-size screenshot ↗</a>
   </figcaption>
 </figure>
 <figure class="network-proof">
-  <a class="network-image-link" href="/images/azure-security-groups.webp" target="_blank" rel="noopener noreferrer" aria-label="View screenshot: Assigned-membership security groups"><img src="/images/azure-security-groups.webp" alt="Assigned-membership security groups" loading="lazy" decoding="async"></a>
+  <a class="network-image-link" href="/images/azure-security-groups.webp" rel="noopener noreferrer" aria-label="View screenshot: Assigned-membership security groups"><img src="/images/azure-security-groups.webp" alt="Assigned-membership security groups" loading="lazy" decoding="async"></a>
   <figcaption>
     <h4>Assigned-membership security groups</h4>
     <p>The g-audit-readonly, g-vm-ops, and g-cloud-admins groups are listed as cloud-sourced security groups with assigned membership. Separate groups simplify assigning permissions to functions rather than directly to every user.</p>
     <p class="network-proves"><strong>What it verifies:</strong> Confirms that three role-oriented security groups exist. Group names alone do not establish their assigned permissions.</p>
-    <a class="section-link" href="/images/azure-security-groups.webp" target="_blank" rel="noopener noreferrer">View full-size screenshot ↗</a>
+    <a class="section-link" href="/images/azure-security-groups.webp" rel="noopener noreferrer">View full-size screenshot ↗</a>
   </figcaption>
 </figure>
 <figure class="network-proof">
-  <a class="network-image-link" href="/images/azure-cloud-admin-group.webp" target="_blank" rel="noopener noreferrer" aria-label="View screenshot: g-cloud-admins — group overview (video frame)"><img src="/images/azure-cloud-admin-group.webp" alt="g-cloud-admins — group overview (video frame)" loading="lazy" decoding="async"></a>
+  <a class="network-image-link" href="/images/azure-cloud-admin-group.webp" rel="noopener noreferrer" aria-label="View screenshot: g-cloud-admins — group overview (video frame)"><img src="/images/azure-cloud-admin-group.webp" alt="g-cloud-admins — group overview (video frame)" loading="lazy" decoding="async"></a>
   <figcaption>
     <h4>g-cloud-admins — group overview (video frame)</h4>
     <p>A frame extracted at approximately 1:50 from the walkthrough shows the g-cloud-admins group overview, with assigned membership and one direct member. The group description expresses its intended administrative purpose.</p>
     <p class="network-proves"><strong>What it verifies:</strong> Shows a configured Entra ID security group. It does not independently prove that the group has received a privileged Azure RBAC assignment.</p>
-    <a class="section-link" href="/images/azure-cloud-admin-group.webp" target="_blank" rel="noopener noreferrer">View full-size screenshot ↗</a>
+    <a class="section-link" href="/images/azure-cloud-admin-group.webp" rel="noopener noreferrer">View full-size screenshot ↗</a>
   </figcaption>
 </figure>
 </section>
 <section class="network-proof-group" id="azure-section-3">
 <div class="network-proof-heading"><h3>03 / Resource-group access control</h3><p>Examining the scope and role of group-based Azure RBAC assignments.</p></div>
 <figure class="network-proof">
-  <a class="network-image-link" href="/images/azure-resource-iam.webp" target="_blank" rel="noopener noreferrer" aria-label="View screenshot: dd-lab-core — IAM role assignments"><img src="/images/azure-resource-iam.webp" alt="dd-lab-core — IAM role assignments" loading="lazy" decoding="async"></a>
+  <a class="network-image-link" href="/images/azure-resource-iam.webp" rel="noopener noreferrer" aria-label="View screenshot: dd-lab-core — IAM role assignments"><img src="/images/azure-resource-iam.webp" alt="dd-lab-core — IAM role assignments" loading="lazy" decoding="async"></a>
   <figcaption>
     <h4>dd-lab-core — IAM role assignments</h4>
     <p>The resource group's IAM role-assignment view displays Reader and Virtual Machine Contributor roles scoped to this resource group. It also shows two Owner assignments inherited from the subscription; those inherited owners remain broadly privileged even when other assignments are narrowly scoped. Identifiers were removed from this public screenshot.</p>
     <p class="network-proves"><strong>What it verifies:</strong> Demonstrates the existence and scope of the RBAC assignments, but does not by itself prove allowed or denied actions from a restricted account.</p>
-    <a class="section-link" href="/images/azure-resource-iam.webp" target="_blank" rel="noopener noreferrer">View full-size screenshot ↗</a>
+    <a class="section-link" href="/images/azure-resource-iam.webp" rel="noopener noreferrer">View full-size screenshot ↗</a>
   </figcaption>
 </figure>
 <figure class="network-proof">
-  <a class="network-image-link" href="/images/azure-vm-ops-role-assignment.webp" target="_blank" rel="noopener noreferrer" aria-label="View screenshot: g-vm-ops — Virtual Machine Contributor (video frame)"><img src="/images/azure-vm-ops-role-assignment.webp" alt="g-vm-ops — Virtual Machine Contributor (video frame)" loading="lazy" decoding="async"></a>
+  <a class="network-image-link" href="/images/azure-vm-ops-role-assignment.webp" rel="noopener noreferrer" aria-label="View screenshot: g-vm-ops — Virtual Machine Contributor (video frame)"><img src="/images/azure-vm-ops-role-assignment.webp" alt="g-vm-ops — Virtual Machine Contributor (video frame)" loading="lazy" decoding="async"></a>
   <figcaption>
     <h4>g-vm-ops — Virtual Machine Contributor (video frame)</h4>
     <p>A frame extracted at approximately 2:15 from the video shows g-vm-ops assigned the Virtual Machine Contributor role to the dd-lab-core resource group. This is evidence of a group-based RBAC assignment at a resource-group boundary.</p>
     <p class="network-proves"><strong>What it verifies:</strong> Documents the VM operations group's assigned role and scope. Testing specific permissions would require signing in as a member and attempting authorized and prohibited actions.</p>
-    <a class="section-link" href="/images/azure-vm-ops-role-assignment.webp" target="_blank" rel="noopener noreferrer">View full-size screenshot ↗</a>
+    <a class="section-link" href="/images/azure-vm-ops-role-assignment.webp" rel="noopener noreferrer">View full-size screenshot ↗</a>
   </figcaption>
 </figure>
 </section>
 <section class="network-proof-group" id="azure-section-4">
 <div class="network-proof-heading"><h3>04 / Cost Management and governance</h3><p>Tracking the budget and explaining what alerts can and cannot do.</p></div>
 <figure class="network-proof">
-  <a class="network-image-link" href="/images/azure-budget.webp" target="_blank" rel="noopener noreferrer" aria-label="View screenshot: Azure monthly budget — $25 with three alerts"><img src="/images/azure-budget.webp" alt="Azure monthly budget — $25 with three alerts" loading="lazy" decoding="async"></a>
+  <a class="network-image-link" href="/images/azure-budget.webp" rel="noopener noreferrer" aria-label="View screenshot: Azure monthly budget — $25 with three alerts"><img src="/images/azure-budget.webp" alt="Azure monthly budget — $25 with three alerts" loading="lazy" decoding="async"></a>
   <figcaption>
     <h4>Azure monthly budget — $25 with three alerts</h4>
     <p>The subscription-scoped budget, named lab-subscription-monthly-cap, is set to $25 USD and resets monthly. Alert thresholds are configured at 50%, 80%, and 100% of budget. The screenshot shows $0 evaluated spending at the time of capture.</p>
     <p class="network-proves"><strong>What it verifies:</strong> Verifies a monitoring budget and notification thresholds; Azure budget alerts do not automatically stop running resources or guarantee a hard spending cap.</p>
-    <a class="section-link" href="/images/azure-budget.webp" target="_blank" rel="noopener noreferrer">View full-size screenshot ↗</a>
+    <a class="section-link" href="/images/azure-budget.webp" rel="noopener noreferrer">View full-size screenshot ↗</a>
   </figcaption>
 </figure>
 </section>
 </section>
-</main><footer class="site-footer"><div class="container footer-inner"><div>© <span data-current-year>2026</span> Dallas Deas · Vol. I · No. 1</div><div class="footer-links"><a href="https://github.com/DallasDeas" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/dallas-deas" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="/contact/">Contact</a></div></div></footer><script src="/site.js?v=automatic-year-20261014" defer></script></body></html>
+</main><footer class="site-footer"><div class="container footer-inner"><div>© <span data-current-year>2026</span> Dallas Deas · Vol. I · No. 1</div><div class="footer-links"><a href="https://github.com/DallasDeas" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/dallas-deas" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="/contact/">Contact</a></div></div></footer><script src="/site.js?v=screenshot-viewer-20261014" defer></script></body></html>
