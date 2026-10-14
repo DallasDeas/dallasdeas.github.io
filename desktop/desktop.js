@@ -22,6 +22,26 @@
   const desktop = document.getElementById('workspace');
   const layer = document.getElementById('windows');
   const mobile = window.matchMedia('(max-width:700px)');
+  const mobileStack = [];
+  function mobileHome() {
+    windows.forEach(state => {state.el.hidden = true;state.el.inert = true;});
+    mobileStack.length = 0;
+    lastFocused = undefined;
+    document.body.classList.remove('mobile-panel-open');
+    document.getElementById('mobile-home').hidden = false;
+    document.getElementById('mobile-home').scrollTop = 0;
+    document.querySelector('.skip-link').href = '#mobile-home';
+    updateDock();
+  }
+  function mobileBack() {
+    mobileStack.pop();
+    const previous = mobileStack[mobileStack.length - 1];
+    if (previous && windows.has(previous)) openApp(previous);
+    else {mobileHome();document.querySelector('.mobile-home-actions button')?.focus({preventScroll:true});}
+  }
+  document.getElementById('mobile-back').addEventListener('click', mobileBack);
+  document.getElementById('mobile-home-button').addEventListener('click', () => {mobileHome();document.querySelector('.mobile-home-actions button')?.focus({preventScroll:true});});
+  document.getElementById('mobile-guide-button').addEventListener('click', () => setGuide(document.getElementById('guide-widget').hidden));
   const reducedMotion = window.matchMedia('(prefers-reduced-motion:reduce)');
   // A lightweight halo complements the native pointer without intercepting input.
   const mousePointer = window.matchMedia('(hover:hover) and (pointer:fine)');
@@ -229,6 +249,13 @@
     });
   }
   function focusWindow(state) {
+    if (mobile.matches) {
+      windows.forEach(other => {other.el.hidden = other !== state;});
+      state.el.hidden = false;
+      document.getElementById('mobile-home').hidden = true;
+      document.body.classList.add('mobile-panel-open');
+      if (mobileStack[mobileStack.length - 1] !== state.id) mobileStack.push(state.id);
+    }
     windows.forEach(other => {
       other.el.classList.remove('is-focused');
       other.el.inert = mobile.matches && other !== state;
@@ -250,8 +277,10 @@
   }
   function openApp(id, focus = true) {
     if (!apps[id]) return;
+    if (mobile.matches) setGuide(false);
     if (windows.has(id)) {
       const state = windows.get(id);
+      if (mobile.matches && id === 'settings') state.el.querySelector('.mobile-sound-controls').append(document.querySelector('.ambient-widget'));
       const wasHidden = state.el.hidden;
       state.el.hidden = false;
       if (wasHidden && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -369,6 +398,11 @@
       });
     }
     if (id === 'settings') {
+      const mobileSettings = document.createElement('div');
+      mobileSettings.className = 'mobile-settings-extra';
+      mobileSettings.innerHTML = '<div class="mobile-sound-controls"></div><div class="mobile-settings-links"><a href="/classic/">Classic view ↗</a><a href="https://github.com/DallasDeas" target="_blank" rel="noopener noreferrer">GitHub profile ↗</a></div>';
+      el.querySelector('.window-content').append(mobileSettings);
+      if (mobile.matches) mobileSettings.querySelector('.mobile-sound-controls').append(document.querySelector('.ambient-widget'));
       el.querySelectorAll('[data-preference]').forEach(button => button.addEventListener('click', () => {
         const key = button.dataset.preference;
         if (key === 'rain' && reducedMotion.matches) { notify('Rain is off because your device prefers reduced motion.'); return; }
@@ -383,8 +417,13 @@
     updateDock();
     if (focus) focusApp(state);
   }
-  function focusApp(state) { (state.el.querySelector('.terminal-form input') || state.el.querySelector('.control-close')).focus({ preventScroll: true }); }
+  function focusApp(state) {
+    const input = state.el.querySelector('.terminal-form input');
+    if (mobile.matches && !input) {state.el.tabIndex = -1;state.el.focus({preventScroll:true});}
+    else (input || state.el.querySelector('.control-close')).focus({preventScroll:true});
+  }
   function closeApp(id) {
+    if (mobile.matches) {mobileBack();return;}
     const state = windows.get(id);
     if (!state) return;
     state.el.inert = true;
@@ -423,8 +462,8 @@
     windows.forEach(state => state.el.remove());
     windows.clear();
     lastFocused = undefined;
-    openApp('terminal', false);
-    openApp('about', false);
+    if (mobile.matches) mobileHome();
+    else {openApp('terminal', false);openApp('about', false);}
     notify('Portfolio layout reset');
   }
   document.addEventListener('click', e => { const button = e.target.closest('[data-app]'); if (button) openApp(button.dataset.app); });
@@ -815,14 +854,30 @@
     guide.hidden = !open;
     if (open && guideMoved) positionGuide(guide.offsetLeft, guide.offsetTop);
     guideToggle.setAttribute('aria-expanded',String(open));
+    document.getElementById('mobile-guide-button').setAttribute('aria-expanded',String(open));
     guideToggle.classList.toggle('is-open',open);
-    if (open) document.getElementById('guide-input').focus(); else guideToggle.focus();
+    if (open) document.getElementById('guide-input').focus(); else (mobile.matches ? document.getElementById('mobile-guide-button') : guideToggle).focus();
   }
   guideToggle.addEventListener('click', () => setGuide(guide.hidden));
   document.getElementById('guide-close').addEventListener('click', () => setGuide(false));
   window.addEventListener('portfolio-guide-open', event => {
     if (typeof event.detail === 'string' && Object.hasOwn(apps, event.detail)) openApp(event.detail, false);
   });
-  openApp('terminal', false);
-  openApp('about', false);
+  mobile.addEventListener('change', () => {
+    const ambient = document.querySelector('.ambient-widget');
+    if (!mobile.matches) {
+      desktop.append(ambient);
+      document.querySelector('.skip-link').href = '#desktop-icons';
+      document.getElementById('mobile-home').hidden = false;
+      document.body.classList.remove('mobile-panel-open');
+      mobileStack.length = 0;
+      openApp('terminal', false);openApp('about', false);
+    } else {
+      const settings = windows.get('settings');
+      if (settings) settings.el.querySelector('.mobile-sound-controls').append(ambient);
+      mobileHome();
+    }
+  });
+  if (mobile.matches) mobileHome();
+  else {openApp('terminal', false);openApp('about', false);}
 })();
