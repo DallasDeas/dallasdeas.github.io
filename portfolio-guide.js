@@ -73,12 +73,12 @@
     if (!tokens.length) return [];
     const matches = records.map(record => {
       const found = tokens.filter(t => record.tokens.includes(t) || record.titleTokens.includes(t));
-      const score = found.reduce((n,t) => n + (record.tokens.includes(t) ? 2 : 0) + (record.titleTokens.includes(t) ? 3 : 0), 0) + (found.includes('contact') && record.text.includes('@') ? 2 : 0);
+      const score = found.reduce((n,t) => n + (record.tokens.includes(t) ? 2 : 0) + (record.titleTokens.includes(t) ? 3 : 0), 0) + (found.includes('contact') && record.text.includes('@') ? 2 : 0) + (record.path.startsWith('/projects/') && found.some(t => ['network','directory','azure'].includes(t)) ? 2 : 0);
       return {...record, score, coverage:found.length/tokens.length};
     }).filter(r => r.score >= 2 && r.coverage >= .45).sort((a,b) => b.score-a.score || b.coverage-a.coverage);
     const selected = [];
     matches.forEach(record => {
-      if (selected.length >= 3 || selected.some(r => r.text === record.text)) return;
+      if (selected.length >= 3 || selected.some(r => r.text === record.text || (r.path === record.path && r.title.startsWith('Dallas’s')))) return;
       selected.push(record);
     });
     return selected;
