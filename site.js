@@ -303,6 +303,6 @@ document.querySelectorAll('.network-proof img').forEach(image => {
 // Share the free portfolio search guide across all classic pages.
 (() => {
   const script = document.createElement('script');
-  script.src = '/portfolio-guide.js?v=free-guide-20261014-v2';
+  script.src = '/portfolio-guide.js?v=free-guide-20261014-v3';
   document.body.appendChild(script);
 })();
