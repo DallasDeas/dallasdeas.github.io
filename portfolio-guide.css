@@ -1,0 +1,29 @@
+.classic-guide,.portfolio-guide-launcher{--accent:var(--blue);--ink:var(--text);--paper:var(--bg);--sans:system-ui,sans-serif}
+.guide-widget .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.guide-result{padding:14px;margin:10px 14px;border:1px solid var(--border,var(--rule));border-radius:6px;background:var(--panel,transparent)}
+.guide-result strong{display:block;color:var(--text,var(--ink));font-size:13px;line-height:1.4}
+.guide-result p{margin:9px 0;color:var(--muted);font-size:13px;line-height:1.65}
+.guide-result-actions{display:flex;flex-wrap:wrap;gap:8px;margin:8px 14px 12px}
+.guide-result .guide-result-actions{margin:12px 0 0}
+.guide-result-actions a,.guide-result-actions button{display:inline-block;padding:8px 10px;border:1px solid var(--accent,var(--rule));border-radius:4px;background:transparent;color:var(--accent,var(--ink));font:11px var(--mono);text-decoration:none;cursor:pointer}
+.guide-result-actions a:hover,.guide-result-actions button:hover{background:#f15a7015}
+#guide-form button:disabled{opacity:.5;cursor:wait}
+.portfolio-guide-launcher{position:fixed;right:24px;bottom:24px;z-index:1500;padding:13px 18px;border:1px solid var(--accent);border-radius:24px;background:var(--paper,#f7f0e6);color:var(--accent);box-shadow:0 4px 18px #0002;font:600 12px var(--mono);cursor:pointer}
+.classic-guide{position:fixed;right:24px;bottom:84px;width:390px;max-height:calc(100dvh - 110px);z-index:1501;display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:10px;background:var(--paper,#f7f0e6);color:var(--ink);box-shadow:0 12px 45px #0003;overflow:hidden;font-family:var(--sans,Arial,sans-serif)}
+.classic-guide[hidden]{display:none}
+.classic-guide header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-bottom:1px solid var(--rule);font:600 13px var(--mono)}
+.classic-guide header button{border:0;background:transparent;color:var(--muted);font-size:22px;cursor:pointer}
+.classic-guide .guide-messages{min-height:150px;max-height:440px;overflow:auto;overscroll-behavior:contain;padding:0 0 12px}
+.classic-guide .guide-response,.classic-guide .guide-question{margin:14px;padding:12px;border:1px solid var(--rule);border-radius:5px;font-size:13px;line-height:1.6}
+.classic-guide .guide-question{margin-left:35px;background:#b5294510;color:var(--accent)}
+.classic-guide .guide-options{display:flex;gap:8px;padding:0 14px 12px}
+.classic-guide .guide-options button{padding:7px 10px;border:1px solid var(--rule);background:transparent;color:var(--accent);font:11px var(--mono);cursor:pointer}
+.classic-guide #guide-form{display:flex;gap:10px;padding:14px;border-top:1px solid var(--rule)}
+.classic-guide #guide-input{min-width:0;flex:1;background:transparent;color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:10px;font-size:13px}
+.classic-guide #guide-form button{border:0;border-radius:4px;background:var(--accent);color:var(--paper,#fff);padding:8px 12px;font-size:18px;cursor:pointer}
+.classic-guide .guide-note{padding:0 14px 12px;color:var(--muted);font-size:10px}
+.classic-guide button:focus-visible,.classic-guide a:focus-visible,.portfolio-guide-launcher:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+[data-theme="dark"] .classic-guide,[data-theme="dark"] .portfolio-guide-launcher{background:#211719}
+#workspace .guide-widget{width:420px;max-width:calc(100vw - 24px)}
+#workspace .guide-messages{max-height:min(440px,calc(100dvh - 280px))}
+@media(max-width:600px){.classic-guide{left:12px;right:12px;bottom:76px;width:auto;max-height:calc(100dvh - 95px)}.portfolio-guide-launcher{right:12px;bottom:16px}.classic-guide .guide-messages{max-height:calc(100dvh - 285px)}.guide-result{margin:10px}.guide-result p{font-size:13px}}
