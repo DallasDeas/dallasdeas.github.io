@@ -42,140 +42,140 @@
   <section class="network-proof-group" id="architecture">
   <div class="network-proof-heading"><h3>01 / Network architecture</h3><p>How the simulated network is physically and logically connected.</p></div>
   <figure class="network-proof">
-    <a class="network-image-link" href="/images/Topology.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot: Cisco Packet Tracer topology">
+    <a class="network-image-link" href="/images/Topology.png" rel="noopener noreferrer" aria-label="Open full-size screenshot: Cisco Packet Tracer topology">
       <img src="/images/Topology.png" alt="Cisco Packet Tracer topology from Cisco Packet Tracer" loading="lazy" decoding="async">
     </a>
     <figcaption>
       <h4>Cisco Packet Tracer topology</h4>
       <p>The topology connects an upstream router, R1, a multilayer core switch, two access switches, three client PCs, and a server. Color-coded endpoint groups identify VLAN 10 (PC1), VLAN 20 (PC2), VLAN 30 (PC3), and VLAN 40 (SR1).</p>
       <p class="network-proves"><strong>What this verifies:</strong> Documents the scope of the lab and provides context for the connectivity, routing, and policy tests below.</p>
-      <a href="/images/Topology.png" target="_blank" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
+      <a href="/images/Topology.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>
 </section>
 <section class="network-proof-group" id="switching">
   <div class="network-proof-heading"><h3>02 / Switching and link aggregation</h3><p>Validating the trunk links and aggregated connections between the core and access switches.</p></div>
   <figure class="network-proof">
-    <a class="network-image-link" href="/images/trunk%20interfaces.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot: 802.1Q trunks and VLAN membership">
+    <a class="network-image-link" href="/images/trunk%20interfaces.png" rel="noopener noreferrer" aria-label="Open full-size screenshot: 802.1Q trunks and VLAN membership">
       <img src="/images/trunk%20interfaces.png" alt="802.1Q trunks and VLAN membership from Cisco Packet Tracer" loading="lazy" decoding="async">
     </a>
     <figcaption>
       <h4>802.1Q trunks and VLAN membership</h4>
       <p>The <code>show interfaces trunk</code> output on SW-CORE1 lists Po1 carrying VLANs 10 and 20 and Po2 carrying VLANs 30 and 40, with 802.1Q encapsulation and a trunking state.</p>
       <p class="network-proves"><strong>What this verifies:</strong> Confirms the VLANs allowed on both port-channel trunk links, including their active, forwarding VLANs.</p>
-      <a href="/images/trunk%20interfaces.png" target="_blank" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
+      <a href="/images/trunk%20interfaces.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>
 <figure class="network-proof">
-    <a class="network-image-link" href="/images/SWCORE%20etherchannel.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot: LACP EtherChannel verification">
+    <a class="network-image-link" href="/images/SWCORE%20etherchannel.png" rel="noopener noreferrer" aria-label="Open full-size screenshot: LACP EtherChannel verification">
       <img src="/images/SWCORE%20etherchannel.png" alt="LACP EtherChannel verification from Cisco Packet Tracer" loading="lazy" decoding="async">
     </a>
     <figcaption>
       <h4>LACP EtherChannel verification</h4>
       <p>The <code>show etherchannel summary</code> output shows two Layer 2 port channels, Po1 and Po2, using LACP. Both display <code>SU</code>, and their member interfaces display <code>(P)</code>.</p>
       <p class="network-proves"><strong>What this verifies:</strong> Indicates that both bundles are in use, with interfaces successfully participating in their port channels.</p>
-      <a href="/images/SWCORE%20etherchannel.png" target="_blank" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
+      <a href="/images/SWCORE%20etherchannel.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>
 </section>
 <section class="network-proof-group" id="routing">
   <div class="network-proof-heading"><h3>03 / OSPF and inter-VLAN routing</h3><p>Proving route exchange between the router and core, and showing which networks each device can reach.</p></div>
   <figure class="network-proof">
-    <a class="network-image-link" href="/images/OSPF%20Neighbor.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot: OSPF adjacency reaches FULL state">
+    <a class="network-image-link" href="/images/OSPF%20Neighbor.png" rel="noopener noreferrer" aria-label="Open full-size screenshot: OSPF adjacency reaches FULL state">
       <img src="/images/OSPF%20Neighbor.png" alt="OSPF adjacency reaches FULL state from Cisco Packet Tracer" loading="lazy" decoding="async">
     </a>
     <figcaption>
       <h4>OSPF adjacency reaches FULL state</h4>
       <p>The R1 neighbor table shows its OSPF neighbor at 192.168.0.2 on GigabitEthernet0/1. The console also records the adjacency transition from LOADING to FULL, after which the neighbor displays <code>FULL/BDR</code>.</p>
       <p class="network-proves"><strong>What this verifies:</strong> Demonstrates successful OSPF adjacency formation on the router-to-core link.</p>
-      <a href="/images/OSPF%20Neighbor.png" target="_blank" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
+      <a href="/images/OSPF%20Neighbor.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>
 <figure class="network-proof">
-    <a class="network-image-link" href="/images/OSPF%20routes.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot: Core switch routing table">
+    <a class="network-image-link" href="/images/OSPF%20routes.png" rel="noopener noreferrer" aria-label="Open full-size screenshot: Core switch routing table">
       <img src="/images/OSPF%20routes.png" alt="Core switch routing table from Cisco Packet Tracer" loading="lazy" decoding="async">
     </a>
     <figcaption>
       <h4>Core switch routing table</h4>
       <p>The multilayer core switch routing table includes connected VLAN interfaces for 192.168.10.0/24, 192.168.20.0/24, 192.168.30.0/24, and 192.168.40.0/24. It also displays an OSPF external default route via 192.168.0.1.</p>
       <p class="network-proves"><strong>What this verifies:</strong> Shows Layer 3 SVIs on the core and learned upstream default-route information.</p>
-      <a href="/images/OSPF%20routes.png" target="_blank" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
+      <a href="/images/OSPF%20routes.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>
 <figure class="network-proof">
-    <a class="network-image-link" href="/images/R1%20OSPF%20routes.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot: R1 learns the VLAN networks through OSPF">
+    <a class="network-image-link" href="/images/R1%20OSPF%20routes.png" rel="noopener noreferrer" aria-label="Open full-size screenshot: R1 learns the VLAN networks through OSPF">
       <img src="/images/R1%20OSPF%20routes.png" alt="R1 learns the VLAN networks through OSPF from Cisco Packet Tracer" loading="lazy" decoding="async">
     </a>
     <figcaption>
       <h4>R1 learns the VLAN networks through OSPF</h4>
       <p>R1's <code>show ip route</code> includes OSPF-learned routes for the four internal /24 networks, with next hop 192.168.0.2. Its default static route points toward 203.0.113.1.</p>
       <p class="network-proves"><strong>What this verifies:</strong> Demonstrates that R1 has learned routes back to the internal VLANs. The 203.0.113.0/24 segment is a simulated external/test network, not proof of connectivity to the public internet.</p>
-      <a href="/images/R1%20OSPF%20routes.png" target="_blank" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
+      <a href="/images/R1%20OSPF%20routes.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>
 </section>
 <section class="network-proof-group" id="services">
   <div class="network-proof-heading"><h3>04 / Address assignment and NAT</h3><p>Checking the automatic client addressing and address translations used by lab traffic.</p></div>
   <figure class="network-proof">
-    <a class="network-image-link" href="/images/dhcp%20binding.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot: DHCP client bindings">
+    <a class="network-image-link" href="/images/dhcp%20binding.png" rel="noopener noreferrer" aria-label="Open full-size screenshot: DHCP client bindings">
       <img src="/images/dhcp%20binding.png" alt="DHCP client bindings from Cisco Packet Tracer" loading="lazy" decoding="async">
     </a>
     <figcaption>
       <h4>DHCP client bindings</h4>
       <p>The <code>show ip dhcp binding</code> output on R1 lists automatic leases for 192.168.10.11, 192.168.20.11, and 192.168.30.11, matching the client VLAN subnets.</p>
       <p class="network-proves"><strong>What this verifies:</strong> Confirms that DHCP bindings exist for clients in three different VLANs. A separate helper-address configuration would verify the relay configuration itself.</p>
-      <a href="/images/dhcp%20binding.png" target="_blank" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
+      <a href="/images/dhcp%20binding.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>
 <figure class="network-proof">
-    <a class="network-image-link" href="/images/Nat%20Translations.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot: NAT/PAT translation entries">
+    <a class="network-image-link" href="/images/Nat%20Translations.png" rel="noopener noreferrer" aria-label="Open full-size screenshot: NAT/PAT translation entries">
       <img src="/images/Nat%20Translations.png" alt="NAT/PAT translation entries from Cisco Packet Tracer" loading="lazy" decoding="async">
     </a>
     <figcaption>
       <h4>NAT/PAT translation entries</h4>
       <p>R1's <code>show ip nat translations</code> displays ICMP translations from inside-local 192.168.30.11 to inside-global 203.0.113.2, with 203.0.113.1 as the outside endpoint.</p>
       <p class="network-proves"><strong>What this verifies:</strong> Demonstrates active ICMP address translation in the simulated topology. The repeated ICMP identifiers are distinct translation entries, not separate clients.</p>
-      <a href="/images/Nat%20Translations.png" target="_blank" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
+      <a href="/images/Nat%20Translations.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>
 </section>
 <section class="network-proof-group" id="connectivity">
   <div class="network-proof-heading"><h3>05 / Connectivity and segmentation testing</h3><p>Comparing a working client-to-server path against a client that cannot reach the same destination.</p></div>
   <figure class="network-proof">
-    <a class="network-image-link" href="/images/PC%201%20ping%20to%20SR1.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot: PC1 successfully reaches the server">
+    <a class="network-image-link" href="/images/PC%201%20ping%20to%20SR1.png" rel="noopener noreferrer" aria-label="Open full-size screenshot: PC1 successfully reaches the server">
       <img src="/images/PC%201%20ping%20to%20SR1.png" alt="PC1 successfully reaches the server from Cisco Packet Tracer" loading="lazy" decoding="async">
     </a>
     <figcaption>
       <h4>PC1 successfully reaches the server</h4>
       <p>PC1 sends four ICMP echo requests to server address 192.168.40.40 and receives four replies. The output reports 0% packet loss.</p>
       <p class="network-proves"><strong>What this verifies:</strong> Validates connectivity from the VLAN 10 workstation to the VLAN 40 server at the time of testing.</p>
-      <a href="/images/PC%201%20ping%20to%20SR1.png" target="_blank" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
+      <a href="/images/PC%201%20ping%20to%20SR1.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>
 <figure class="network-proof">
-    <a class="network-image-link" href="/images/PC%202%20ping%20to%20SR1.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot: PC2 cannot reach the same server">
+    <a class="network-image-link" href="/images/PC%202%20ping%20to%20SR1.png" rel="noopener noreferrer" aria-label="Open full-size screenshot: PC2 cannot reach the same server">
       <img src="/images/PC%202%20ping%20to%20SR1.png" alt="PC2 cannot reach the same server from Cisco Packet Tracer" loading="lazy" decoding="async">
     </a>
     <figcaption>
       <h4>PC2 cannot reach the same server</h4>
       <p>PC2 also tries to ping 192.168.40.40, but its gateway at 192.168.20.1 returns <code>Destination host unreachable</code> for all four attempts.</p>
       <p class="network-proves"><strong>What this verifies:</strong> Shows that PC2 does not have working connectivity to the server. This is consistent with a segmentation objective but does not establish that an ACL caused the failure; an ACL configuration and hit-count check are still needed.</p>
-      <a href="/images/PC%202%20ping%20to%20SR1.png" target="_blank" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
+      <a href="/images/PC%202%20ping%20to%20SR1.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>
 </section>
 <section class="network-proof-group" id="management">
   <div class="network-proof-heading"><h3>06 / Secure device administration</h3><p>Accessing the core switch remotely using an authenticated SSH session.</p></div>
   <figure class="network-proof">
-    <a class="network-image-link" href="/images/ssh%20session.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size screenshot: SSH connection to the core switch">
+    <a class="network-image-link" href="/images/ssh%20session.png" rel="noopener noreferrer" aria-label="Open full-size screenshot: SSH connection to the core switch">
       <img src="/images/ssh%20session.png" alt="SSH connection to the core switch from Cisco Packet Tracer" loading="lazy" decoding="async">
     </a>
     <figcaption>
       <h4>SSH connection to the core switch</h4>
       <p>From PC1, the command <code>ssh -l dallas 192.168.0.2</code> opens an authenticated CLI session on SW-CORE1. The session then enters privileged EXEC and global configuration modes.</p>
       <p class="network-proves"><strong>What this verifies:</strong> Documents working SSH-based remote administration. This screenshot does not independently prove Telnet is disabled; that requires verification of the VTY configuration.</p>
-      <a href="/images/ssh%20session.png" target="_blank" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
+      <a href="/images/ssh%20session.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>
 </section>
-</section></main><footer class="site-footer"><div class="container footer-inner"><div>© <span data-current-year>2026</span> Dallas Deas · Vol. I · No. 1</div><div class="footer-links"><a href="https://github.com/DallasDeas" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/dallas-deas" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="/contact/">Contact</a></div></div></footer><script src="/site.js?v=automatic-year-20261014" defer></script></body></html>
+</section></main><footer class="site-footer"><div class="container footer-inner"><div>© <span data-current-year>2026</span> Dallas Deas · Vol. I · No. 1</div><div class="footer-links"><a href="https://github.com/DallasDeas" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/dallas-deas" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="/contact/">Contact</a></div></div></footer><script src="/site.js?v=screenshot-viewer-20261014" defer></script></body></html>
