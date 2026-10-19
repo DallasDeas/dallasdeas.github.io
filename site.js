@@ -191,58 +191,79 @@ document.querySelectorAll('.network-proof img').forEach(image => {
   };
   updateLabel();
 
+
+  // Reveal the actual new palette, keeping the page visible throughout.
+  const transitionStyle = document.createElement('style');
+  transitionStyle.textContent = `
+    html.classic-theme-reveal::view-transition-group(root){animation:none}
+    html.classic-theme-reveal::view-transition-old(root),
+    html.classic-theme-reveal::view-transition-new(root){
+      animation:none;mix-blend-mode:normal
+    }
+    html.classic-theme-reveal::view-transition-old(root){z-index:1}
+    html.classic-theme-reveal::view-transition-new(root){z-index:2}
+    .theme-fade{position:fixed;inset:0;z-index:10000;pointer-events:none;
+      background:var(--theme-fade-color);opacity:0}
+  `;
+  document.head.appendChild(transitionStyle);
+
   let animating = false;
-  button.addEventListener('click', () => {
+  button.addEventListener('click', async () => {
     if (animating) return;
     const next = getMode() === 'dark' ? 'light' : 'dark';
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const supportsPortal = !!(window.CSS && CSS.supports && CSS.supports('clip-path', 'circle(10px at 10px 10px)'));
-    if (reducedMotion || !supportsPortal) { setMode(next); return; }
-
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setMode(next);
+      return;
+    }
     animating = true;
-    button.classList.add('is-morphing');
     button.setAttribute('aria-busy', 'true');
-    const rect = button.getBoundingClientRect();
-    const fx = document.createElement('div');
-    fx.className = 'theme-morph theme-morph--' + next;
-    fx.setAttribute('aria-hidden', 'true');
-    fx.style.setProperty('--origin-x', (rect.left + rect.width / 2) + 'px');
-    fx.style.setProperty('--origin-y', (rect.top + rect.height / 2) + 'px');
-
-    const veil = document.createElement('div');
-    veil.className = 'theme-morph__veil';
-    const texture = document.createElement('div');
-    texture.className = 'theme-morph__texture';
-    fx.append(veil, texture);
-    for (let i = 0; i < 2; i += 1) {
-      const ring = document.createElement('span');
-      ring.className = 'theme-morph__ring theme-morph__ring--' + (i ? 'two' : 'one');
-      fx.appendChild(ring);
-    }
-    for (let i = 0; i < 12; i += 1) {
-      const spark = document.createElement('span');
-      spark.className = 'theme-morph__spark';
-      spark.style.setProperty('--ray', (i * 30) + 'deg');
-      spark.style.setProperty('--distance', (100 + (i % 3) * 24) + 'px');
-      spark.style.setProperty('--delay', (i % 4) * 35 + 'ms');
-      fx.appendChild(spark);
-    }
-    const orb = document.createElement('span');
-    orb.className = 'theme-morph__orb';
-    const word = document.createElement('span');
-    word.className = 'theme-morph__word';
-    word.textContent = next === 'light' ? 'Daybreak' : 'Nightfall';
-    fx.append(orb, word);
-    document.body.appendChild(fx);
-
-    // The expanding veil covers the old palette before switching to the new one.
-    window.setTimeout(() => setMode(next), 525);
-    window.setTimeout(() => {
-      fx.remove();
+    let transition;
+    let fade;
+    try {
+      if (typeof document.startViewTransition === 'function') {
+        const rect = button.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        const ellipse = (rx, ry) => `ellipse(${rx}px ${ry}px at ${x}px ${y}px)`;
+        root.classList.add('classic-theme-reveal');
+        transition = document.startViewTransition(() => setMode(next));
+        await transition.ready;
+        button.classList.add('is-morphing');
+        await root.animate([
+          { clipPath: ellipse(0, 0), offset: 0 },
+          { clipPath: ellipse(radius * .4, radius * .32), offset: .4 },
+          { clipPath: ellipse(radius * .8, radius * .74), offset: .75 },
+          { clipPath: ellipse(radius, radius), offset: 1 }
+        ], {
+          duration: 1000,
+          easing: 'cubic-bezier(.22,.68,.2,1)',
+          fill: 'both',
+          pseudoElement: '::view-transition-new(root)'
+        }).finished;
+      } else {
+        // A brief soft fade for browsers without page snapshot transitions.
+        fade = document.createElement('div');
+        fade.className = 'theme-fade';
+        fade.style.setProperty('--theme-fade-color', next === 'dark' ? '#211719' : '#f7f0e6');
+        fade.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(fade);
+        await fade.animate([{opacity:0},{opacity:.75}], {duration:180,fill:'forwards'}).finished;
+        setMode(next);
+        button.classList.add('is-morphing');
+        await fade.animate([{opacity:.75},{opacity:0}], {duration:420,easing:'ease-out',fill:'forwards'}).finished;
+      }
+    } catch (_) {
+      // A hidden tab or interrupted animation must never leave the control locked.
+      if (transition) transition.skipTransition();
+      setMode(next);
+    } finally {
+      fade?.remove();
+      root.classList.remove('classic-theme-reveal');
       button.classList.remove('is-morphing');
       button.removeAttribute('aria-busy');
       animating = false;
-    }, 1060);
+    }
   });
 })();
 
