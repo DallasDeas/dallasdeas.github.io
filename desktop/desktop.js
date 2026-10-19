@@ -772,6 +772,32 @@
       button.setAttribute('aria-label', 'Switch to ' + next + ' mode');
     });
   }
+
+  const themeRoot = document.documentElement;
+  const themeRevealStyle = document.createElement('style');
+  themeRevealStyle.textContent = `
+    html.desktop-theme-reveal::view-transition-group(root){animation:none}
+    html.desktop-theme-reveal::view-transition-old(root),
+    html.desktop-theme-reveal::view-transition-new(root){animation:none;mix-blend-mode:normal}
+    html.desktop-theme-reveal::view-transition-old(root){z-index:1}
+    html.desktop-theme-reveal::view-transition-new(root){z-index:2}
+    .desktop-theme-fade{position:fixed;inset:0;z-index:10000;pointer-events:none;
+      background:var(--theme-fade-color);opacity:0}
+  `;
+  document.head.appendChild(themeRevealStyle);
+
+  // Decode both skylines ahead of the first switch so the reveal includes the photo.
+  const dayWallpaper = getComputedStyle(themeRoot).getPropertyValue('--day-wallpaper').trim();
+  const dayURL = dayWallpaper.match(/^url\((?:"([^"]+)"|'([^']+)'|(.+))\)$/);
+  const wallpapersReady = Promise.all([
+    '/desktop/assets/atlanta-night.webp',
+    dayURL && (dayURL[1] || dayURL[2] || dayURL[3])
+  ].filter(Boolean).map(src => {
+    const image = new Image();
+    image.src = src;
+    return image.decode().catch(() => {});
+  }));
+
   let themeTransition;
   function setDesktopTheme(next) {
     theme = next;
@@ -780,51 +806,80 @@
   }
   function finishThemeTransition(commit = false) {
     if (!themeTransition) return;
-    const transition = themeTransition;
-    clearTimeout(transition.switchTimer); clearTimeout(transition.finishTimer);
-    if (commit) setDesktopTheme(transition.next);
-    transition.fx.remove();
+    const state = themeTransition;
+    themeTransition = null;
+    clearTimeout(state.finishTimer);
+    state.animation?.cancel();
+    state.native?.skipTransition();
+    state.fx?.remove();
+    if (commit) setDesktopTheme(state.next);
+    themeRoot.classList.remove('desktop-theme-reveal');
     document.querySelectorAll('[data-theme-toggle]').forEach(button => {
       button.classList.remove('is-morphing'); button.removeAttribute('aria-busy');
     });
-    themeTransition = null;
   }
-  document.addEventListener('click', event => {
+  document.addEventListener('click', async event => {
     const button = event.target.closest('[data-theme-toggle]');
     if (!button || themeTransition) return;
     const next = theme === 'dark' ? 'light' : 'dark';
-    // Unlock the day recording while the theme button's tap is still active.
+    // Keep iPhone playback unlocked within the original theme-button tap.
     if (next === 'light' && playing && dayRecording) {
       clearTimeout(dayPauseTimer);
       dayRecording.play().catch(() => {});
     }
-    if (reducedMotion.matches || !CSS.supports('clip-path', 'circle(10px at 10px 10px)')) {
-      setDesktopTheme(next); return;
+    if (reducedMotion.matches) { setDesktopTheme(next); return; }
+
+    const state = { next };
+    themeTransition = state;
+    document.querySelectorAll('[data-theme-toggle]').forEach(toggle => toggle.setAttribute('aria-busy', 'true'));
+    state.finishTimer = setTimeout(() => {
+      if (themeTransition === state) finishThemeTransition(true);
+    }, 3000);
+    try {
+      await wallpapersReady;
+      if (themeTransition !== state) return;
+      if (typeof document.startViewTransition === 'function') {
+        const rect = button.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+        const ellipse = (rx, ry) => `ellipse(${rx}px ${ry}px at ${x}px ${y}px)`;
+        themeRoot.classList.add('desktop-theme-reveal');
+        state.native = document.startViewTransition(() => {
+          if (themeTransition === state) setDesktopTheme(next);
+        });
+        await state.native.ready;
+        if (themeTransition !== state) return;
+        button.classList.add('is-morphing');
+        state.animation = themeRoot.animate([
+          { clipPath: ellipse(0, 0), offset: 0 },
+          { clipPath: ellipse(radius * .4, radius * .32), offset: .4 },
+          { clipPath: ellipse(radius * .8, radius * .74), offset: .75 },
+          { clipPath: ellipse(radius, radius), offset: 1 }
+        ], {
+          duration: 1000, easing: 'cubic-bezier(.22,.68,.2,1)', fill: 'both',
+          pseudoElement: '::view-transition-new(root)'
+        });
+        await state.animation.finished;
+      } else {
+        state.fx = document.createElement('div');
+        state.fx.className = 'desktop-theme-fade';
+        state.fx.style.setProperty('--theme-fade-color', next === 'dark' ? '#101019' : '#f7f0e6');
+        state.fx.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(state.fx);
+        state.animation = state.fx.animate([{opacity:0},{opacity:.75}], {duration:180,fill:'forwards'});
+        await state.animation.finished;
+        if (themeTransition !== state) return;
+        setDesktopTheme(next);
+        button.classList.add('is-morphing');
+        state.animation = state.fx.animate([{opacity:.75},{opacity:0}], {duration:420,easing:'ease-out',fill:'forwards'});
+        await state.animation.finished;
+      }
+    } catch (_) {
+      if (themeTransition === state) setDesktopTheme(next);
+    } finally {
+      if (themeTransition === state) finishThemeTransition();
     }
-    const rect = button.getBoundingClientRect();
-    const fx = document.createElement('div');
-    fx.className = 'theme-morph theme-morph--' + next;
-    fx.setAttribute('aria-hidden', 'true');
-    fx.style.setProperty('--origin-x', (rect.left + rect.width / 2) + 'px');
-    fx.style.setProperty('--origin-y', (rect.top + rect.height / 2) + 'px');
-    fx.innerHTML = '<div class="theme-morph__veil"></div><div class="theme-morph__texture"></div><span class="theme-morph__ring"></span><span class="theme-morph__ring theme-morph__ring--two"></span><span class="theme-morph__orb"></span><span class="theme-morph__word">' + (next === 'light' ? 'Daybreak' : 'Nightfall') + '</span>';
-    for (let i = 0; i < 12; i++) {
-      const spark = document.createElement('span');
-      spark.className = 'theme-morph__spark';
-      spark.style.setProperty('--ray', (i * 30) + 'deg');
-      spark.style.setProperty('--distance', (100 + (i % 3) * 24) + 'px');
-      spark.style.setProperty('--delay', (i % 4) * 35 + 'ms');
-      fx.append(spark);
-    }
-    document.body.append(fx);
-    document.querySelectorAll('[data-theme-toggle]').forEach(toggle => {
-      toggle.classList.add('is-morphing'); toggle.setAttribute('aria-busy', 'true');
-    });
-    themeTransition = {
-      fx, next,
-      switchTimer: setTimeout(() => setDesktopTheme(next), 525),
-      finishTimer: setTimeout(() => finishThemeTransition(), 1060),
-    };
   });
   window.addEventListener('pagehide', () => finishThemeTransition(true));
   reducedMotion.addEventListener('change', () => {
