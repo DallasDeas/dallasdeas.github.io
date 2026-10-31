@@ -165,6 +165,13 @@
     toastTimer = setTimeout(() => toast.classList.remove('visible'), 3500);
   }
   const projectData = {
+    zabbix: {
+      title: 'Zabbix Monitoring & Investigation', label: 'MONITORING / INCIDENT ANALYSIS', icon: 'network',
+      summary: 'I built a Windows and Ubuntu monitoring lab in Hyper-V, automated Gmail alerts, and investigated a monitoring interruption using Zabbix and Windows event records.',
+      tools: ['Zabbix', 'Hyper-V', 'Windows Server', 'Ubuntu', 'PowerShell', 'Chrony'],
+      points: ['Deployed Zabbix with MariaDB, Apache and PHP-FPM on Ubuntu.', 'Collected Windows service and performance data through Zabbix Agent 2.', 'Configured Gmail problem and recovery notifications.', 'Investigated clock skew and validated the Windows time source.', 'Correlated an October 30 monitoring interruption with startup and service events; documented the October 28 shutdown separately.'],
+      image: 'https://raw.githubusercontent.com/DallasDeas/enterprise-infrastructure-monitoring-lab/main/docs/images/lab-topology.png', caption: 'The Hyper-V lab topology and traffic paths between Windows Server and Ubuntu.', path: '/projects/zabbix/', count: '7 evidence captures + full archive',
+    },
     network: {
       title: 'Cisco Enterprise Network', label: 'NETWORKS / PACKET TRACER', icon: 'network',
       summary: 'A simulated enterprise network with VLAN segmentation, Layer 3 switching, OSPF routing, DHCP, NAT/PAT, EtherChannel, and connectivity tests.',
@@ -200,17 +207,17 @@
     terminal: { title: 'Terminal — dallas@portfolio', icon: 'terminal', width: 640, height: 540, x: .94, y: .22, status: 'LOCAL PORTFOLIO TERMINAL', content: () => `
       <div class="terminal-content"><p class="terminal-welcome">Dallas Portfolio <b data-terminal-version>[Version ${portfolioVersion()}]</b><br>Type <b>help</b> to explore. Welcome in.</p>
         <div class="terminal-logo" aria-hidden="true">D A L L A S / D E A S<br>─────────────────────</div>
-        <dl class="terminal-facts"><dt>user</dt><dd>Dallas Deas</dd><dt>location</dt><dd>Atlanta, Georgia</dd><dt>focus</dt><dd>IT support, networking & systems</dd><dt>credentials</dt><dd>CCNA · Security+ · AZ-900</dd><dt>projects</dt><dd>Active Directory / Cisco / Azure</dd><dt>status</dt><dd>Open to IT opportunities</dd></dl>
+        <dl class="terminal-facts"><dt>user</dt><dd>Dallas Deas</dd><dt>location</dt><dd>Atlanta, Georgia</dd><dt>focus</dt><dd>IT support, networking & systems</dd><dt>credentials</dt><dd>CCNA · Security+ · AZ-900</dd><dt>projects</dt><dd>Zabbix / Active Directory / Cisco / Azure</dd><dt>status</dt><dd>Open to IT opportunities</dd></dl>
         <div class="terminal-history" role="log" aria-live="polite"></div>
         <form class="terminal-form"><label class="prompt" for="terminal-input">dallas@portfolio:~$</label><input id="terminal-input" aria-label="Terminal command" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="200"></form>
         <div class="terminal-help">try: help · projects · about · contact</div>
       </div>` },
-    projects: { title: 'Projects — File Explorer', icon: 'folder', width: 640, height: 450, x: .48, y: .13, status: '3 PROJECT FOLDERS', content: () => `
-      <div class="window-toolbar"><span>⌂ / home / dallas / projects</span><span>3 items</span></div>
+    projects: { title: 'Projects — File Explorer', icon: 'folder', width: 640, height: 600, x: .48, y: .13, status: `${Object.keys(projectData).length} PROJECT FOLDERS`, content: () => `
+      <div class="window-toolbar"><span>⌂ / home / dallas / projects</span><span>${Object.keys(projectData).length} items</span></div>
       <div class="folder-grid">${Object.entries(projectData).map(([id, project]) => `<button class="folder" data-app="project-${id}"><span class="folder-icon">${svg('folder')}</span><strong>${project.title}</strong><small>${project.count}</small></button>`).join('')}</div>
       <div class="folder-bottom"><b>Technical work, documented.</b><br>Open a folder to see what I configured, tested, and learned. Each project links to its full lab documentation.</div>` },
     skills: { title: 'Toolbox — skills.json', icon: 'network', width: 590, height: 560, x: .55, y: .16, status: 'TOOLS USED IN WORK & LABS', content: () => `
-      <div class="detail-content">${Object.entries({ Networking: ['Cisco IOS', 'TCP/IP', 'VLANs', 'OSPF', 'DHCP', 'NAT/PAT', 'LACP', 'SSH'], Systems: ['Windows Server', 'Active Directory', 'Group Policy', 'Hyper-V', 'Windows support'], Cloud: ['Microsoft Azure', 'Entra ID', 'RBAC', 'Cost Management'], 'Business tools': ['Excel', 'Power Query', 'ERP workflows', 'IT asset tracking'] }).map(([label, skills]) => `<section class="skills-group"><h3>${label.toUpperCase()}</h3><div class="pill-row">${skills.map(skill => `<span class="pill">${skill}</span>`).join('')}</div></section>`).join('')}</div>` },
+      <div class="detail-content">${Object.entries({ Networking: ['Cisco IOS', 'TCP/IP', 'VLANs', 'OSPF', 'DHCP', 'NAT/PAT', 'LACP', 'SSH'], Systems: ['Windows Server', 'Active Directory', 'Group Policy', 'Hyper-V', 'Windows support'], Monitoring: ['Zabbix', 'Ubuntu', 'PowerShell', 'Windows event logs', 'Chrony'], Cloud: ['Microsoft Azure', 'Entra ID', 'RBAC', 'Cost Management'], 'Business tools': ['Excel', 'Power Query', 'ERP workflows', 'IT asset tracking'] }).map(([label, skills]) => `<section class="skills-group"><h3>${label.toUpperCase()}</h3><div class="pill-row">${skills.map(skill => `<span class="pill">${skill}</span>`).join('')}</div></section>`).join('')}</div>` },
     certifications: { title: 'Credentials — verified learning', icon: 'shield', width: 600, height: 560, x: .45, y: .14, status: 'NETWORKING / SECURITY / CLOUD', content: () => `
       <div class="detail-content"><div class="credential"><span class="credential-icon">${svg('network')}</span><div><h3>Cisco Certified Network Associate</h3><p>CCNA · Routing, switching, IP services and network fundamentals.</p><small>Certified June 2026</small></div></div><div class="credential"><span class="credential-icon">${svg('shield')}</span><div><h3>CompTIA Security+</h3><p>Security fundamentals, threats, risk, defensive controls and identity.</p><small>Certified October 2025</small></div></div><div class="credential"><span class="credential-icon">${svg('cloud')}</span><div><h3>Microsoft Azure Fundamentals</h3><p>AZ-900 · Cloud concepts, Azure services, governance and pricing.</p><small>Certified</small></div></div><div class="action-row"><button class="action" data-app="projects">See the hands-on work ↗</button></div></div>` },
     contact: { title: 'Contact — Let’s connect', icon: 'mail', width: 620, height: 760, x: .6, y: .08, status: 'LET’S CONNECT', content: () => `
@@ -491,15 +498,15 @@
       if (command === 'clear') history.replaceChildren();
       else if (command === 'help') append('Available commands:\n  about       Meet Dallas\n  projects    Open the lab folders\n  skills      Explore the toolbox\n  certs       View credentials\n  resume      Open the résumé\n  contact     Find contact details\n  open <app>  Open a portfolio app\n  ls          List portfolio folders\n  whoami      Show profile\n  date        Show current time\n  clear       Clear this history\n\nUse ↑ / ↓ for command history.', 'terminal-output');
       else if (command === 'whoami') append('Dallas Deas\nIT support · Networking · Systems\nAtlanta, Georgia\nCCNA · CompTIA Security+ · Azure Fundamentals', 'terminal-output');
-      else if (command === 'ls') append('about.md  projects/  skills.json  credentials/\nresume.pdf  contact.txt\n\nprojects/: active-directory/  cisco-network/  azure/', 'terminal-output');
+      else if (command === 'ls') append('about.md  projects/  skills.json  credentials/\nresume.pdf  contact.txt\n\nprojects/: zabbix/  active-directory/  cisco-network/  azure/', 'terminal-output');
       else if (command === 'pwd') append('/home/dallas/portfolio', 'terminal-output');
       else if (command === 'date') append(new Date().toLocaleString('en-US', { timeZone:'America/New_York', timeZoneName:'short' }), 'terminal-output');
       else if (commandApps[command]) { append('Opening ' + command + '…', 'terminal-output'); openApp(commandApps[command]); }
       else if (command === 'open') {
-        const aliases = { ...commandApps, settings:'settings', terminal:'terminal', network:'project-network', azure:'project-azure', directory:'project-directory' };
+        const aliases = { ...commandApps, settings:'settings', terminal:'terminal', zabbix:'project-zabbix', monitoring:'project-zabbix', network:'project-network', azure:'project-azure', directory:'project-directory' };
         const id = aliases[args[0]];
         if (id) { append('Opening ' + args[0] + '…', 'terminal-output'); openApp(id); }
-        else append('Choose an app: about, projects, skills, certs, resume, contact, settings, network, azure, directory.', 'terminal-output');
+        else append('Choose an app: about, projects, skills, certs, resume, contact, settings, zabbix, network, azure, directory.', 'terminal-output');
       } else append(`Command not found: ${command}. Type help for available commands.`, 'terminal-output');
       content.scrollTop = content.scrollHeight;
     });
