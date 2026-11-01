@@ -24,12 +24,12 @@
       <h2>Verified outcomes</h2>
       <p>OSPF reaches the FULL adjacency state. LACP port channels are bundled and forwarding their intended VLANs. The router records DHCP bindings and active NAT translations. PC1 reaches the lab server at 192.168.40.40 with four successful ICMP replies; PC2 instead receives destination-unreachable responses.</p>
       <h2>Verification gaps worth addressing</h2>
-      <p>To prove that PC2's blocked connectivity is caused by your intended ACL, capture <code>show access-lists</code>, the interface configuration showing where the ACL is applied, and test counters or a controlled before/after test. Also consider saving <code>show vlan brief</code>, <code>show ip interface brief</code>, and the SSH-only VTY settings.</p>
+      <p>For my next validation pass, I would capture <code>show access-lists</code>, the interface configuration showing where the ACL is applied, and test counters or a controlled before/after test to determine why PC2 cannot reach the server. I would also save <code>show vlan brief</code>, <code>show ip interface brief</code>, and the SSH-only VTY settings.</p>
     </article>
     <aside class="side-sticky"><div class="panel">
       <h3>Technologies practiced</h3>
       <div class="tags"><span class="tag">Cisco IOS</span><span class="tag">Packet Tracer</span><span class="tag">VLANs</span><span class="tag">SVIs</span><span class="tag">802.1Q</span><span class="tag">LACP</span><span class="tag">OSPF</span><span class="tag">DHCP</span><span class="tag">NAT/PAT</span><span class="tag">SSH</span><span class="tag">Connectivity Testing</span></div>
-      <div class="note">This is a Cisco Packet Tracer simulation, not a production deployment. Screenshots show the specific outputs described below.</div>
+      <p style="margin-top:20px"><a class="section-link" href="https://github.com/DallasDeas/dallasdeas.github.io/blob/main/projects/network/README.md" target="_blank" rel="noopener noreferrer">View complete lab README ↗</a></p>
       <p style="margin-top:20px"><a class="section-link" href="/projects/">← All projects</a></p>
     </div></aside>
   </div>
@@ -109,7 +109,7 @@
     <figcaption>
       <h4>R1 learns the VLAN networks through OSPF</h4>
       <p>R1's <code>show ip route</code> includes OSPF-learned routes for the four internal /24 networks, with next hop 192.168.0.2. Its default static route points toward 203.0.113.1.</p>
-      <p class="network-proves"><strong>What this verifies:</strong> Demonstrates that R1 has learned routes back to the internal VLANs. The 203.0.113.0/24 segment is a simulated external/test network, not proof of connectivity to the public internet.</p>
+      <p class="network-proves"><strong>What this verifies:</strong> Demonstrates that R1 has learned routes back to the internal VLANs. The 203.0.113.0/24 segment represents the upstream test network.</p>
       <a href="/images/R1%20OSPF%20routes.png" rel="noopener noreferrer" class="section-link">Open full-size screenshot ↗</a>
     </figcaption>
   </figure>

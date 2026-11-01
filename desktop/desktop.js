@@ -177,7 +177,7 @@
       summary: 'A simulated enterprise network with VLAN segmentation, Layer 3 switching, OSPF routing, DHCP, NAT/PAT, EtherChannel, and connectivity tests.',
       tools: ['Cisco IOS', 'Packet Tracer', 'VLANs', 'OSPF', 'LACP', 'DHCP', 'NAT/PAT'],
       points: ['Configured VLANs, SVIs and 802.1Q trunks.', 'Bundled links using LACP EtherChannel.', 'Verified OSPF adjacency, DHCP bindings and NAT translations.', 'Documented successful and blocked connectivity tests, including remaining ACL verification gaps.'],
-      image: '/images/Topology.png', caption: 'The documented Packet Tracer topology. This is a lab simulation.', path: '/projects/network/', count: '11 screenshots',
+      image: '/images/Topology.png', caption: 'The Packet Tracer topology showing the router, core, access switches, client VLANs, and server.', path: '/projects/network/', count: '11 screenshots',
     },
     directory: {
       title: 'Active Directory Home Lab', label: 'SYSTEMS / WINDOWS SERVER', icon: 'network',
